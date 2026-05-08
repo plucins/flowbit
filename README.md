@@ -19,13 +19,13 @@ copilot plugin marketplace add plucins/flowbit
 Browse available plugins:
 
 ```bash
-copilot plugin marketplace browse flowbit-marketplace
+copilot plugin marketplace browse flowbit
 ```
 
 Install Flowbit from marketplace:
 
 ```bash
-copilot plugin install flowbit@flowbit-marketplace
+copilot plugin install flowbit@flowbit
 ```
 
 ## Install directly from repository
