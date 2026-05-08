@@ -15,13 +15,13 @@ This Copilot CLI build installs plugins from a repository source (not from `.` p
 Install from GitHub repository:
 
 ```bash
-copilot plugin install OWNER/REPO
+copilot plugin install https://github.com/plucins/flowbit
 ```
 
 Install from repository subdirectory:
 
 ```bash
-copilot plugin install OWNER/REPO:plugins/flowbit-sdlc
+copilot plugin install https://github.com/plucins/flowbit:plugins/flowbit-sdlc
 ```
 
 Verify:
