@@ -193,7 +193,7 @@ Research type classification determines which methodology to apply. Use question
 ### Documentation Sources
 
 **Project Documentation**:
-- `.flowbit/docs/**/*.md` - AI SDLC framework documentation
+- `.flowbit/docs/**/*.md` Flowbit documentation
 - `docs/**/*.md` - Project documentation
 - `README.md`, `ARCHITECTURE.md`, `CONTRIBUTING.md` - Root docs
 

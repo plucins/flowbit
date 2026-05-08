@@ -1,10 +1,10 @@
 ---
 name: init
-description: Initialize AI SDLC framework with intelligent project analysis and documentation generation
+description: Initialize Flowbit with intelligent project analysis and documentation generation
 argument-hint: [--standards-from=PATH]
 ---
 
-# Initialize AI SDLC Framework
+# Initialize Flowbit
 
 Initialize `.flowbit/docs/` with intelligent project analysis and meaningful documentation generation based on actual codebase inspection.
 
