@@ -1,6 +1,6 @@
 # Migration Types Reference
 
-> **Design Documentation**: This file serves as **design documentation** for developers and Claude implementing migration workflows. It provides guidance for identifying migration types and adapting workflows accordingly.
+> **Design Documentation**: This file serves as **design documentation** for developers and GitHub Copilot implementing migration workflows. It provides guidance for identifying migration types and adapting workflows accordingly.
 
 **Purpose:** Pattern guide for the three migration types: Code, Data, and Architecture
 

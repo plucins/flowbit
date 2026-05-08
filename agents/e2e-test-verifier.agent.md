@@ -277,7 +277,7 @@ Categorized by severity (Critical/Major/Minor/Cosmetic):
 
 Detect unavailable tools and provide setup instructions:
 - Install playwright-mcp
-- Configure MCP server in Claude Code
+- Configure MCP server in GitHub Copilot
 - Restart and retry
 
 ### Application Not Running

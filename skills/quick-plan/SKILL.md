@@ -5,7 +5,7 @@ description: Enter planning mode with AI SDLC standards awareness
 
 # Planning Mode with Standards Awareness
 
-Enter Claude Code's planning mode for a task, with automatic discovery of project standards from `.flowbit/docs/`.
+Enter GitHub Copilot planning mode for a task, with automatic discovery of project standards from `.flowbit/docs/`.
 
 ## Usage
 
@@ -56,7 +56,7 @@ Enter Claude Code's planning mode for a task, with automatic discovery of projec
 
 ### Step 3: Enter Planning Mode
 
-**Use the `EnterPlanMode` tool to trigger Claude Code's builtin planning mode.**
+**Use the planning mode flow to trigger GitHub Copilot's built-in planning behavior.**
 
 **Standards context from Step 2 MUST actively inform all plan mode phases:**
 
@@ -101,7 +101,7 @@ project documentation and coding standards for better consistency.
 
 1. **Parses** task description from user input
 2. **Discovers and READS** applicable standard files from `.flowbit/docs/` (BEFORE plan mode)
-3. **Enters** Claude Code's builtin planning mode via `EnterPlanMode` with standards already loaded
+3. **Enters** GitHub Copilot planning mode with standards already loaded
 4. **Produces** a plan file with implementation approach, applicable standards, and compliance checklist
 5. **Gates** ExitPlanMode on mandatory standards sections in the plan file
 

@@ -1,6 +1,6 @@
 # Migration Strategies Reference
 
-> **Design Documentation**: This file serves as **design documentation** for developers and Claude implementing migration workflows. It provides conceptual patterns and decision frameworks for selecting and executing migration strategies.
+> **Design Documentation**: This file serves as **design documentation** for developers and GitHub Copilot implementing migration workflows. It provides conceptual patterns and decision frameworks for selecting and executing migration strategies.
 
 **Purpose:** Pattern guide for migration execution strategies (incremental, rollback, dual-run)
 
