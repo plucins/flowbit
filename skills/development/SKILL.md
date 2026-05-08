@@ -20,7 +20,7 @@ Unified workflow for all development tasks — bug fixes, enhancements, and new 
 
 ### Step 2: Detect Research Context
 
-**If argument is a research folder path** (matches `.maister/tasks/research/*`):
+**If argument is a research folder path** (matches `.flowbit/tasks/research/*`):
 - Auto-detect research folder, extract task description from `research_context.research_question`
 - Read research artifacts (see Research-Based Development section below)
 - Set `research_reference` in state automatically
@@ -33,9 +33,9 @@ Unified workflow for all development tasks — bug fixes, enhancements, and new 
 ### Step 3: Initialize Workflow
 
 1. **Create Task Items**: Use `TaskCreate` for all phases (see Phase Configuration), then set dependencies with `TaskUpdate addBlockedBy`
-2. **Create Task Directory**: `.maister/tasks/development/YYYY-MM-DD-task-name/`
+2. **Create Task Directory**: `.flowbit/tasks/development/YYYY-MM-DD-task-name/`
 3. **Initialize State**: Create `orchestrator-state.yml` with task info and research reference
-4. **Discover project documentation**: Read `.maister/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section. This includes predefined docs (vision, roadmap, tech-stack, architecture) AND any user-added project docs (e.g., deployment.md, api-strategy.md). Store complete list as `project_context.project_doc_paths` in state.
+4. **Discover project documentation**: Read `.flowbit/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section. This includes predefined docs (vision, roadmap, tech-stack, architecture) AND any user-added project docs (e.g., deployment.md, api-strategy.md). Store complete list as `project_context.project_doc_paths` in state.
 
 **Output**:
 ```
@@ -84,7 +84,7 @@ Use for **all development tasks**: bug fixes, enhancements, new features, and an
 
 **Purpose**: Comprehensive codebase exploration followed by scope/requirements clarification
 **Execute**:
-1. Skill tool - `maister-codebase-analyzer`
+1. Skill tool - `flowbit-codebase-analyzer`
 2. Update state with analysis results
 3. Direct - use ask_user for max 5 critical clarifying questions
 4. Save clarifications to `analysis/clarifications.md`
@@ -99,7 +99,7 @@ Use for **all development tasks**: bug fixes, enhancements, new features, and an
 
 **Purpose**: Compare current vs desired state, detect task characteristics, then resolve scope/approach decisions
 **Execute**:
-1. Task tool - `maister-gap-analyzer` subagent
+1. Task tool - `flowbit-gap-analyzer` subagent
 2. **Extract and store structured data from gap-analyzer result**:
    a. Read `task_characteristics` from gap-analyzer output — 5 fields: `has_reproducible_defect`, `modifies_existing_code`, `creates_new_entities`, `involves_data_operations`, `ui_heavy`
    b. Write all 5 fields to `orchestrator-state.yml` at `task_context.task_characteristics`
@@ -163,7 +163,7 @@ ask_user - "TDD red gate complete. Continue to Phase 4?"
 > **Phase gate**: Requires `ask_user` confirmation from the preceding phase before executing.
 
 **Purpose**: Generate ASCII mockups showing UI integration
-**Execute**: Task tool - `maister-ui-mockup-generator` subagent
+**Execute**: Task tool - `flowbit-ui-mockup-generator` subagent
 **Output**: `analysis/ui-mockups.md`
 **State**: Update `phase_summaries.ui_mockups`
 
@@ -218,11 +218,11 @@ ask_user - "UI mockups complete. Continue to Phase 5?"
 
 **INVOKE NOW** — Task tool call:
 
-6. Task tool - `maister-specification-creator` subagent
+6. Task tool - `flowbit-specification-creator` subagent
 
 **Context to pass to subagent**: task_path, task_description, task_characteristics, requirements_path (analysis/requirements.md), project_context_paths (INDEX.md + project_doc_paths from state — all discovered project docs), risk_level, phase_summaries (codebase_analysis, gap_analysis, clarifications, scope_clarifications, ui_mockups), research_context (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `maister-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
 
 **Output**: `analysis/technical-clarifications.md` (conditional), `analysis/requirements.md`, `implementation/spec.md`
 **State**: Update `task_context.tech_clarified`, `task_context.architecture_decision`, `phase_summaries.specification`
@@ -238,7 +238,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 > **Phase gate**: Requires `ask_user` confirmation from Phase 5 before executing.
 
 **Purpose**: Independent review of specification before implementation
-**Execute**: Task tool - `maister-spec-auditor` subagent
+**Execute**: Task tool - `flowbit-spec-auditor` subagent
 **Output**: `verification/spec-audit.md`
 **State**: Update `options.spec_audit_enabled`
 
@@ -265,13 +265,13 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 **INVOKE NOW** — Task tool call:
 
-**Execute**: Task tool - `maister-implementation-planner` subagent
+**Execute**: Task tool - `flowbit-implementation-planner` subagent
 **Output**: `implementation/implementation-plan.md`
 **State**: Update task groups and dependencies
 
 **Context to pass to subagent**: task_path, task_description, task_characteristics, phase_summaries (specification, gap_analysis, codebase_analysis), research_context (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `maister-implementation-planner`? Or did you start writing implementation-plan.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-implementation-planner`? Or did you start writing implementation-plan.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
 
 → Pause
 
@@ -291,11 +291,11 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 **INVOKE NOW** — Skill tool call:
 
-**Execute**: Skill tool - `maister-implementation-plan-executor`
+**Execute**: Skill tool - `flowbit-implementation-plan-executor`
 **Output**: Implemented code, `implementation/work-log.md`
 **State**: Update implementation progress, extract phase_summaries.implementation
 
-**SELF-CHECK**: Did you just invoke the Skill tool with `maister-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
+**SELF-CHECK**: Did you just invoke the Skill tool with `flowbit-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
 
 **⚠️ POST-IMPLEMENTATION CONTINUATION** — After the skill completes and returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -378,7 +378,7 @@ Options: "Code review (Recommended)", "Pragmatic review (Recommended)", "Reality
 
 **Execute**:
 
-**Step 1**: Invoke Skill tool - `maister-implementation-verifier`
+**Step 1**: Invoke Skill tool - `flowbit-implementation-verifier`
 
 **Step 2**: Display detailed issue breakdown grouped by category and severity:
 ```
@@ -406,7 +406,7 @@ Verification Results:
 3. Fix selected issues, log each to `verification_context.fixes_applied`
 4. After fixes applied: set `skip_test_suite: false` (code changed, tests must re-run)
 5. ask_user — "Re-run verification to check fixes?" with options:
-   - "Yes, re-run verification" → re-invoke `maister-implementation-verifier` → return to Step 2
+   - "Yes, re-run verification" → re-invoke `flowbit-implementation-verifier` → return to Step 2
    - "No, proceed to next phase"
 6. Update `verification_context.reverify_count`
 
@@ -432,7 +432,7 @@ ask_user - Display executive summary: total issues found, issues fixed, issues r
 > **Phase gate**: Requires `ask_user` confirmation from Phase 11 before executing.
 
 **Purpose**: Runtime browser verification with screenshots (via Playwright MCP tools, not test file generation)
-**Execute**: Task tool - `maister-e2e-test-verifier` subagent
+**Execute**: Task tool - `flowbit-e2e-test-verifier` subagent
 **Prompt must include**: task_path (absolute), spec_path, base_url. Report saves to `{task_path}/verification/e2e-verification-report.md`.
 **Output**: `verification/e2e-verification-report.md`, screenshots
 **State**: Update E2E results
@@ -450,7 +450,7 @@ ask_user - "E2E complete. Continue to Phase 13?"
 > **Phase gate**: Requires `ask_user` confirmation from the preceding phase before executing.
 
 **Purpose**: Generate user-facing documentation with screenshots
-**Execute**: Task tool - `maister-user-docs-generator` subagent
+**Execute**: Task tool - `flowbit-user-docs-generator` subagent
 **Prompt must include**: task_path (absolute), spec_path, base_url. Guide saves to `{task_path}/documentation/user-guide.md`.
 **Output**: `documentation/user-guide.md`, screenshots
 **State**: Update docs generation status
@@ -529,7 +529,7 @@ orchestrator:
 ## Task Structure
 
 ```
-.maister/tasks/development/YYYY-MM-DD-task-name/
+.flowbit/tasks/development/YYYY-MM-DD-task-name/
 ├── orchestrator-state.yml
 ├── analysis/
 │   ├── research-context/          # If --research provided
@@ -591,7 +591,7 @@ When starting development from a completed research task, the orchestrator loads
 
 **Method 1: Research folder as sole argument** (recommended)
 ```
-/maister-development .maister/tasks/research/2026-01-12-oauth-research
+/flowbit-development .flowbit/tasks/research/2026-01-12-oauth-research
 ```
 The orchestrator auto-detects this is a research folder and:
 - Extracts task description from `research_context.research_question`
@@ -600,7 +600,7 @@ The orchestrator auto-detects this is a research folder and:
 
 **Method 2: Explicit --research flag**
 ```
-/maister-development "Implement OAuth" --research=.maister/tasks/research/2026-01-12-oauth-research
+/flowbit-development "Implement OAuth" --research=.flowbit/tasks/research/2026-01-12-oauth-research
 ```
 
 ### Research Artifacts (Standard List)
@@ -631,8 +631,8 @@ When research context is detected, read these files from the research folder:
 ## Command Integration
 
 Invoked via:
-- `/maister-development [description] [--e2e] [--user-docs] [--research=PATH]` (new)
-- `/maister-development [task-path] [--from=PHASE] [--reset-attempts]` (resume)
+- `/flowbit-development [description] [--e2e] [--user-docs] [--research=PATH]` (new)
+- `/flowbit-development [task-path] [--from=PHASE] [--reset-attempts]` (resume)
 
 ---
 

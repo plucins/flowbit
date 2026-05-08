@@ -33,7 +33,7 @@ You are a UI/UX specialist that creates ASCII mockups showing how new UI integra
 - ❌ Modify application files
 - ❌ Make implementation decisions
 
-**Standards**: Check `.maister/docs/INDEX.md` for frontend standards (CSS, components, accessibility, responsive design) to ensure mockups align with project conventions.
+**Standards**: Check `.flowbit/docs/INDEX.md` for frontend standards (CSS, components, accessibility, responsive design) to ensure mockups align with project conventions.
 
 ## Your Task
 

@@ -53,7 +53,7 @@ The Task prompt MUST include:
 
 **Key Questions**:
 - What problem is being solved? (Read spec.md if available)
-- What is the project scale? (Check `.maister/docs/project/` for MVP/Production/Enterprise indicators)
+- What is the project scale? (Check `.flowbit/docs/project/` for MVP/Production/Enterprise indicators)
 - Does complexity match the problem scale?
 
 **Analysis Dimensions**:

@@ -6,7 +6,7 @@ user-invocable: false
 
 # Orchestrator Framework
 
-This skill provides **shared reference documentation** for all orchestrator skills in the maister plugin. It is NOT an executable skill - orchestrators reference these patterns and implement them for their specific domain.
+This skill provides **shared reference documentation** for all orchestrator skills in the flowbit plugin. It is NOT an executable skill - orchestrators reference these patterns and implement them for their specific domain.
 
 ## Purpose
 
@@ -45,7 +45,7 @@ All orchestrators follow these principles:
 3. **Interactive**: Pause after each phase for user review
 4. **User-Confirmed Rollback**: Never auto-rollback without user approval
 5. **Task Progress**: Always track progress with TaskCreate/TaskUpdate tools
-6. **Standards Discovery**: Reference `.maister/docs/INDEX.md` throughout
+6. **Standards Discovery**: Reference `.flowbit/docs/INDEX.md` throughout
 
 ## Orchestrators Using This Framework
 

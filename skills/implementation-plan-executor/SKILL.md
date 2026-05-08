@@ -30,7 +30,7 @@ You are an implementation plan executor that delegates task groups to subagents 
 2. **Validate files exist**:
    - `implementation/implementation-plan.md` (required)
    - `implementation/spec.md` (recommended)
-   - `.maister/docs/INDEX.md` (required for standards)
+   - `.flowbit/docs/INDEX.md` (required for standards)
 3. **Check for task group items**: Call `TaskList` to find existing task group items from the planner. If found, use them. If not, create them with `TaskCreate` for each task group (fallback for plans created before task system migration).
 4. **Initialize work-log.md**:
    ```markdown
@@ -55,7 +55,7 @@ You are an implementation plan executor that delegates task groups to subagents 
 
 For each task group:
 
-0. Use `TaskUpdate` to set the group task to `status: "in_progress"` with `owner: "maister-task-group-implementer"`
+0. Use `TaskUpdate` to set the group task to `status: "in_progress"` with `owner: "flowbit-task-group-implementer"`
 
 1. **Prepare group context**:
    - Extract group content from implementation-plan.md
@@ -64,7 +64,7 @@ For each task group:
    - Get relevant spec sections
 
 2. **Invoke task-group-implementer subagent via Task tool**:
-   - subagent_type: `maister-task-group-implementer`
+   - subagent_type: `flowbit-task-group-implementer`
    - prompt: Include group content, initial standards, INDEX.md path, spec excerpt
    - See "Subagent Invocation" section for full prompt template
 
@@ -94,7 +94,7 @@ For each task group:
 
 1. **Implementation Plan Standards**: The "Standards Compliance" section in implementation-plan.md lists standards identified during planning. Filter these per task group based on relevance.
 
-2. **INDEX.md Discovery**: The file `.maister/docs/INDEX.md` maps topics to standard files. Use it to find standards not listed in the plan.
+2. **INDEX.md Discovery**: The file `.flowbit/docs/INDEX.md` maps topics to standard files. Use it to find standards not listed in the plan.
 
 3. **Keyword-Triggered Discovery**: During execution, step descriptions may reveal need for additional standards.
 
@@ -138,17 +138,17 @@ Per task group:
 
 ### Group 1: [Name]
 **From Implementation Plan**:
-- [x] .maister/docs/standards/backend/api.md - Listed in Standards Compliance
+- [x] .flowbit/docs/standards/backend/api.md - Listed in Standards Compliance
 
 **From INDEX.md**:
-- [x] .maister/docs/standards/global/naming.md - Group topic match
+- [x] .flowbit/docs/standards/global/naming.md - Group topic match
 
 **Discovered During Execution**:
-- [x] .maister/docs/standards/global/security.md - Step 1.3 (auth-related logic)
+- [x] .flowbit/docs/standards/global/security.md - Step 1.3 (auth-related logic)
 
 ### Group 2: [Name]
 **From Implementation Plan**:
-- [x] .maister/docs/standards/frontend/forms.md - Listed in Standards Compliance
+- [x] .flowbit/docs/standards/frontend/forms.md - Listed in Standards Compliance
 ```
 
 ## Subagent Invocation
@@ -171,7 +171,7 @@ Identify which are relevant to this group and read them:
 - [path/to/standard2.md] - [likely relevant because...]
 
 ### Standards Discovery
-You have access to `.maister/docs/INDEX.md` for continuous standards discovery.
+You have access to `.flowbit/docs/INDEX.md` for continuous standards discovery.
 - Check INDEX.md for additional standards matching this group's topic
 - During implementation, discover more standards as step context reveals needs
 - Do not limit discovery to explicit keyword matches - use judgment
@@ -202,13 +202,13 @@ The task-group-implementer returns structured output:
 
 ### Standards Applied
 **From Implementation Plan**:
-- .maister/docs/standards/backend/api.md
+- .flowbit/docs/standards/backend/api.md
 
 **From INDEX.md** (group topic):
-- .maister/docs/standards/global/naming.md
+- .flowbit/docs/standards/global/naming.md
 
 **Discovered During Execution**:
-- .maister/docs/standards/global/error-handling.md (step N.2, error handling logic)
+- .flowbit/docs/standards/global/error-handling.md (step N.2, error handling logic)
 
 ### Test Results
 **Command**: [test command run]

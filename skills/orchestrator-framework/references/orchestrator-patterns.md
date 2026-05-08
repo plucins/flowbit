@@ -23,10 +23,10 @@ When a phase requires delegation:
 
 | Anti-Pattern | Why It's Wrong | Correct Approach |
 |--------------|----------------|------------------|
-| "I'll analyze the codebase..." | Bypasses codebase-analyzer skill | Use `Skill` tool with `maister-codebase-analyzer` |
-| "Let me create the specification..." | Bypasses specification-creator | Use `Task` tool with `maister-specification-creator` subagent |
-| "Looking at the gaps between..." | Bypasses gap-analyzer subagent | Use `Task` tool with `maister-gap-analyzer` |
-| "I'll implement this by..." | Bypasses implementation-plan-executor skill | Use `Skill` tool with `maister-implementation-plan-executor` |
+| "I'll analyze the codebase..." | Bypasses codebase-analyzer skill | Use `Skill` tool with `flowbit-codebase-analyzer` |
+| "Let me create the specification..." | Bypasses specification-creator | Use `Task` tool with `flowbit-specification-creator` subagent |
+| "Looking at the gaps between..." | Bypasses gap-analyzer subagent | Use `Task` tool with `flowbit-gap-analyzer` |
+| "I'll implement this by..." | Bypasses implementation-plan-executor skill | Use `Skill` tool with `flowbit-implementation-plan-executor` |
 | Reading a SKILL.md then doing the work | Skill files are instructions FOR skills | Use Skill tool to invoke |
 | Spawning Explore agents in orchestrator | Codebase-analyzer manages its own agents | Invoke skill, let IT spawn agents |
 
@@ -43,13 +43,13 @@ These do NOT require delegation:
 For all analysis, planning, implementation, and verification phases: **ALWAYS DELEGATE**.
 
 **Never acceptable inline** (regardless of perceived task simplicity):
-- Specification creation → always delegate to `maister-specification-creator` subagent
-- Implementation planning → always delegate to `maister-implementation-planner` subagent
-- Gap analysis → always delegate to `maister-gap-analyzer` subagent
-- Codebase analysis → always delegate to `maister-codebase-analyzer` skill
-- Code review → always delegate to `maister-code-reviewer` subagent
-- Test execution → always delegate to `maister-test-suite-runner` subagent
-- Implementation completeness → always delegate to `maister-implementation-completeness-checker` subagent
+- Specification creation → always delegate to `flowbit-specification-creator` subagent
+- Implementation planning → always delegate to `flowbit-implementation-planner` subagent
+- Gap analysis → always delegate to `flowbit-gap-analyzer` subagent
+- Codebase analysis → always delegate to `flowbit-codebase-analyzer` skill
+- Code review → always delegate to `flowbit-code-reviewer` subagent
+- Test execution → always delegate to `flowbit-test-suite-runner` subagent
+- Implementation completeness → always delegate to `flowbit-implementation-completeness-checker` subagent
 
 "The task is simple" is NOT a valid reason to skip delegation.
 
@@ -156,7 +156,7 @@ When a subagent returns `decisions_needed` items, the orchestrator MUST present 
 
 ## 4. State Schema
 
-All orchestrators use `orchestrator-state.yml` at `.maister/tasks/[type]/YYYY-MM-DD-task-name/orchestrator-state.yml`.
+All orchestrators use `orchestrator-state.yml` at `.flowbit/tasks/[type]/YYYY-MM-DD-task-name/orchestrator-state.yml`.
 
 ### Common Fields
 
@@ -181,7 +181,7 @@ orchestrator:
   # Timestamps
   created: [ISO 8601 timestamp]
   updated: [ISO 8601 timestamp]
-  task_path: .maister/tasks/[type]/YYYY-MM-DD-task-name
+  task_path: .flowbit/tasks/[type]/YYYY-MM-DD-task-name
 
   # Task tracking IDs (maps phase names to TaskCreate IDs)
   task_ids:

@@ -54,7 +54,7 @@ Determine the test command by checking (in order):
 1. `test_command` from orchestrator prompt (if provided)
 2. `package.json` scripts (`test`, `test:all`, `test:ci`)
 3. `Makefile` targets (`test`, `check`)
-4. `.maister/docs/project/tech-stack.md` for test framework info
+4. `.flowbit/docs/project/tech-stack.md` for test framework info
 5. Common conventions: `npm test`, `pytest`, `go test ./...`, `mvn test`, `cargo test`
 
 If no test command can be identified, report failure with guidance.

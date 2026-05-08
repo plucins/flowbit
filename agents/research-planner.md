@@ -90,9 +90,9 @@ You are a research planning specialist that creates structured, methodical resea
 4. Identify relevant documentation: `docs/**/*.md`, `README*.md`, `ARCHITECTURE.md`
 
 **Documentation Sources**:
-1. Read `.maister/docs/INDEX.md` to discover all available project documentation and standards
+1. Read `.flowbit/docs/INDEX.md` to discover all available project documentation and standards
 2. Read ALL project documentation from `project_doc_paths` (if provided) — includes predefined docs (vision, roadmap, tech-stack, architecture) AND user-added project docs. Users may document domain models, deployment strategies, API conventions, etc. that directly inform research methodology and source selection.
-3. Check `.maister/docs/standards/` for relevant coding standards
+3. Check `.flowbit/docs/standards/` for relevant coding standards
 4. Use project context to inform source prioritization and methodology
 5. Find inline code comments in relevant modules
 
@@ -273,7 +273,7 @@ When the planner does not include a Gathering Strategy section, the orchestrator
 ## Documentation Sources
 
 ### Project Documentation
-- `.maister/docs/standards/backend/authentication.md` - Auth standards
+- `.flowbit/docs/standards/backend/authentication.md` - Auth standards
 - `docs/architecture/security.md` - Security architecture
 
 ### Code Documentation

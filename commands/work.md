@@ -19,7 +19,7 @@ Auto-classifies tasks and routes to the appropriate workflow orchestrator. Suppo
 
 | Input Type | Example |
 |------------|---------|
-| Task folder path | `.maister/tasks/development/2025-10-23-login-timeout` |
+| Task folder path | `.flowbit/tasks/development/2025-10-23-login-timeout` |
 | Folder name only | `2025-10-26-user-auth` (searches all task types) |
 | Task description | `"Fix login timeout error on mobile"` |
 | GitHub issue | `#456`, `GH-456`, `https://github.com/owner/repo/issues/456` |
@@ -31,7 +31,7 @@ Auto-classifies tasks and routes to the appropriate workflow orchestrator. Suppo
 
 ```bash
 # Resume existing task
-/work ".maister/tasks/development/2025-10-23-login-timeout"
+/work ".flowbit/tasks/development/2025-10-23-login-timeout"
 /work "2025-10-26-user-auth"
 
 # New task (auto-classifies)
@@ -55,11 +55,11 @@ Auto-classifies tasks and routes to the appropriate workflow orchestrator. Suppo
 
 | Classification | Routes To (Skill) |
 |----------------|-------------------|
-| development | `maister-development` |
-| performance | `maister-performance` |
-| migration | `maister-migration` |
-| research | `maister-research` |
-| product-design | `maister-product-design` |
+| development | `flowbit-development` |
+| performance | `flowbit-performance` |
+| migration | `flowbit-migration` |
+| research | `flowbit-research` |
+| product-design | `flowbit-product-design` |
 
 ---
 
@@ -70,8 +70,8 @@ Auto-classifies tasks and routes to the appropriate workflow orchestrator. Suppo
 **Check if input is an existing task folder:**
 
 1. Try path as-is (absolute path)
-2. Try prepending `.maister/` (relative path)
-3. Search `.maister/tasks/*/` for folder name match
+2. Try prepending `.flowbit/` (relative path)
+3. Search `.flowbit/tasks/*/` for folder name match
 
 **If folder exists AND contains `orchestrator-state.yml`:**
 - Go to **Step 2: Resume Existing Task**
@@ -135,14 +135,14 @@ Options:
 
 ```
 Use Skill tool:
-  skill: "maister-[orchestrator-name]"
+  skill: "flowbit-[orchestrator-name]"
   args: "--resume [task_path] [flags]"
 ```
 
 Examples:
-- Resume development: `skill: "maister-development"` with `args: "--resume .maister/tasks/development/2025-10-23-fix"`
-- Restart from phase: `skill: "maister-development"` with `args: "--resume .maister/tasks/development/2025-10-26-auth --from=verify"`
-- Fresh attempts: `skill: "maister-migration"` with `args: "--resume .maister/tasks/migrations/2025-10-20-redux --reset-attempts"`
+- Resume development: `skill: "flowbit-development"` with `args: "--resume .flowbit/tasks/development/2025-10-23-fix"`
+- Restart from phase: `skill: "flowbit-development"` with `args: "--resume .flowbit/tasks/development/2025-10-26-auth --from=verify"`
+- Fresh attempts: `skill: "flowbit-migration"` with `args: "--resume .flowbit/tasks/migrations/2025-10-20-redux --reset-attempts"`
 
 ### Step 3: Classify & Route New Task
 
@@ -152,7 +152,7 @@ Examples:
 
 ```
 Use Task tool:
-  subagent_type: "maister-task-classifier"
+  subagent_type: "flowbit-task-classifier"
   description: "Classify task type"
   prompt: "Classify this task into a workflow type: [task description].
            Return structured YAML classification result."
@@ -182,14 +182,14 @@ Display:
   Routing to [task_type] workflow...
 
 Use Skill tool:
-  skill: "maister-[orchestrator-name]"
+  skill: "flowbit-[orchestrator-name]"
   args: "[description]"
 ```
 
 **Routing examples:**
-- development (92%): `skill: "maister-development"` with `args: "Fix login timeout error"`
-- development (88%): `skill: "maister-development"` with `args: "Add filtering to user table"`
-- performance (95%): `skill: "maister-performance"` with `args: "Optimize slow dashboard queries"`
+- development (92%): `skill: "flowbit-development"` with `args: "Fix login timeout error"`
+- development (88%): `skill: "flowbit-development"` with `args: "Add filtering to user table"`
+- performance (95%): `skill: "flowbit-performance"` with `args: "Optimize slow dashboard queries"`
 
 ---
 
@@ -219,7 +219,7 @@ Display:
 "Task cancelled. You can:
 - Run /work again when ready
 - Use specific workflow commands directly:
-  /maister-development, /maister-performance, etc."
+  /flowbit-development, /flowbit-performance, etc."
 ```
 
 ---
@@ -228,11 +228,11 @@ Display:
 
 | Workflow Type | Skill | Args |
 |---------------|-------|------|
-| development | `maister-development` | `--resume [path] [--from=PHASE] [--reset-attempts]` |
-| performance | `maister-performance` | `--resume [path] [--from=PHASE]` |
-| migration | `maister-migration` | `--resume [path] [--from=PHASE]` |
-| research | `maister-research` | `--resume [path] [--from=PHASE]` |
-| product-design | `maister-product-design` | `--resume [path] [--from=PHASE]` |
+| development | `flowbit-development` | `--resume [path] [--from=PHASE] [--reset-attempts]` |
+| performance | `flowbit-performance` | `--resume [path] [--from=PHASE]` |
+| migration | `flowbit-migration` | `--resume [path] [--from=PHASE]` |
+| research | `flowbit-research` | `--resume [path] [--from=PHASE]` |
+| product-design | `flowbit-product-design` | `--resume [path] [--from=PHASE]` |
 
 ---
 
@@ -256,8 +256,8 @@ After classification/detection, this command routes to the appropriate orchestra
 ### With Project Documentation
 
 Uses project documentation for context:
-- `.maister/docs/INDEX.md` - Project overview and standards
-- `.maister/tasks/` - Existing task directories
+- `.flowbit/docs/INDEX.md` - Project overview and standards
+- `.flowbit/tasks/` - Existing task directories
 
 ---
 

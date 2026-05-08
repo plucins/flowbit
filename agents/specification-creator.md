@@ -35,7 +35,7 @@ Before specifying any new code, exhaustively search for existing code to reuse. 
 - Minimum viable specification for the requirements
 
 ### Standards Awareness
-Read and follow project standards from `.maister/docs/standards/` when creating specifications. Reference applicable standards in the Standards Compliance section.
+Read and follow project standards from `.flowbit/docs/standards/` when creating specifications. Reference applicable standards in the Standards Compliance section.
 
 ---
 
@@ -66,7 +66,7 @@ The Task prompt MUST include:
 
 1. **Read `analysis/requirements.md`** — gathered user requirements, Q&A, scope boundaries
 2. **Read project context** from `project_context_paths`:
-   - `.maister/docs/INDEX.md` — project documentation and standards index
+   - `.flowbit/docs/INDEX.md` — project documentation and standards index
    - **ALL** project docs from paths provided — this includes predefined docs (vision.md, roadmap.md, tech-stack.md, architecture.md) AND any user-added project documentation. Do NOT skip files you don't recognize — users add custom project docs that are equally important.
    - Standards files referenced in INDEX.md (relevant to this task)
 3. **Read prior analysis** (paths from accumulated context):
@@ -140,7 +140,7 @@ Create `implementation/spec.md` using this template:
 - Test verification runs only new tests, not entire suite
 
 ### Standards Compliance
-[Reference applicable standards from .maister/docs/standards/]
+[Reference applicable standards from .flowbit/docs/standards/]
 
 ## Out of Scope
 [Features not being built, future enhancements]

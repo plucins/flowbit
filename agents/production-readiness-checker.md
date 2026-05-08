@@ -52,7 +52,7 @@ The Task prompt MUST include:
 
 1. **Get task path** and determine target environment
 2. **Identify files** to analyze
-3. **Read project context** from `.maister/docs/INDEX.md`
+3. **Read project context** from `.flowbit/docs/INDEX.md`
 
 ---
 
@@ -252,7 +252,7 @@ issue_counts:
 
 ## Integration
 
-**Invoked by**: implementation-verifier (Phase 3), performance orchestrator (Phase 4), standalone via `/maister-reviews-production-readiness` command
+**Invoked by**: implementation-verifier (Phase 3), performance orchestrator (Phase 4), standalone via `/flowbit-reviews-production-readiness` command
 
 **Prerequisites**:
 - Code exists at the specified path

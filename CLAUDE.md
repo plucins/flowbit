@@ -67,7 +67,7 @@ To avoid confusion, this plugin uses specific terminology:
 **Development Task** (or simply "Task")
 - The high-level work item: a bug fix, new feature, enhancement, refactoring, etc.
 - Represents the overall piece of work from start to finish
-- Located in: `.maister/tasks/[workflow-type]/YYYY-MM-DD-task-name/`
+- Located in: `.flowbit/tasks/[workflow-type]/YYYY-MM-DD-task-name/`
 - Contains: specification, requirements, implementation plan, and verification results
 
 **Implementation Step** (or "Implementation Task")
@@ -173,13 +173,13 @@ For UI-heavy features/enhancements, the plugin can generate ASCII mockups:
 
 This plugin separates reference documentation from work items:
 
-**`.maister/docs/`** - Reference documentation (stable)
+**`.flowbit/docs/`** - Reference documentation (stable)
 - Project vision, roadmap, tech stack
 - Coding standards and conventions
 - Architecture documentation
 - Read these to understand the project
 
-**`.maister/tasks/`** - Work items (active, growing)
+**`.flowbit/tasks/`** - Work items (active, growing)
 - Individual development tasks
 - Feature implementations, bug fixes, etc.
 - Active work in progress
@@ -195,10 +195,10 @@ This plugin separates reference documentation from work items:
 
 ### Project Documentation Structure
 
-The maister plugin uses this structure:
+The flowbit plugin uses this structure:
 
 ```
-.maister/
+.flowbit/
 ├── docs/                         # Reference documentation (stable)
 │   ├── INDEX.md                 # Master index - READ THIS FIRST
 │   ├── project/                 # Project-level documentation
@@ -220,16 +220,16 @@ The maister plugin uses this structure:
 ```
 
 **Core Principle**:
-- Reference documentation in `.maister/docs/` is the source of truth for understanding the project
+- Reference documentation in `.flowbit/docs/` is the source of truth for understanding the project
 - Always read `docs/INDEX.md` first to understand available documentation and standards
-- Development tasks live separately in `.maister/tasks/` for better organization and scalability
+- Development tasks live separately in `.flowbit/tasks/` for better organization and scalability
 
 ### Development Task Organization
 
-Development tasks are organized by workflow type in `.maister/tasks/`:
+Development tasks are organized by workflow type in `.flowbit/tasks/`:
 
 ```
-.maister/tasks/
+.flowbit/tasks/
 ├── development/
 │   └── YYYY-MM-DD-task-name/
 ├── performance/
@@ -286,9 +286,9 @@ Task types can add specialized subdirectories as needed (e.g., `analysis/bug-ana
 
 ### Integration
 
-- **Documentation Discovery**: Always read `.maister/docs/INDEX.md` before starting work to understand project context
-- **Task Discovery**: Browse `.maister/tasks/` to find development tasks by workflow type
-- **Standards Compliance**: Follow standards from `.maister/docs/standards/` during implementation
+- **Documentation Discovery**: Always read `.flowbit/docs/INDEX.md` before starting work to understand project context
+- **Task Discovery**: Browse `.flowbit/tasks/` to find development tasks by workflow type
+- **Standards Compliance**: Follow standards from `.flowbit/docs/standards/` during implementation
 - **Task Tracking**: Task status, priority, tags, and time tracking are in the `task:` section of `orchestrator-state.yml`
 - **Activity Logging**: Record work in `implementation/work-log.md` for transparency
 
@@ -457,7 +457,7 @@ Skills are automatically invoked by Claude when appropriate. Details live in eac
 | `implementation-verifier` | Read-only QA orchestrator: delegates completeness checks, test execution, code review, and production readiness to specialized subagents; compiles results into verification report | `skills/implementation-verifier/SKILL.md` |
 | `standards-discover` | Parallel multi-source standards discovery (config, code, docs, PRs/CI) with confidence scoring | `skills/standards-discover/SKILL.md` |
 | `docs-manager` | Internal engine for doc file operations, INDEX.md generation, CLAUDE.md integration. Not user-invocable — accessed via `docs-operator` agent (Task tool) by init, standards-update, standards-discover | `skills/docs-manager/skill.md` |
-| `maister-init` | Initialize `.maister/docs/` with project analysis, documentation generation, and baseline standards | `skills/init/SKILL.md` |
+| `flowbit-init` | Initialize `.flowbit/docs/` with project analysis, documentation generation, and baseline standards | `skills/init/SKILL.md` |
 | `standards-update` | Update or create standards from conversation context or explicit input | `skills/standards-update/SKILL.md` |
 | `quick-bugfix` | Quick TDD-driven bug fix with complexity escalation to full development workflow | `skills/quick-bugfix/SKILL.md` |
 
@@ -492,11 +492,11 @@ Commands invoke orchestrators and utilities. All orchestrators support `--from=p
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `/maister-init` | `/maister-init [--standards-from=PATH]` | Initialize framework with project analysis and smart defaults for docs/standards. Optionally copy standards from another project's `.maister/docs/standards/` instead of built-in defaults. |
-| `/maister-standards-update` | `/maister-standards-update [description] [--from=PATH]` | Update/create standards from conversation context, or sync from another project |
-| `/maister-standards-discover` | `/maister-standards-discover [--scope=SCOPE]` | Discover standards from config files and code patterns |
+| `/flowbit-init` | `/flowbit-init [--standards-from=PATH]` | Initialize framework with project analysis and smart defaults for docs/standards. Optionally copy standards from another project's `.flowbit/docs/standards/` instead of built-in defaults. |
+| `/flowbit-standards-update` | `/flowbit-standards-update [description] [--from=PATH]` | Update/create standards from conversation context, or sync from another project |
+| `/flowbit-standards-discover` | `/flowbit-standards-discover [--scope=SCOPE]` | Discover standards from config files and code patterns |
 
-> **Note**: These are all skills (not commands). `/maister-init`, `/maister-standards-update`, and `/maister-standards-discover` invoke their respective skills which delegate file operations to the internal `docs-manager` skill.
+> **Note**: These are all skills (not commands). `/flowbit-init`, `/flowbit-standards-update`, and `/flowbit-standards-discover` invoke their respective skills which delegate file operations to the internal `docs-manager` skill.
 
 ### Workflow Commands
 
@@ -504,19 +504,19 @@ Each workflow skill handles both new tasks and resuming existing ones. Pass a ta
 
 | Command | Usage | Task Directory |
 |---------|-------|----------------|
-| `/maister-development` | `[desc] [--e2e] [--user-docs] [--research=PATH]` (new) / `[task-path] [--from=PHASE] [--reset-attempts]` (resume) | `.maister/tasks/development/` |
-| `/maister-performance` | `[desc]` (new) / `[task-path] [--from=PHASE]` (resume) | `.maister/tasks/performance/` |
-| `/maister-migration` | `[desc] [--type=TYPE]` (new) / `[task-path] [--from=PHASE]` (resume) | `.maister/tasks/migrations/` |
-| `/maister-research` | `[question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new) / `[task-path] [--from=PHASE]` (resume) | `.maister/tasks/research/` |
-| `/maister-product-design` | `[desc] [--research=PATH] [--no-visual]` (new) / `[task-path] [--from=PHASE]` (resume) | `.maister/tasks/product-design/` |
+| `/flowbit-development` | `[desc] [--e2e] [--user-docs] [--research=PATH]` (new) / `[task-path] [--from=PHASE] [--reset-attempts]` (resume) | `.flowbit/tasks/development/` |
+| `/flowbit-performance` | `[desc]` (new) / `[task-path] [--from=PHASE]` (resume) | `.flowbit/tasks/performance/` |
+| `/flowbit-migration` | `[desc] [--type=TYPE]` (new) / `[task-path] [--from=PHASE]` (resume) | `.flowbit/tasks/migrations/` |
+| `/flowbit-research` | `[question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new) / `[task-path] [--from=PHASE]` (resume) | `.flowbit/tasks/research/` |
+| `/flowbit-product-design` | `[desc] [--research=PATH] [--no-visual]` (new) / `[task-path] [--from=PHASE]` (resume) | `.flowbit/tasks/product-design/` |
 
 **Research-Based Development**: Start development informed by a completed research workflow:
 ```bash
 # Auto-detect research folder (recommended)
-/maister-development .maister/tasks/research/2026-01-12-oauth-research
+/flowbit-development .flowbit/tasks/research/2026-01-12-oauth-research
 
 # Explicit --research flag
-/maister-development "Implement OAuth" --research=.maister/tasks/research/2026-01-12-oauth-research
+/flowbit-development "Implement OAuth" --research=.flowbit/tasks/research/2026-01-12-oauth-research
 ```
 Research context flows through ALL phases without skipping any. Research artifacts are copied to `analysis/research-context/` and summaries pass to every subagent via Pattern 7.
 
@@ -524,19 +524,19 @@ Research context flows through ALL phases without skipping any. Research artifac
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `/maister-reviews-code` | `[path] [--scope=SCOPE]` | Automated code quality, security, performance analysis |
-| `/maister-reviews-pragmatic` | `[path]` | Detect over-engineering, ensure code matches project scale |
-| `/maister-reviews-spec-audit` | `[spec-path]` | Independent spec audit for completeness and clarity |
-| `/maister-reviews-reality-check` | `[task-path]` | Validate work actually solves the problem |
-| `/maister-reviews-production-readiness` | `[path] [--target=ENV]` | Pre-deployment verification with GO/NO-GO recommendation |
+| `/flowbit-reviews-code` | `[path] [--scope=SCOPE]` | Automated code quality, security, performance analysis |
+| `/flowbit-reviews-pragmatic` | `[path]` | Detect over-engineering, ensure code matches project scale |
+| `/flowbit-reviews-spec-audit` | `[spec-path]` | Independent spec audit for completeness and clarity |
+| `/flowbit-reviews-reality-check` | `[task-path]` | Validate work actually solves the problem |
+| `/flowbit-reviews-production-readiness` | `[path] [--target=ENV]` | Pre-deployment verification with GO/NO-GO recommendation |
 
 ### Quick Commands
 
 | Command | Usage | Purpose |
 |---------|-------|---------|
-| `/maister-quick-plan` | `[task description]` | Enter planning mode with standards awareness from INDEX.md |
-| `/maister-quick-dev` | `[task description]` | Implement directly with standards awareness (no planning) |
-| `/maister-quick-bugfix` | `[bug description]` | Quick bug fix with TDD red/green gates and complexity escalation |
+| `/flowbit-quick-plan` | `[task description]` | Enter planning mode with standards awareness from INDEX.md |
+| `/flowbit-quick-dev` | `[task description]` | Implement directly with standards awareness (no planning) |
+| `/flowbit-quick-bugfix` | `[bug description]` | Quick bug fix with TDD red/green gates and complexity escalation |
 
 **See**: Individual `commands/` and `skills/*/skill.md` files for detailed documentation.
 
@@ -548,7 +548,7 @@ Subagents are specialized AI agents invoked by skills and orchestrators. All age
 
 | Agent | Purpose | Invoked By | Details |
 |-------|---------|------------|---------|
-| `project-analyzer` | Deep codebase analysis for tech stack, architecture, conventions | `/maister-init` | `agents/project-analyzer.md` |
+| `project-analyzer` | Deep codebase analysis for tech stack, architecture, conventions | `/flowbit-init` | `agents/project-analyzer.md` |
 | `docs-operator` | Internal service agent: executes docs-manager operations mid-workflow via Task tool. Has docs-manager skill preloaded. **Special case**: companion agent pattern only works here because docs-manager does NOT spawn subagents (only file operations). Do not use this pattern for skills that spawn subagents. | init, standards-update, standards-discover | `agents/docs-operator.md` |
 | `task-classifier` | Classifies task descriptions into workflow types with confidence scoring | `/work` command | `agents/task-classifier.md` |
 | `gap-analyzer` | Compares current vs desired state with characteristic-detection-based analysis modules | development orchestrator | `agents/gap-analyzer.md` |
@@ -611,7 +611,7 @@ Subagents are specialized AI agents invoked by skills and orchestrators. All age
 5. **Continuous Standards Discovery**: Check standards throughout, not just at start
 6. **Incremental Verification**: Run only new tests after each group, not entire suite
 7. **Comprehensive Verification Before Commit**: Run full test suite and create verification report before code review
-8. **Task Directory Artifact Anchoring**: ALL workflow artifacts (reports, documentation, screenshots) MUST be saved under the task directory (`.maister/tasks/[type]/[task-name]/`). NEVER save task artifacts to project directories like `docs/`, `src/`, or project root.
+8. **Task Directory Artifact Anchoring**: ALL workflow artifacts (reports, documentation, screenshots) MUST be saved under the task directory (`.flowbit/tasks/[type]/[task-name]/`). NEVER save task artifacts to project directories like `docs/`, `src/`, or project root.
 
 **For detailed workflow documentation, see**: individual skill `SKILL.md` files
 
@@ -695,7 +695,7 @@ Before working with this plugin, read the following up-to-date documentation:
 
 When implementing or modifying plugin features:
 1. **Current official documentation** (links above) - Always check for latest updates
-2. **Project-specific documentation** (this file and .maister/docs/)
+2. **Project-specific documentation** (this file and .flowbit/docs/)
 3. **Code patterns** in this plugin's codebase
 4. **General best practices**
 

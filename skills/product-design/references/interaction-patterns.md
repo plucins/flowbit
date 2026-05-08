@@ -57,7 +57,7 @@ Explicitly announce transitions between modes. This creates a narrative arc that
 
 ## Iterative Refinement Loop Pattern
 
-A new maister pattern for convergence points where artifacts need user approval.
+A new flowbit pattern for convergence points where artifacts need user approval.
 
 ### When to Apply
 

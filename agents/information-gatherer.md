@@ -30,7 +30,7 @@ color: green
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
 | `source_category` | No | `all` | Source type to gather: `codebase`, `documentation`, `configuration`, `external`, any custom category ID from gathering strategy, or `all` |
-| `task_path` | Yes | - | Path to task directory (e.g., `.maister/tasks/research/2025-01-15-auth-research/`) |
+| `task_path` | Yes | - | Path to task directory (e.g., `.flowbit/tasks/research/2025-01-15-auth-research/`) |
 
 **Source Category Behavior**:
 
@@ -130,7 +130,7 @@ Follow the research plan phases systematically. Typical progression:
 1. Use Glob to find documentation:
    ```
    docs/**/*auth*.md
-   .maister/docs/**/*auth*.md
+   .flowbit/docs/**/*auth*.md
    README*.md
    ```
 2. Check for architecture documentation

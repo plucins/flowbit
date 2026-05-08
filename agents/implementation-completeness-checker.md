@@ -77,7 +77,7 @@ The Task prompt MUST include:
 **Use active reasoning, not hardcoded checklist.**
 
 1. **Review work-log.md** — extract standards mentioned during implementation
-2. **Read `.maister/docs/INDEX.md` comprehensively** — note ALL standards, including project-specific ones
+2. **Read `.flowbit/docs/INDEX.md` comprehensively** — note ALL standards, including project-specific ones
 3. **Analyze implementation scope** — what files modified, what patterns used, what domains touched
 4. **For each standard, reason about applicability**:
    - Clear from name/description: Reason directly

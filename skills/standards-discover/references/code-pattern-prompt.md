@@ -34,7 +34,7 @@ Calculate: `(files following pattern / total files sampled) * 100`
 
 ## Categorization
 
-Discover existing categories from `.maister/docs/standards/*/`. Baseline categories: `global/`, `frontend/`, `backend/`, `testing/`. Propose new categories if patterns don't fit existing ones.
+Discover existing categories from `.flowbit/docs/standards/*/`. Baseline categories: `global/`, `frontend/`, `backend/`, `testing/`. Propose new categories if patterns don't fit existing ones.
 
 ## Confidence Range
 

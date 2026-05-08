@@ -20,7 +20,7 @@ Interactive workflow for product and feature design -- from fuzzy idea to develo
 
 ### Step 2: Detect Design Context
 
-**If argument is a design task path** (matches `.maister/tasks/product-design/*`):
+**If argument is a design task path** (matches `.flowbit/tasks/product-design/*`):
 - This is a resume — read `orchestrator-state.yml` from that path
 - Determine current phase from `completed_phases` and resume from next phase
 - If `--from=PHASE` provided, resume from that specific phase
@@ -33,7 +33,7 @@ Interactive workflow for product and feature design -- from fuzzy idea to develo
 ### Step 3: Initialize Workflow
 
 1. **Create Task Items**: Use `TaskCreate` for all phases (see Phase Configuration), then set dependencies with `TaskUpdate addBlockedBy`
-2. **Create Task Directory**: `.maister/tasks/product-design/YYYY-MM-DD-task-name/`
+2. **Create Task Directory**: `.flowbit/tasks/product-design/YYYY-MM-DD-task-name/`
    - Create `context/` folder with `README.md` instructing users to drop relevant files there (meeting transcripts, existing designs, spreadsheets, docs, PDFs, images)
    - Create `analysis/` and `outputs/` directories
 3. **Initialize State**: Create `orchestrator-state.yml` with design context schema (see Domain Context section)
@@ -54,7 +54,7 @@ Starting Phase 0: Initialize & Gather Context...
 
 Use for **product and feature design**: defining what to build before building it. Greenfield products, new features, enhancements, API designs, workflow designs.
 
-**DO NOT use for**: Implementation tasks (use `/maister-development`), pure research (use `/maister-research`), bug fixes, performance optimization, migrations.
+**DO NOT use for**: Implementation tasks (use `/flowbit-development`), pure research (use `/flowbit-research`), bug fixes, performance optimization, migrations.
 
 **When to use this vs development orchestrator**: If you need to explore the problem space, evaluate alternatives, and define requirements interactively before any code is written, use this. If you already know what to build and need to plan and execute, use development.
 
@@ -178,7 +178,7 @@ digraph product_design_orchestrator {
 **Execute**: Direct, interactive
 
 1. Create task directory structure (see Task Structure section)
-1b. **Discover project documentation**: Read `.maister/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Read discovered project docs. Store paths in `design_context.project_doc_paths` and brief summary in `design_context.project_context_summary`.
+1b. **Discover project documentation**: Read `.flowbit/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Read discovered project docs. Store paths in `design_context.project_doc_paths` and brief summary in `design_context.project_context_summary`.
 2. **Read `references/characteristic-detection.md` NOW** using the Read tool
 3. Analyze user's description to detect the 6 design characteristics: `is_greenfield`, `is_enhancement`, `is_ui_focused`, `is_backend`, `is_complex`, `is_simple`
 4. Derive `complexity_level` from characteristics: "simple" (if `is_simple`), "complex" (if `is_complex` or `is_greenfield`), "standard" (otherwise)
@@ -226,9 +226,9 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 - "I'll look through the project..." -- STOP. Delegate to codebase-analyzer.
 
 **INVOKE NOW** -- Skill tool call:
-1. Skill tool - `maister-codebase-analyzer` (to understand existing product context, tech stack, UI patterns)
+1. Skill tool - `flowbit-codebase-analyzer` (to understand existing product context, tech stack, UI patterns)
 
-**SELF-CHECK**: Did you invoke the Skill tool with `maister-codebase-analyzer`? Or did you start reading project files yourself? If the latter, STOP and invoke the Skill tool.
+**SELF-CHECK**: Did you invoke the Skill tool with `flowbit-codebase-analyzer`? Or did you start reading project files yourself? If the latter, STOP and invoke the Skill tool.
 
 **POST-SKILL CONTINUATION**: After codebase-analyzer returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -245,7 +245,7 @@ ask_user — "I detected these design characteristics. Please confirm or correct
    - "I'll look that up..." -- STOP. Delegate to information-gatherer.
 
    **INVOKE NOW** -- Task tool call (parallel, one per topic):
-   Task tool - `maister-information-gatherer` subagent per research topic
+   Task tool - `flowbit-information-gatherer` subagent per research topic
 
    **Context to pass**: research topic, scope constraints, task_path
 
@@ -379,7 +379,7 @@ ask_user — "Personas defined. Continue to Idea Generation?"
 
 **INVOKE NOW** -- Task tool call:
 
-Task tool - `maister-solution-brainstormer` subagent
+Task tool - `flowbit-solution-brainstormer` subagent
 
 **Context to pass** (Pattern 7):
 - `task_path`
@@ -585,7 +585,7 @@ The visual companion is the **default and preferred** rendering method. Always a
 > You should only reach this section if Step 1 failed (server could not start on any port) or the user explicitly passed `--no-visual`. If the visual companion is running, do NOT use this fallback.
 
 **INVOKE NOW** -- Task tool call:
-Task tool - `maister-ui-mockup-generator` subagent
+Task tool - `flowbit-ui-mockup-generator` subagent
 
 **Context to pass**: task_path, spec sections from Phase 6, design context from Phase 1, selected approach from Phase 5
 
@@ -673,13 +673,13 @@ ask_user — with options:
 
 6. On approval, update task status and suggest next steps.
 
-   Output this message EXACTLY — do NOT invent alternative commands (e.g. `/maister-feature:new` does not exist):
+   Output this message EXACTLY — do NOT invent alternative commands (e.g. `/flowbit-feature:new` does not exist):
 
 ```
 Product brief approved and saved to: [task-path]/outputs/product-brief.md
 
 To start development based on this design, clear context first or start a new session, then run:
-/maister-development [task-path]
+/flowbit-development [task-path]
 ```
 
 **Output**: `outputs/product-brief.md`
@@ -739,7 +739,7 @@ options:
 ## Task Structure
 
 ```
-.maister/tasks/product-design/YYYY-MM-DD-task-name/
+.flowbit/tasks/product-design/YYYY-MM-DD-task-name/
   orchestrator-state.yml           # Phase tracking + design characteristics
   context/                         # User-supplied context materials (Phase 0)
     README.md                      # Instructions: "Drop files here for the design process"
@@ -779,8 +779,8 @@ options:
 ## Command Integration
 
 Invoked via:
-- `/maister-product-design [description] [--no-visual] [--research=PATH]` (new)
-- `/maister-product-design [task-path] [--from=PHASE]` (resume)
+- `/flowbit-product-design [description] [--no-visual] [--research=PATH]` (new)
+- `/flowbit-product-design [task-path] [--from=PHASE]` (resume)
 
 **Flags**:
 | Flag | Effect |
@@ -791,7 +791,7 @@ Invoked via:
 
 **Resume**: Pass a task directory path to resume an existing design workflow. The orchestrator reads `orchestrator-state.yml`, determines the current phase from `completed_phases`, and continues.
 
-Task directory: `.maister/tasks/product-design/YYYY-MM-DD-task-name/`
+Task directory: `.flowbit/tasks/product-design/YYYY-MM-DD-task-name/`
 
 ---
 
@@ -802,7 +802,7 @@ Task directory: `.maister/tasks/product-design/YYYY-MM-DD-task-name/`
 The product brief is consumed by the development orchestrator:
 
 ```
-/maister-development .maister/tasks/product-design/YYYY-MM-DD-task-name/
+/flowbit-development .flowbit/tasks/product-design/YYYY-MM-DD-task-name/
 ```
 
 The development orchestrator auto-detects the product-design task type and copies the product brief to `analysis/design-context/product-brief.md`, then flows design context through all development phases. The product brief's Layer 0 maps to requirements, design characteristics map to task characteristics, and mockup references feed into UI implementation phases.
@@ -812,7 +812,7 @@ The development orchestrator auto-detects the product-design task type and copie
 A completed research workflow can feed into product design:
 
 ```
-/maister-product-design "Design feature X" --research=.maister/tasks/research/YYYY-MM-DD-research/
+/flowbit-product-design "Design feature X" --research=.flowbit/tasks/research/YYYY-MM-DD-research/
 ```
 
 Research findings are imported into `context/research-context/` and synthesized alongside other context sources in Phase 1.

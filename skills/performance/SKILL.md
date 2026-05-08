@@ -21,10 +21,10 @@ Static-analysis-first performance optimization workflow. Identifies bottlenecks 
 ### Step 2: Initialize Workflow
 
 1. **Create Task Items**: Use `TaskCreate` for all phases (see Phase Configuration), then set dependencies with `TaskUpdate addBlockedBy`
-2. **Create Task Directory**: `.maister/tasks/performance/YYYY-MM-DD-task-name/`
+2. **Create Task Directory**: `.flowbit/tasks/performance/YYYY-MM-DD-task-name/`
 3. **Create Subdirectories**: `analysis/`, `analysis/user-profiling-data/`, `implementation/`, `verification/`
 4. **Initialize State**: Create `orchestrator-state.yml` with performance context
-5. **Discover project documentation**: Read `.maister/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Store as `project_context.project_doc_paths` in state.
+5. **Discover project documentation**: Read `.flowbit/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Store as `project_context.project_doc_paths` in state.
 
 **Output**:
 ```
@@ -84,7 +84,7 @@ Use for:
 
 **Purpose**: Comprehensive codebase exploration for performance context, followed by scope/requirements clarification
 **Execute**:
-1. Skill tool - `maister-codebase-analyzer`
+1. Skill tool - `flowbit-codebase-analyzer`
 2. Update state with analysis results
 3. Direct - use ask_user for max 5 critical clarifying questions about performance concerns, hotspots, and optimization goals
 4. Save clarifications to `analysis/clarifications.md`
@@ -100,7 +100,7 @@ Pass `task_type="enhancement"` and the performance-focused description. The code
 ### Phase 2: Static Performance Analysis
 
 **Purpose**: Identify bottlenecks through static code analysis + optional user profiling data
-**Execute**: Task tool - `maister-bottleneck-analyzer` subagent
+**Execute**: Task tool - `flowbit-bottleneck-analyzer` subagent
 **Output**: `analysis/performance-analysis.md`
 **State**: Update `performance_context.bottlenecks_identified`, `performance_context.user_data_available`, `performance_context.bottleneck_priorities`
 
@@ -117,11 +117,11 @@ Pass `task_type="enhancement"` and the performance-focused description. The code
 
 **INVOKE NOW** — Task tool call:
 
-4. Task tool - `maister-bottleneck-analyzer` subagent
+4. Task tool - `flowbit-bottleneck-analyzer` subagent
 
 **Context to pass**: task_path, description, codebase analysis summary from Phase 1, user data paths (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `maister-bottleneck-analyzer`? Or did you start analyzing code yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-bottleneck-analyzer`? Or did you start analyzing code yourself? If the latter, STOP and invoke the Task tool.
 
 → Pause
 
@@ -148,7 +148,7 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 
 **Part B — Specification Creation (subagent)**:
 
-📋 **Standards Discovery**: Read `.maister/docs/INDEX.md` before creating spec.
+📋 **Standards Discovery**: Read `.flowbit/docs/INDEX.md` before creating spec.
 
 **ANTI-PATTERN — DO NOT DO THIS:**
 - ❌ "Let me create the specification..." — STOP. Delegate to specification-creator.
@@ -156,11 +156,11 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 
 **INVOKE NOW** — Task tool call:
 
-4. Task tool - `maister-specification-creator` subagent
+4. Task tool - `flowbit-specification-creator` subagent
 
 **Context to pass**: task_path, task_type="performance", task_description, requirements_path (analysis/requirements.md), project_context_paths (INDEX.md + project_doc_paths from state — all discovered project docs), phase_summaries (codebase_analysis, bottleneck_analysis)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `maister-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP and invoke the Task tool.
 
 → Pause
 
@@ -173,7 +173,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 > **Phase gate**: Requires `ask_user` confirmation from Phase 3 before executing.
 
 **Purpose**: Independent review of optimization specification
-**Execute**: Task tool - `maister-spec-auditor` subagent
+**Execute**: Task tool - `flowbit-spec-auditor` subagent
 **Output**: `verification/spec-audit.md`
 **State**: Update `options.spec_audit_enabled`
 
@@ -194,7 +194,7 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 **Purpose**: Break optimization specification into implementation steps
 
-📋 **Standards Discovery**: Read `.maister/docs/INDEX.md` before planning.
+📋 **Standards Discovery**: Read `.flowbit/docs/INDEX.md` before planning.
 
 **ANTI-PATTERN — DO NOT DO THIS:**
 - ❌ "Let me create the implementation plan..." — STOP. Delegate to implementation-planner.
@@ -202,13 +202,13 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 **INVOKE NOW** — Task tool call:
 
-**Execute**: Task tool - `maister-implementation-planner` subagent
+**Execute**: Task tool - `flowbit-implementation-planner` subagent
 **Output**: `implementation/implementation-plan.md`
 **State**: Update task groups and dependencies
 
 **Context to pass**: task_path, task_type="performance", task_description, phase_summaries (specification, bottleneck_analysis, codebase_analysis)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `maister-implementation-planner`? Or did you start writing the plan yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-implementation-planner`? Or did you start writing the plan yourself? If the latter, STOP and invoke the Task tool.
 
 → Pause
 
@@ -222,7 +222,7 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 **Purpose**: Execute the optimization plan
 
-📋 **Standards Discovery**: Implementation reads `.maister/docs/INDEX.md` continuously.
+📋 **Standards Discovery**: Implementation reads `.flowbit/docs/INDEX.md` continuously.
 
 **ANTI-PATTERN — DO NOT DO THIS:**
 - ❌ "Let me implement this directly..." — STOP. Delegate to implementation-plan-executor.
@@ -230,11 +230,11 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 **INVOKE NOW** — Skill tool call:
 
-**Execute**: Skill tool - `maister-implementation-plan-executor`
+**Execute**: Skill tool - `flowbit-implementation-plan-executor`
 **Output**: Implemented optimizations, `implementation/work-log.md`
 **State**: Update implementation progress, extract phase_summaries.implementation
 
-**SELF-CHECK**: Did you just invoke the Skill tool with `maister-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
+**SELF-CHECK**: Did you just invoke the Skill tool with `flowbit-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
 
 **⚠️ POST-IMPLEMENTATION CONTINUATION** — After the skill completes and returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -279,7 +279,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 
 **Execute**:
 
-**Step 1**: Invoke Skill tool - `maister-implementation-verifier`
+**Step 1**: Invoke Skill tool - `flowbit-implementation-verifier`
 
 **Step 2**: Display detailed issue breakdown grouped by category and severity (critical/warning/info), listing location, description, and fixability for each.
 
@@ -293,7 +293,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 3. Fix selected issues
 4. After fixes: set `skip_test_suite: false` (code changed, tests must re-run)
 5. ask_user — "Re-run verification to check fixes?" with options: "Yes, re-run verification" / "No, proceed to next phase"
-6. If re-run → re-invoke `maister-implementation-verifier` → return to Step 2
+6. If re-run → re-invoke `flowbit-implementation-verifier` → return to Step 2
 
 → Pause
 
@@ -363,7 +363,7 @@ options:
 ## Task Structure
 
 ```
-.maister/tasks/performance/YYYY-MM-DD-task-name/
+.flowbit/tasks/performance/YYYY-MM-DD-task-name/
 ├── orchestrator-state.yml
 ├── analysis/
 │   ├── codebase-analysis.md           # Phase 1
@@ -397,7 +397,7 @@ options:
 ## Command Integration
 
 Invoked via:
-- `/maister-performance [description]` (new)
-- `/maister-performance [task-path] [--from=PHASE]` (resume)
+- `/flowbit-performance [description]` (new)
+- `/flowbit-performance [task-path] [--from=PHASE]` (resume)
 
-Task directory: `.maister/tasks/performance/YYYY-MM-DD-task-name/`
+Task directory: `.flowbit/tasks/performance/YYYY-MM-DD-task-name/`

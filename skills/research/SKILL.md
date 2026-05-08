@@ -21,7 +21,7 @@ Systematic research workflow from question definition to evidence-based document
 ### Step 2: Initialize Workflow
 
 1. **Create Task Items**: Use `TaskCreate` for all phases (see Phase Configuration), then set dependencies with `TaskUpdate addBlockedBy`
-2. **Create Task Directory**: `.maister/tasks/research/YYYY-MM-DD-task-name/`
+2. **Create Task Directory**: `.flowbit/tasks/research/YYYY-MM-DD-task-name/`
 3. **Initialize State**: Create `orchestrator-state.yml` with research context
 
 **Output**:
@@ -115,7 +115,7 @@ This phase executes 4 sequential steps. On resume, check existing artifacts to s
 4. Define success criteria
 5. Create research brief
 6. Update state: set `research_context.research_type`, `research_question`, `scope`
-7. **Discover project documentation**: Read `.maister/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Store as `research_context.project_doc_paths` in state.
+7. **Discover project documentation**: Read `.flowbit/docs/INDEX.md` (if exists), extract ALL file paths from the "Project Documentation" section — includes predefined docs AND any user-added project docs. Store as `research_context.project_doc_paths` in state.
 
 #### Step 2: Plan (Subagent)
 
@@ -124,7 +124,7 @@ This phase executes 4 sequential steps. On resume, check existing artifacts to s
 
 **Read `references/research-methodologies.md` NOW using the Read tool** — research type classification, methodology selection, gathering strategies
 
-**INVOKE NOW**: Use Task tool with `subagent_type: maister-research-planner`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-research-planner`
 
 **Context to pass**: task_path, research_brief_path, research_type, research_question, scope, project_doc_paths (from state)
 
@@ -155,7 +155,7 @@ For each category in strategy:
 **Artifacts**: `analysis/synthesis.md`, `outputs/research-report.md`
 **Resume check**: If `analysis/synthesis.md` AND `outputs/research-report.md` exist, skip (Phase 1 complete)
 
-**INVOKE NOW**: Use Task tool with `subagent_type: maister-research-synthesizer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-research-synthesizer`
 
 **Context to pass**: task_path, findings_directory_path, research_question, research_type, methodology
 
@@ -223,7 +223,7 @@ ask_user - "Research foundation complete (initialized, planned, gathered, synthe
 
 > **ANTI-PATTERN**: Do NOT generate solution alternatives inline. The solution-brainstormer agent has specialized multi-perspective analysis capabilities.
 
-**INVOKE NOW**: Use Task tool with `subagent_type: maister-solution-brainstormer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-solution-brainstormer`
 
 **Context to pass** (Pattern 7):
 - `task_path`, `synthesis_path`, `research_report_path`
@@ -298,7 +298,7 @@ ask_user - "Brainstorming complete. Continue to high-level design?"
 
 > **ANTI-PATTERN**: Do NOT generate C4 architecture diagrams or ADRs inline. The solution-designer agent has specialized architecture and MADR documentation capabilities.
 
-**INVOKE NOW**: Use Task tool with `subagent_type: maister-solution-designer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-solution-designer`
 
 **Context to pass** (Pattern 7):
 - `task_path`, `synthesis_path`, `research_report_path`
@@ -341,7 +341,7 @@ ask_user - "Design complete. Continue to output generation?"
 3. If design artifacts exist, suggest starting development in a fresh session:
    ```
    To start development based on this research, clear context first or start a new session, then run:
-   /maister-development [task-path]
+   /flowbit-development [task-path]
    ```
 
 → End of workflow
@@ -392,7 +392,7 @@ options:
 ## Task Structure
 
 ```
-.maister/tasks/research/YYYY-MM-DD-research-name/
+.flowbit/tasks/research/YYYY-MM-DD-research-name/
 ├── orchestrator-state.yml
 ├── planning/
 │   ├── research-brief.md           # Phase 1, Step 1
@@ -435,7 +435,7 @@ options:
 
 ### As Standalone Research
 
-**Command**: `/maister-research [research-question]`
+**Command**: `/flowbit-research [research-question]`
 **Flow**: Complete all phases, save outputs in task directory
 
 ### As Embedded Research Phase
@@ -463,8 +463,8 @@ research_outputs:
 ## Command Integration
 
 Invoked via:
-- `/maister-research [question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new)
-- `/maister-research [task-path] [--from=PHASE]` (resume)
+- `/flowbit-research [question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new)
+- `/flowbit-research [task-path] [--from=PHASE]` (resume)
 
 **Brainstorming flags**:
 - `--brainstorm`: Force brainstorming phase (auto-resolves Phase 2 brainstorming decision to "enable")
@@ -476,4 +476,4 @@ Invoked via:
 - `--no-design`: Skip high-level design phase
 - Neither: Phase 2 presents recommendation and asks user
 
-Task directory: `.maister/tasks/research/YYYY-MM-DD-task-name/`
+Task directory: `.flowbit/tasks/research/YYYY-MM-DD-task-name/`

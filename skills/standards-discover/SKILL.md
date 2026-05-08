@@ -39,7 +39,7 @@ Analyzes multiple project sources in parallel to discover coding standards, conv
 | `quick` | Yes | No | No | No |
 | `[custom]` | Relevant configs | Filtered files | Yes | Yes |
 
-Custom scope values are matched against existing `.maister/docs/standards/*/` directories and filter analysis to relevant files.
+Custom scope values are matched against existing `.flowbit/docs/standards/*/` directories and filter analysis to relevant files.
 
 ---
 
@@ -66,8 +66,8 @@ Custom scope values are matched against existing `.maister/docs/standards/*/` di
 ### Phase 1: Planning & Initialization
 
 1. **Parse options** from command arguments
-2. **Check prerequisites**: Verify `.maister/docs/` exists. If not, offer to run `/maister-init` first
-3. **Read existing standards** from `.maister/docs/INDEX.md` to identify updates vs creates and avoid duplicates
+2. **Check prerequisites**: Verify `.flowbit/docs/` exists. If not, offer to run `/flowbit-init` first
+3. **Read existing standards** from `.flowbit/docs/INDEX.md` to identify updates vs creates and avoid duplicates
 4. **Display discovery plan** showing scope, sources, and estimated time
 5. **Get user confirmation** via ask_user before proceeding
 
@@ -172,7 +172,7 @@ For each approved standard:
 
 1. **Prepare content** — Standard name, description, examples (preferred/avoid), rationale from evidence, source citations. Format each standard as a `###` heading with 1-10 lines description (excluding code snippets). Group related standards into the same topic file. Add brief code examples only when they clarify the practice.
 2. **Check if file exists** — Determine create vs update action
-3. **Invoke `docs-operator` subagent** via Task tool (subagent_type: `maister-docs-operator`) — Pass prepared content. For creates: new file. For updates: merge new findings with existing. Wait for completion, then continue with the next standard.
+3. **Invoke `docs-operator` subagent** via Task tool (subagent_type: `flowbit-docs-operator`) — Pass prepared content. For creates: new file. For updates: merge new findings with existing. Wait for completion, then continue with the next standard.
 4. **After all standards applied, invoke `docs-operator` subagent** via Task tool to regenerate INDEX.md. Wait for completion, then continue with step 5.
 5. **Invoke `docs-operator` subagent** via Task tool to verify .github/copilot-instructions.md integration — ensure standards directory is referenced. Wait for completion, then display the application summary.
 
@@ -194,7 +194,7 @@ Display final results:
 
 | Situation | Strategy |
 |-----------|----------|
-| `.maister/docs/` missing | Offer `/maister-init`, abort if declined |
+| `.flowbit/docs/` missing | Offer `/flowbit-init`, abort if declined |
 | gh CLI unavailable | Skip PR analysis, continue with other sources |
 | GitHub API rate limit | Skip PR analysis, note in report |
 | Config file parse error | Skip that file, log warning, continue |
@@ -218,17 +218,17 @@ Display final results:
 
 ```bash
 # Full discovery (default)
-/maister-standards-discover
+/flowbit-standards-discover
 
 # Quick scan (config files only, ~30-60s)
-/maister-standards-discover --scope=quick
+/flowbit-standards-discover --scope=quick
 
 # Frontend standards only
-/maister-standards-discover --scope=frontend
+/flowbit-standards-discover --scope=frontend
 
 # High confidence, auto-apply
-/maister-standards-discover --confidence=80 --auto-apply
+/flowbit-standards-discover --confidence=80 --auto-apply
 
 # Skip external analysis (offline/no GitHub)
-/maister-standards-discover --skip-external
+/flowbit-standards-discover --skip-external
 ```

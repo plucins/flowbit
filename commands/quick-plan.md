@@ -5,20 +5,20 @@ description: Enter planning mode with AI SDLC standards awareness
 
 # Planning Mode with Standards Awareness
 
-Enter Claude Code's planning mode for a task, with automatic discovery of project standards from `.maister/docs/`.
+Enter Claude Code's planning mode for a task, with automatic discovery of project standards from `.flowbit/docs/`.
 
 ## Usage
 
 ```bash
-/maister-quick-plan [task description]
+/flowbit-quick-plan [task description]
 ```
 
 ## Examples
 
 ```bash
-/maister-quick-plan "Add user authentication with email/password"
-/maister-quick-plan "Refactor the payment processing module"
-/maister-quick-plan
+/flowbit-quick-plan "Add user authentication with email/password"
+/flowbit-quick-plan "Refactor the payment processing module"
+/flowbit-quick-plan
 ```
 
 ---
@@ -39,7 +39,7 @@ Enter Claude Code's planning mode for a task, with automatic discovery of projec
 
 **CRITICAL: This step MUST complete before calling EnterPlanMode.**
 
-1. **Check if `.maister/docs/INDEX.md` exists**
+1. **Check if `.flowbit/docs/INDEX.md` exists**
    - **If not exists**: Note that no standards are available, skip to Step 3
    - **If exists**: Continue with discovery below
 
@@ -75,7 +75,7 @@ The planning mode will:
 
 **BLOCKING: Do NOT call `ExitPlanMode` until the plan file contains these sections:**
 
-1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/maister-init`."
+1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/flowbit-init`."
 
 2. **"## Standards Compliance Checklist"** — checkboxes for each applicable standard guideline that implementation must follow. Example:
    ```markdown
@@ -88,19 +88,19 @@ If these sections are missing from the plan file, add them before calling ExitPl
 
 ### Graceful Fallback
 
-**If `.maister/docs/` does not exist:**
+**If `.flowbit/docs/` does not exist:**
 
 Continue with planning mode normally. The "Applicable Standards" section in the plan should note:
 
 ```
-No AI SDLC standards found. Consider running `/maister-init` to initialize
+No AI SDLC standards found. Consider running `/flowbit-init` to initialize
 project documentation and coding standards for better consistency.
 ```
 
 ## What This Does
 
 1. **Parses** task description from user input
-2. **Discovers and READS** applicable standard files from `.maister/docs/` (BEFORE plan mode)
+2. **Discovers and READS** applicable standard files from `.flowbit/docs/` (BEFORE plan mode)
 3. **Enters** Claude Code's builtin planning mode via `EnterPlanMode` with standards already loaded
 4. **Produces** a plan file with implementation approach, applicable standards, and compliance checklist
 5. **Gates** ExitPlanMode on mandatory standards sections in the plan file

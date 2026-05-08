@@ -27,7 +27,7 @@ For each config file found, extract rules/settings that indicate coding standard
 
 ## Categorization
 
-Discover existing categories from `.maister/docs/standards/*/`. Baseline categories:
+Discover existing categories from `.flowbit/docs/standards/*/`. Baseline categories:
 - `global/` — Language-agnostic (indentation, line endings, general error handling)
 - `frontend/` — UI-specific (React rules, CSS conventions, component patterns)
 - `backend/` — Server-specific (API rules, database conventions)

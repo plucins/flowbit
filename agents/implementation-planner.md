@@ -162,7 +162,7 @@ Expected Tests: [calculation]
 
 ## Standards Compliance
 
-Follow standards from `.maister/docs/standards/`:
+Follow standards from `.flowbit/docs/standards/`:
 - global/ - Always applicable
 - [area]/ - Area-specific
 

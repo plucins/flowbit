@@ -17,7 +17,7 @@ Before considering an orchestrator complete, verify ALL items:
 - [ ] **Context extraction** — Each phase's State Update extracts findings to `phase_summaries`
 - [ ] **Decision gates** — Phases receiving `decisions_needed` present to user via ask_user
 - [ ] **Interactive mode** — `ask_user` at every `→ Pause` transition
-- [ ] **Standards discovery** — `.maister/docs/INDEX.md` referenced in spec, plan, implement, verify phases
+- [ ] **Standards discovery** — `.flowbit/docs/INDEX.md` referenced in spec, plan, implement, verify phases
 - [ ] **TaskCreate initialization** — Tasks created for all phases at workflow start with `addBlockedBy` dependencies
 - [ ] **Auto-recovery table** — Max attempts per phase with recovery strategies
 - [ ] **Domain context schema** — Includes `phase_summaries` structure

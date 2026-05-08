@@ -6,9 +6,9 @@ argument-hint: [--standards-from=PATH]
 
 # Initialize AI SDLC Framework
 
-Initialize `.maister/docs/` with intelligent project analysis and meaningful documentation generation based on actual codebase inspection.
+Initialize `.flowbit/docs/` with intelligent project analysis and meaningful documentation generation based on actual codebase inspection.
 
-**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `maister-docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** only for standards-discover (Phase 8, last phase). The Task tool returns control to this skill after completion; the Skill tool does not.
+**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `flowbit-docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** only for standards-discover (Phase 8, last phase). The Task tool returns control to this skill after completion; the Skill tool does not.
 
 ## Phase Configuration
 
@@ -31,14 +31,14 @@ Initialize `.maister/docs/` with intelligent project analysis and meaningful doc
 
 **If `--standards-from=PATH` is provided:**
 1. Resolve the path (absolute or relative to current working directory)
-2. Check if `PATH/.maister/docs/standards/` exists. If not, inform the user and stop — the specified project doesn't have maister standards initialized.
+2. Check if `PATH/.flowbit/docs/standards/` exists. If not, inform the user and stop — the specified project doesn't have flowbit standards initialized.
 3. Store the resolved standards source path for use in Phases 4 and 5.
 
-Check if `.maister/` directory already exists.
+Check if `.flowbit/` directory already exists.
 
 **If exists**, use ask_user:
 - Options: "Backup and reinitialize", "Update existing documentation", "Cancel"
-- If "Backup": Create `.maister.backup-$(date +%Y%m%d-%H%M%S)/` using Bash tool
+- If "Backup": Create `.flowbit.backup-$(date +%Y%m%d-%H%M%S)/` using Bash tool
 - If "Update": Skip to PHASE 6 (documentation generation only)
 - If "Cancel": Stop execution
 
@@ -86,7 +86,7 @@ Before presenting options, explain to the user:
 - **Starting point**: If `--standards-from` was provided, standards come from the referenced project. Otherwise, the plugin includes generic built-in standards. Either way, they serve as a starting point and can be fully customized or extended later.
 
 **Determine available categories:**
-- **If `--standards-from` was provided**: Scan `PATH/.maister/docs/standards/*/` to discover all available categories from the external project (may include custom categories beyond the baseline global/frontend/backend/testing).
+- **If `--standards-from` was provided**: Scan `PATH/.flowbit/docs/standards/*/` to discover all available categories from the external project (may include custom categories beyond the baseline global/frontend/backend/testing).
 - **Otherwise**: Use built-in baseline categories (global, frontend, backend, testing).
 
 Calculate smart defaults based on analysis:
@@ -95,7 +95,7 @@ Calculate smart defaults based on analysis:
 - **Backend**: If backend framework detected or projectArchitectureType includes backend (if available)
 - **Testing**: Always recommended (if available)
 
-Also scan `.maister/docs/standards/*/` for any existing custom categories to include.
+Also scan `.flowbit/docs/standards/*/` for any existing custom categories to include.
 
 Show smart defaults summary (noting the source: external project or built-in), then use ask_user:
 - "Use smart defaults" → proceed with calculated defaults
@@ -109,9 +109,9 @@ Store selection for Phase 5.
 
 ## PHASE 5: Initialize Documentation Structure
 
-**Invoke `docs-operator` subagent** via Task tool (subagent_type: `maister-docs-operator`) with prompt:
+**Invoke `docs-operator` subagent** via Task tool (subagent_type: `flowbit-docs-operator`) with prompt:
 
-> "Initialize documentation structure. Standards selection: [array from Phase 4]. [If --standards-from was provided: Standards source path: [resolved path]/.maister/docs/standards/. Copy standards from this external path instead of built-in defaults.] Only copy selected standard categories. Do NOT copy project templates — only create the project/ directory. Project documentation will be generated in Phase 6 with real content from project analysis. Create placeholder sections in INDEX.md for skipped categories."
+> "Initialize documentation structure. Standards selection: [array from Phase 4]. [If --standards-from was provided: Standards source path: [resolved path]/.flowbit/docs/standards/. Copy standards from this external path instead of built-in defaults.] Only copy selected standard categories. Do NOT copy project templates — only create the project/ directory. Project documentation will be generated in Phase 6 with real content from project analysis. Create placeholder sections in INDEX.md for skipped categories."
 
 Wait for docs-operator to complete, then immediately proceed to Phase 6.
 
@@ -132,15 +132,15 @@ Fill templates using:
 - User-provided context from Phase 3 (goals, users, requirements)
 - Auto-detected project characteristics
 
-Write each file to `.maister/docs/project/`.
+Write each file to `.flowbit/docs/project/`.
 
 ---
 
 ## PHASE 7: Validate
 
-**Step 1**: Invoke `docs-operator` subagent via Task tool (subagent_type: `maister-docs-operator`) with prompt:
+**Step 1**: Invoke `docs-operator` subagent via Task tool (subagent_type: `flowbit-docs-operator`) with prompt:
 
-> "Regenerate INDEX.md to include all newly created project documentation. Then verify .github/copilot-instructions.md is properly integrated with .maister/docs/ documentation."
+> "Regenerate INDEX.md to include all newly created project documentation. Then verify .github/copilot-instructions.md is properly integrated with .flowbit/docs/ documentation."
 
 Wait for docs-operator to complete, then immediately continue with Step 2.
 
@@ -159,7 +159,7 @@ Wait for docs-operator to complete, then immediately continue with Step 2.
 - Next steps:
   1. Review generated documentation
   2. Customize for your team
-  3. Start development with `/maister-work`
+  3. Start development with `/flowbit-work`
   4. Keep documentation current
 
 ---
@@ -178,7 +178,7 @@ After completion, display a brief summary of how many standards were discovered 
 
 ## Error Handling Principles
 
-- If `.maister/docs/` creation fails: check permissions, suggest manual creation
+- If `.flowbit/docs/` creation fails: check permissions, suggest manual creation
 - If project-analyzer fails: offer to proceed with manual input only
 - If docs-manager fails: offer retry (max 2 attempts), then manual instructions
 - Never auto-rollback — always ask user before destructive actions

@@ -3,7 +3,7 @@ name: reviews-reality-check
 description: Comprehensive reality assessment of completed work to verify it actually works and is production-ready
 ---
 
-**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="maister-reality-assessor" NOW. Pass the task path in the prompt. Do not read files, explore code, or execute workflow steps yourself.
+**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="flowbit-reality-assessor" NOW. Pass the task path in the prompt. Do not read files, explore code, or execute workflow steps yourself.
 
 You are running a comprehensive reality check using the `reality-assessor` agent.
 
@@ -66,17 +66,17 @@ The reality-assessor agent will:
 
 **Example 1**: Reality check before deployment
 ```
-User: /maister-reviews-reality-check .maister/tasks/development/2025-11-17-payment-processing/
+User: /flowbit-reviews-reality-check .flowbit/tasks/development/2025-11-17-payment-processing/
 ```
 
 **Example 2**: Verify claimed completion
 ```
-User: /maister-reviews-reality-check .maister/tasks/development/2025-11-17-login-timeout/
+User: /flowbit-reviews-reality-check .flowbit/tasks/development/2025-11-17-login-timeout/
 ```
 
 **Example 3**: Production readiness check
 ```
-User: /maister-reviews-reality-check .maister/tasks/development/2025-11-17-user-dashboard/ --production
+User: /flowbit-reviews-reality-check .flowbit/tasks/development/2025-11-17-user-dashboard/ --production
 ```
 
 ## What to Expect

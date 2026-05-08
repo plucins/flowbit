@@ -8,24 +8,24 @@ argument-hint: "[bug description]"
 
 Lightweight TDD-driven bug fix workflow with planning mode. Analyze the bug, present a fix plan for approval, then reproduce with a failing test, fix, and verify. No orchestrator state, no task directory, no subagents.
 
-For complex bugs that grow beyond a quick fix, suggests escalating to the full development workflow (`/maister-development`).
+For complex bugs that grow beyond a quick fix, suggests escalating to the full development workflow (`/flowbit-development`).
 
 ## Usage
 
 ```bash
-/maister-quick-bugfix "Login form submits twice on slow connections"
-/maister-quick-bugfix "API returns 500 when email contains special characters"
-/maister-quick-bugfix "Dark mode toggle doesn't persist after refresh"
+/flowbit-quick-bugfix "Login form submits twice on slow connections"
+/flowbit-quick-bugfix "API returns 500 when email contains special characters"
+/flowbit-quick-bugfix "Dark mode toggle doesn't persist after refresh"
 ```
 
 ## When to Use
 
-**Use `/maister-quick-bugfix` when:**
+**Use `/flowbit-quick-bugfix` when:**
 - Bug is reasonably scoped and reproducible
 - You have a clear description of expected vs actual behavior
 - Fix likely touches a small number of files
 
-**Use `/maister-development` instead when:**
+**Use `/flowbit-development` instead when:**
 - Bug requires architectural changes
 - Multiple subsystems are involved
 - You need formal specification and planning
@@ -49,7 +49,7 @@ For complex bugs that grow beyond a quick fix, suggests escalating to the full d
 
 **CRITICAL: This step MUST complete before entering plan mode.**
 
-**Check if `.maister/docs/INDEX.md` exists:**
+**Check if `.flowbit/docs/INDEX.md` exists:**
 
 **If exists:**
 1. Read INDEX.md to discover available documentation and standards
@@ -61,7 +61,7 @@ For complex bugs that grow beyond a quick fix, suggests escalating to the full d
 
 **If not exists:**
 - Note that no standards are available
-- Suggest running `/maister-init` in completion message
+- Suggest running `/flowbit-init` in completion message
 
 ### Standards Reading Enforcement (MANDATORY)
 
@@ -106,7 +106,7 @@ Use ask_user:
 - Question: "This bug appears more complex than a quick fix — [describe why]. How would you like to proceed?"
 - Options:
   1. "Continue with quick fix" — proceed, accepting the complexity
-  2. "Switch to full development workflow" — stop here and suggest running `/maister-development` with the bug description and analysis context
+  2. "Switch to full development workflow" — stop here and suggest running `/flowbit-development` with the bug description and analysis context
 
 **If no escalation needed or user chooses to continue:** proceed to Step 4.
 
@@ -135,7 +135,7 @@ Standards context from Step 2 and analysis from Step 3 MUST inform the plan.
 ## Applicable Standards
 
 [List each standard file read, with key guidelines extracted from each.
-If no standards exist: "No AI SDLC standards found. Consider running `/maister-init`."]
+If no standards exist: "No AI SDLC standards found. Consider running `/flowbit-init`."]
 
 ## Standards Compliance Checklist
 
@@ -190,7 +190,7 @@ If any section is missing, add it before calling ExitPlanMode.
 
 **If still failing after 3 attempts:**
 - Stop and present findings to the user
-- Suggest escalating to `/maister-development` for a more thorough approach
+- Suggest escalating to `/flowbit-development` for a more thorough approach
 
 ### Step 7: Summary
 
@@ -210,7 +210,7 @@ If any section is missing, add it before calling ExitPlanMode.
 ## What This Does
 
 1. **Parses** bug description from user input
-2. **Discovers** applicable standards from `.maister/docs/INDEX.md`
+2. **Discovers** applicable standards from `.flowbit/docs/INDEX.md`
 3. **Analyzes** codebase to find root cause and assess complexity
 4. **Escalates** to full development workflow if bug is too complex
 5. **Plans** the fix and presents for user approval via planning mode
@@ -220,11 +220,11 @@ If any section is missing, add it before calling ExitPlanMode.
 
 ## Graceful Fallback
 
-**If `.maister/docs/` does not exist:**
+**If `.flowbit/docs/` does not exist:**
 
 Proceed with the bug fix normally, then note:
 
 ```
-"No AI SDLC standards found. Consider running `/maister-init` to initialize
+"No AI SDLC standards found. Consider running `/flowbit-init` to initialize
 project documentation and coding standards for better consistency."
 ```

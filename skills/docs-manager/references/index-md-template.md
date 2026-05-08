@@ -1,6 +1,6 @@
 # INDEX.md Template
 
-Use this structure when generating or updating `.maister/docs/INDEX.md`. Scan the actual `.maister/docs/` directory to populate sections dynamically — do not hardcode file lists.
+Use this structure when generating or updating `.flowbit/docs/INDEX.md`. Scan the actual `.flowbit/docs/` directory to populate sections dynamically — do not hardcode file lists.
 
 For technical standards, the description MUST enumerate specific practices/conventions documented in the file, not just a generic category description.
 
@@ -21,7 +21,7 @@ Coding standards, conventions, and best practices organized by domain.
 
 ## Project Documentation
 
-Located in `.maister/docs/project/`
+Located in `.flowbit/docs/project/`
 
 ### Vision (`project/vision.md`)
 [Brief description of what this file contains]
@@ -41,7 +41,7 @@ Located in `.maister/docs/project/`
 
 ### [Category Name] Standards
 
-Located in `.maister/docs/standards/[category]/`
+Located in `.flowbit/docs/standards/[category]/`
 
 #### [Standard Name] (`standards/[category]/[name].md`)
 [Practice-specific description — enumerate actual conventions, not generic text]

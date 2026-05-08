@@ -86,7 +86,7 @@ Combine fetched details with user-provided context:
 ### Phase 2: Context Analysis
 
 **Read Project Documentation**:
-- Read `.maister/docs/INDEX.md` for project context
+- Read `.flowbit/docs/INDEX.md` for project context
 - Check standards for relevant patterns
 - Review roadmap if exists
 
@@ -381,7 +381,7 @@ Use ask_user with relevant options
 
 ## Tool Usage
 
-**Read**: Read `.maister/docs/INDEX.md`, project documentation, specifications
+**Read**: Read `.flowbit/docs/INDEX.md`, project documentation, specifications
 
 **Grep**: Search for component definitions, error patterns, imports/exports
 

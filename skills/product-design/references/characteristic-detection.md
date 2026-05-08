@@ -16,7 +16,7 @@ Not every design task needs the same depth. A quick "add a settings page" should
 
 | Characteristic | Detection Signals | Mutually Exclusive With |
 |---|---|---|
-| `is_greenfield` | No existing codebase, "new product/app/tool" language, no `.maister/docs/` present | `is_enhancement` |
+| `is_greenfield` | No existing codebase, "new product/app/tool" language, no `.flowbit/docs/` present | `is_enhancement` |
 | `is_enhancement` | Existing codebase, "add/improve/enhance/extend" language, references existing features | `is_greenfield` |
 | `is_ui_focused` | "UI/UX/interface/page/screen/dashboard/form" language, UI framework detected in codebase | -- (can coexist with `is_backend`) |
 | `is_backend` | "API/endpoint/service/data/model/schema" language, no UI framework detected | -- (can coexist with `is_ui_focused`) |

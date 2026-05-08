@@ -25,7 +25,7 @@ Analyze code and produce `code-review-report.md` with findings categorized by se
 Report issues but never modify code. Your job is to identify and classify, not to fix.
 
 ### Context-Aware
-Check `.maister/docs/INDEX.md` for project standards. Consider project tech stack and patterns. Some patterns may be intentional — don't be overly strict.
+Check `.flowbit/docs/INDEX.md` for project standards. Consider project tech stack and patterns. Some patterns may be intentional — don't be overly strict.
 
 ### Actionable Findings
 Every finding must have a specific location (file:line), clear description, why it matters, and how to fix it.
@@ -52,7 +52,7 @@ The Task prompt MUST include:
 
 1. **Get analysis path** and determine scope
 2. **Identify files to analyze** (max 50 files for focused analysis)
-3. **Read project context** from `.maister/docs/INDEX.md` for standards
+3. **Read project context** from `.flowbit/docs/INDEX.md` for standards
 
 ---
 
@@ -214,7 +214,7 @@ issue_counts:
 
 ## Integration
 
-**Invoked by**: implementation-verifier (Phase 3), standalone via `/maister-reviews-code` command
+**Invoked by**: implementation-verifier (Phase 3), standalone via `/flowbit-reviews-code` command
 
 **Prerequisites**:
 - Code exists at the specified path
