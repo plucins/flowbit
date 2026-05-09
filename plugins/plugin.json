@@ -1,6 +1,6 @@
 {
   "name": "flowbit",
-  "description": "AI SDLC workflows for GitHub Copilot CLI projects",
+  "description": "Structured SDLC workflows and agents for GitHub Copilot CLI",
   "version": "1.3",
   "author": {
     "name": "plucins"
