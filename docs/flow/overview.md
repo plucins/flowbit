@@ -22,18 +22,32 @@ Opis:
 - Komendy review (`/flowbit:reviews-*`) i quick bugfix (`/flowbit:quick-bugfix`) maja dodatkowe powiazania opisane w [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings).
 
 ```mermaid
-graph TD
-  WORK["/work"]
-  INIT["/flowbit:init"]
-  DEV["/flowbit:development"]
-  PERF["/flowbit:performance"]
-  MIG["/flowbit:migration"]
-  RES["/flowbit:research"]
-  PD["/flowbit:product-design"]
-  STD_DISC["/flowbit:standards-discover"]
-  STD_UPD["/flowbit:standards-update"]
-  REV["/flowbit:reviews-*"]
-  QBUG["/flowbit:quick-bugfix"]
+graph LR
+  subgraph C1[" "]
+    direction TB
+    WORK["⚡ /work"]
+    INIT["⚡ /flowbit:init"]
+    PERF["⚡ /flowbit:performance"]
+    RES["⚡ /flowbit:research"]
+  end
+
+  subgraph C2[" "]
+    direction TB
+    DEV["⚡ /flowbit:development"]
+    MIG["⚡ /flowbit:migration"]
+    PD["⚡ /flowbit:product-design"]
+  end
+
+  subgraph C3[" "]
+    direction TB
+    STD_DISC["⚡ /flowbit:standards-discover"]
+    STD_UPD["⚡ /flowbit:standards-update"]
+    REV["⚡ /flowbit:reviews-*"]
+    QBUG["⚡ /flowbit:quick-bugfix"]
+  end
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  class WORK,INIT,DEV,PERF,MIG,RES,PD,STD_DISC,STD_UPD,REV,QBUG cmd;
 ```
 
 <a id="work-routing"></a>
@@ -47,12 +61,19 @@ Opis:
 
 ```mermaid
 graph TD
-  WORK["/work"] -- "komenda: /work" --> CLASS["task-classifier"]
-  CLASS -- "decyzja: dev task" --> S_DEV["development"]
-  CLASS -- "decyzja: perf task" --> S_PERF["performance"]
-  CLASS -- "decyzja: migration task" --> S_MIG["migration"]
-  CLASS -- "decyzja: research task" --> S_RES["research"]
-  CLASS -- "decyzja: product-design task" --> S_PD["product-design"]
+  WORK["⚡ /work"] -- "komenda: /work" --> CLASS["🤖 task-classifier"]
+  CLASS -- "decyzja: dev task" --> S_DEV["🧠 development"]
+  CLASS -- "decyzja: perf task" --> S_PERF["🧠 performance"]
+  CLASS -- "decyzja: migration task" --> S_MIG["🧠 migration"]
+  CLASS -- "decyzja: research task" --> S_RES["🧠 research"]
+  CLASS -- "decyzja: product-design task" --> S_PD["🧠 product-design"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class WORK cmd;
+  class S_DEV,S_PERF,S_MIG,S_RES,S_PD skill;
+  class CLASS agent;
 ```
 
 <a id="direct-command-to-orchestrator-mapping"></a>
@@ -65,15 +86,20 @@ Opis:
 
 ```mermaid
 graph TD
-  INIT["/flowbit:init"] -- "komenda: direct invoke skill" --> S_INIT["init"]
-  DEV["/flowbit:development"] -- "komenda: direct invoke skill" --> S_DEV["development"]
-  PERF["/flowbit:performance"] -- "komenda: direct invoke skill" --> S_PERF["performance"]
-  MIG["/flowbit:migration"] -- "komenda: direct invoke skill" --> S_MIG["migration"]
-  RES["/flowbit:research"] -- "komenda: direct invoke skill" --> S_RES["research"]
-  PD["/flowbit:product-design"] -- "komenda: direct invoke skill" --> S_PD["product-design"]
-  STD_DISC["/flowbit:standards-discover"] -- "komenda: direct invoke skill" --> S_STD_DISC["standards-discover"]
-  STD_UPD["/flowbit:standards-update"] -- "komenda: direct invoke skill" --> S_STD_UPD["standards-update"]
-  QBUG["/flowbit:quick-bugfix"] -- "komenda: shortcut flow" --> S_QBUG["quick-bugfix"]
+  INIT["⚡ /flowbit:init"] -- "komenda: direct invoke skill" --> S_INIT["🧠 init"]
+  DEV["⚡ /flowbit:development"] -- "komenda: direct invoke skill" --> S_DEV["🧠 development"]
+  PERF["⚡ /flowbit:performance"] -- "komenda: direct invoke skill" --> S_PERF["🧠 performance"]
+  MIG["⚡ /flowbit:migration"] -- "komenda: direct invoke skill" --> S_MIG["🧠 migration"]
+  RES["⚡ /flowbit:research"] -- "komenda: direct invoke skill" --> S_RES["🧠 research"]
+  PD["⚡ /flowbit:product-design"] -- "komenda: direct invoke skill" --> S_PD["🧠 product-design"]
+  STD_DISC["⚡ /flowbit:standards-discover"] -- "komenda: direct invoke skill" --> S_STD_DISC["🧠 standards-discover"]
+  STD_UPD["⚡ /flowbit:standards-update"] -- "komenda: direct invoke skill" --> S_STD_UPD["🧠 standards-update"]
+  QBUG["⚡ /flowbit:quick-bugfix"] -- "komenda: shortcut flow" --> S_QBUG["🧠 quick-bugfix"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  class INIT,DEV,PERF,MIG,RES,PD,STD_DISC,STD_UPD,QBUG cmd;
+  class S_INIT,S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_STD_DISC,S_STD_UPD,S_QBUG skill;
 ```
 
 <a id="init-and-standards-flow"></a>
@@ -86,10 +112,13 @@ Opis:
 
 ```mermaid
 graph TD
-  S_INIT["init"] -- "etap: standards discovery" --> S_STD_DISC["standards-discover"]
-  S_INIT -- "etap: docs sync" --> S_DOCS["docs-manager (via docs-operator)"]
+  S_INIT["🧠 init"] -- "etap: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT -- "etap: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
   S_STD_DISC -- "etap: docs sync" --> S_DOCS
-  S_STD_UPD["standards-update"] -- "etap: docs update" --> S_DOCS
+  S_STD_UPD["🧠 standards-update"] -- "etap: docs update" --> S_DOCS
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD skill;
 ```
 
 <a id="delivery-orchestrators-and-shared-skills"></a>
@@ -102,19 +131,22 @@ Opis:
 
 ```mermaid
 graph TD
-  S_DEV["development"] -- "faza: analiza kodu" --> S_CODEBASE["codebase-analyzer"]
-  S_DEV -- "faza: wykonanie planu" --> S_IMPL_EXEC["implementation-plan-executor"]
-  S_DEV -- "faza: weryfikacja" --> S_IMPL_VER["implementation-verifier"]
+  S_DEV["🧠 development"] -- "faza: analiza kodu" --> S_CODEBASE["🧠 codebase-analyzer"]
+  S_DEV -- "faza: wykonanie planu" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
+  S_DEV -- "faza: weryfikacja" --> S_IMPL_VER["🧠 implementation-verifier"]
 
-  S_PERF["performance"] -- "faza: analiza kodu" --> S_CODEBASE
+  S_PERF["🧠 performance"] -- "faza: analiza kodu" --> S_CODEBASE
   S_PERF -- "faza: wykonanie planu" --> S_IMPL_EXEC
   S_PERF -- "faza: weryfikacja" --> S_IMPL_VER
 
-  S_MIG["migration"] -- "faza: analiza kodu" --> S_CODEBASE
+  S_MIG["🧠 migration"] -- "faza: analiza kodu" --> S_CODEBASE
   S_MIG -- "faza: wykonanie planu" --> S_IMPL_EXEC
   S_MIG -- "faza: weryfikacja" --> S_IMPL_VER
 
-  S_PD["product-design"] -- "faza: analiza kodu (enhancement)" --> S_CODEBASE
+  S_PD["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> S_CODEBASE
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD skill;
 ```
 
 <a id="orchestrators-to-specialized-agent-families"></a>
@@ -128,23 +160,28 @@ Opis:
 
 ```mermaid
 graph TD
-  S_DEV["development"] -- "delegacja: spec creation/audit" --> A_SPEC["specification-creator / spec-auditor"]
-  S_PERF["performance"] -- "delegacja: spec creation/audit" --> A_SPEC
-  S_MIG["migration"] -- "delegacja: spec creation/audit" --> A_SPEC
+  S_DEV["🧠 development"] -- "delegacja: spec creation/audit" --> A_SPEC["🤖 specification-creator / spec-auditor"]
+  S_PERF["🧠 performance"] -- "delegacja: spec creation/audit" --> A_SPEC
+  S_MIG["🧠 migration"] -- "delegacja: spec creation/audit" --> A_SPEC
 
-  S_DEV -- "delegacja: planning/execution" --> A_PLAN["implementation-planner / task-group-implementer"]
+  S_DEV -- "delegacja: planning/execution" --> A_PLAN["🤖 implementation-planner / task-group-implementer"]
   S_PERF -- "delegacja: planning/execution" --> A_PLAN
   S_MIG -- "delegacja: planning/execution" --> A_PLAN
 
-  S_RES["research"] -- "delegacja: research pipeline" --> A_RESEARCH["research-planner / gatherer / synthesizer / brainstormer / designer"]
-  S_PD["product-design"] -- "delegacja: mini-research support" --> A_RESEARCH
+  S_RES["🧠 research"] -- "delegacja: research pipeline" --> A_RESEARCH["🤖 research-planner / gatherer / synthesizer / brainstormer / designer"]
+  S_PD["🧠 product-design"] -- "delegacja: mini-research support" --> A_RESEARCH
 
-  S_IMPL_VER["implementation-verifier"] -- "quality gates" --> A_QUALITY["code-reviewer / pragmatist / readiness / reality / tests"]
+  S_IMPL_VER["🧠 implementation-verifier"] -- "quality gates" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
 
-  S_INIT["init"] -- "delegacja: helper analyzers" --> A_OTHER["project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
+  S_INIT["🧠 init"] -- "delegacja: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
   S_DEV -- "delegacja: helper analyzers" --> A_OTHER
   S_PERF -- "delegacja: helper analyzers" --> A_OTHER
   S_MIG -- "delegacja: helper analyzers" --> A_OTHER
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_IMPL_VER,S_INIT skill;
+  class A_SPEC,A_PLAN,A_RESEARCH,A_QUALITY,A_OTHER agent;
 ```
 
 <a id="reviews-and-quick-bugfix-bindings"></a>
@@ -157,6 +194,13 @@ Opis:
 
 ```mermaid
 graph TD
-  REV["/flowbit:reviews-*"] -- "komenda: quality/review lane" --> A_QUALITY["code-reviewer / pragmatist / readiness / reality / tests"]
-  QBUG["/flowbit:quick-bugfix"] -- "komenda: shortcut to fix lane" --> S_QBUG["quick-bugfix"]
+  REV["⚡ /flowbit:reviews-*"] -- "komenda: quality/review lane" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
+  QBUG["⚡ /flowbit:quick-bugfix"] -- "komenda: shortcut to fix lane" --> S_QBUG["🧠 quick-bugfix"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class REV,QBUG cmd;
+  class S_QBUG skill;
+  class A_QUALITY agent;
 ```

@@ -25,12 +25,19 @@ Opis:
 
 ```mermaid
 graph TD
-  WORK["/work"] -- "komenda: /work -> routing" --> CLASS["task-classifier"]
-  CLASS -- "decyzja: typ zadania" --> DEV["development"]
-  CLASS -- "decyzja: typ zadania" --> PERF["performance"]
-  CLASS -- "decyzja: typ zadania" --> MIG["migration"]
-  CLASS -- "decyzja: typ zadania" --> RES["research"]
-  CLASS -- "decyzja: typ zadania" --> PD["product-design"]
+  WORK["⚡ /work"] -- "komenda: /work -> routing" --> CLASS["🤖 task-classifier"]
+  CLASS -- "decyzja: typ zadania" --> DEV["🧠 development"]
+  CLASS -- "decyzja: typ zadania" --> PERF["🧠 performance"]
+  CLASS -- "decyzja: typ zadania" --> MIG["🧠 migration"]
+  CLASS -- "decyzja: typ zadania" --> RES["🧠 research"]
+  CLASS -- "decyzja: typ zadania" --> PD["🧠 product-design"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class WORK cmd;
+  class DEV,PERF,MIG,RES,PD skill;
+  class CLASS agent;
 ```
 
 <a id="init-standards"></a>
@@ -44,13 +51,20 @@ Opis:
 
 ```mermaid
 graph TD
-  INIT_CMD["/flowbit:init"] -- "komenda: bootstrap" --> INIT["init skill"]
-  INIT -- "etap: discovery" --> PROJ["project-analyzer"]
-  INIT -- "etap: standards discovery" --> STD_DISC["standards-discover skill"]
-  INIT -- "etap: docs sync" --> DOCS_OP["docs-operator"]
+  INIT_CMD["⚡ /flowbit:init"] -- "komenda: bootstrap" --> INIT["🧠 init skill"]
+  INIT -- "etap: discovery" --> PROJ["🤖 project-analyzer"]
+  INIT -- "etap: standards discovery" --> STD_DISC["🧠 standards-discover skill"]
+  INIT -- "etap: docs sync" --> DOCS_OP["🤖 docs-operator"]
   STD_DISC -- "wejscie: zebrane standardy" --> DOCS_OP
-  STD_UPD["/flowbit:standards-update"] -- "komenda: update standards" --> DOCS_OP
-  DOCS_OP -- "etap: utrwalenie dokumentacji" --> DOCS["docs-manager (preloaded)"]
+  STD_UPD["⚡ /flowbit:standards-update"] -- "komenda: update standards" --> DOCS_OP
+  DOCS_OP -- "etap: utrwalenie dokumentacji" --> DOCS["🧠 docs-manager (preloaded)"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class INIT_CMD,STD_UPD cmd;
+  class INIT,STD_DISC,DOCS skill;
+  class PROJ,DOCS_OP agent;
 ```
 
 <a id="development"></a>
@@ -63,16 +77,21 @@ Opis:
 
 ```mermaid
 graph TD
-  DEV2["development"] -- "faza: analiza kodu" --> CODEBASE_D["codebase-analyzer"]
-  DEV2 -- "faza: analiza brakow" --> GAP_D["gap-analyzer"]
-  DEV2 -- "faza: specyfikacja" --> SPEC_D["specification-creator"]
-  DEV2 -- "faza: quality gate (warunkowo)" --> AUD_D["spec-auditor (conditional)"]
-  DEV2 -- "faza: plan implementacji" --> PLAN_D["implementation-planner"]
-  DEV2 -- "faza: wykonanie planu" --> EXEC_D["implementation-plan-executor"]
-  DEV2 -- "faza: weryfikacja" --> VER_D["implementation-verifier"]
-  DEV2 -- "faza: UI (jesli ui_heavy)" --> UI_D["ui-mockup (if ui_heavy)"]
-  DEV2 -- "faza: testy E2E (opcjonalnie)" --> E2E_D["e2e-test-verifier (optional)"]
-  DEV2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_D["user-docs-generator (optional)"]
+  DEV2["🧠 development"] -- "faza: analiza kodu" --> CODEBASE_D["🧠 codebase-analyzer"]
+  DEV2 -- "faza: analiza brakow" --> GAP_D["🤖 gap-analyzer"]
+  DEV2 -- "faza: specyfikacja" --> SPEC_D["🤖 specification-creator"]
+  DEV2 -- "faza: quality gate (warunkowo)" --> AUD_D["🤖 spec-auditor (conditional)"]
+  DEV2 -- "faza: plan implementacji" --> PLAN_D["🤖 implementation-planner"]
+  DEV2 -- "faza: wykonanie planu" --> EXEC_D["🧠 implementation-plan-executor"]
+  DEV2 -- "faza: weryfikacja" --> VER_D["🧠 implementation-verifier"]
+  DEV2 -- "faza: UI (jesli ui_heavy)" --> UI_D["🤖 ui-mockup (if ui_heavy)"]
+  DEV2 -- "faza: testy E2E (opcjonalnie)" --> E2E_D["🤖 e2e-test-verifier (optional)"]
+  DEV2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_D["🤖 user-docs-generator (optional)"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class DEV2,CODEBASE_D,EXEC_D,VER_D skill;
+  class GAP_D,SPEC_D,AUD_D,PLAN_D,UI_D,E2E_D,UDOCS_D agent;
 ```
 
 <a id="performance"></a>
@@ -84,13 +103,18 @@ Opis:
 
 ```mermaid
 graph TD
-  PERF2["performance"] -- "faza: analiza kodu" --> CODEBASE_P["codebase-analyzer"]
-  PERF2 -- "faza: analiza bottleneckow" --> BOT_P["bottleneck-analyzer"]
-  PERF2 -- "faza: specyfikacja optymalizacji" --> SPEC_P["specification-creator"]
-  PERF2 -- "faza: quality gate (warunkowo)" --> AUD_P["spec-auditor (conditional)"]
-  PERF2 -- "faza: plan implementacji" --> PLAN_P["implementation-planner"]
-  PERF2 -- "faza: wykonanie planu" --> EXEC_P["implementation-plan-executor"]
-  PERF2 -- "faza: weryfikacja efektu" --> VER_P["implementation-verifier"]
+  PERF2["🧠 performance"] -- "faza: analiza kodu" --> CODEBASE_P["🧠 codebase-analyzer"]
+  PERF2 -- "faza: analiza bottleneckow" --> BOT_P["🤖 bottleneck-analyzer"]
+  PERF2 -- "faza: specyfikacja optymalizacji" --> SPEC_P["🤖 specification-creator"]
+  PERF2 -- "faza: quality gate (warunkowo)" --> AUD_P["🤖 spec-auditor (conditional)"]
+  PERF2 -- "faza: plan implementacji" --> PLAN_P["🤖 implementation-planner"]
+  PERF2 -- "faza: wykonanie planu" --> EXEC_P["🧠 implementation-plan-executor"]
+  PERF2 -- "faza: weryfikacja efektu" --> VER_P["🧠 implementation-verifier"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class PERF2,CODEBASE_P,EXEC_P,VER_P skill;
+  class BOT_P,SPEC_P,AUD_P,PLAN_P agent;
 ```
 
 <a id="migration"></a>
@@ -102,13 +126,18 @@ Opis:
 
 ```mermaid
 graph TD
-  MIG2["migration"] -- "faza: analiza kodu" --> CODEBASE_M["codebase-analyzer"]
-  MIG2 -- "faza: analiza brakow" --> GAP_M["gap-analyzer"]
-  MIG2 -- "faza: specyfikacja migracji" --> SPEC_M["specification-creator"]
-  MIG2 -- "faza: plan implementacji" --> PLAN_M["implementation-planner"]
-  MIG2 -- "faza: wykonanie planu" --> EXEC_M["implementation-plan-executor"]
-  MIG2 -- "faza: weryfikacja migracji" --> VER_M["implementation-verifier"]
-  MIG2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_M["user-docs-generator (optional)"]
+  MIG2["🧠 migration"] -- "faza: analiza kodu" --> CODEBASE_M["🧠 codebase-analyzer"]
+  MIG2 -- "faza: analiza brakow" --> GAP_M["🤖 gap-analyzer"]
+  MIG2 -- "faza: specyfikacja migracji" --> SPEC_M["🤖 specification-creator"]
+  MIG2 -- "faza: plan implementacji" --> PLAN_M["🤖 implementation-planner"]
+  MIG2 -- "faza: wykonanie planu" --> EXEC_M["🧠 implementation-plan-executor"]
+  MIG2 -- "faza: weryfikacja migracji" --> VER_M["🧠 implementation-verifier"]
+  MIG2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_M["🤖 user-docs-generator (optional)"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class MIG2,CODEBASE_M,EXEC_M,VER_M skill;
+  class GAP_M,SPEC_M,PLAN_M,UDOCS_M agent;
 ```
 
 <a id="research"></a>
@@ -120,11 +149,16 @@ Opis:
 
 ```mermaid
 graph TD
-  RES2["research"] -- "faza: plan badania" --> RPLAN["research-planner"]
-  RES2 -- "faza: zbieranie danych (rownolegle)" --> GATHER_R["information-gatherer (parallel)"]
-  RES2 -- "faza: synteza" --> SYN_R["research-synthesizer"]
-  RES2 -- "faza: ideacja (opcjonalnie)" --> BRAIN_R["solution-brainstormer (optional)"]
-  RES2 -- "faza: projekt rozwiazania (opcjonalnie)" --> DESIGN_R["solution-designer (optional)"]
+  RES2["🧠 research"] -- "faza: plan badania" --> RPLAN["🤖 research-planner"]
+  RES2 -- "faza: zbieranie danych (rownolegle)" --> GATHER_R["🤖 information-gatherer (parallel)"]
+  RES2 -- "faza: synteza" --> SYN_R["🤖 research-synthesizer"]
+  RES2 -- "faza: ideacja (opcjonalnie)" --> BRAIN_R["🤖 solution-brainstormer (optional)"]
+  RES2 -- "faza: projekt rozwiazania (opcjonalnie)" --> DESIGN_R["🤖 solution-designer (optional)"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class RES2 skill;
+  class RPLAN,GATHER_R,SYN_R,BRAIN_R,DESIGN_R agent;
 ```
 
 <a id="product-design"></a>
@@ -137,10 +171,15 @@ Opis:
 
 ```mermaid
 graph TD
-  PD2["product-design"] -- "faza: analiza kodu (enhancement)" --> CODEBASE_PD["codebase-analyzer (enhancement)"]
-  PD2 -- "faza: mini-research" --> GATHER_PD["information-gatherer (mini-research)"]
-  PD2 -- "faza: ideacja rozwiazania" --> BRAIN_PD["solution-brainstormer"]
-  PD2 -- "faza: fallback UI-focused" --> UI_PD["ui-mockup-generator (UI-focused fallback)"]
+  PD2["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> CODEBASE_PD["🧠 codebase-analyzer (enhancement)"]
+  PD2 -- "faza: mini-research" --> GATHER_PD["🤖 information-gatherer (mini-research)"]
+  PD2 -- "faza: ideacja rozwiazania" --> BRAIN_PD["🤖 solution-brainstormer"]
+  PD2 -- "faza: fallback UI-focused" --> UI_PD["🤖 ui-mockup-generator (UI-focused fallback)"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class PD2,CODEBASE_PD skill;
+  class GATHER_PD,BRAIN_PD,UI_PD agent;
 ```
 
 <a id="shared-codebase-analyzer"></a>
@@ -152,8 +191,13 @@ Opis:
 
 ```mermaid
 graph TD
-  CODEBASE_S["codebase-analyzer"] -- "faza: eksploracja (parallel)" --> EXPLORE["Explore agents (parallel)"]
-  CODEBASE_S -- "faza: raport" --> REPORT["codebase-analysis-reporter"]
+  CODEBASE_S["🧠 codebase-analyzer"] -- "faza: eksploracja (parallel)" --> EXPLORE["🤖 Explore agents (parallel)"]
+  CODEBASE_S -- "faza: raport" --> REPORT["🤖 codebase-analysis-reporter"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class CODEBASE_S skill;
+  class EXPLORE,REPORT agent;
 ```
 
 <a id="shared-implementation-executor"></a>
@@ -165,7 +209,12 @@ Opis:
 
 ```mermaid
 graph TD
-  EXEC_S["implementation-plan-executor"] -- "faza: realizacja task groups" --> TG["task-group-implementer"]
+  EXEC_S["🧠 implementation-plan-executor"] -- "faza: realizacja task groups" --> TG["🤖 task-group-implementer"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class EXEC_S skill;
+  class TG agent;
 ```
 
 <a id="shared-implementation-verifier"></a>
@@ -177,10 +226,15 @@ Opis:
 
 ```mermaid
 graph TD
-  VER_S["implementation-verifier"] -- "check: completeness" --> COMP["implementation-completeness-checker"]
-  VER_S -- "check: test suite" --> TEST["test-suite-runner"]
-  VER_S -- "check: code review" --> REVIEW["code-reviewer"]
-  VER_S -- "check: pragmatic quality" --> PRAG["code-quality-pragmatist"]
-  VER_S -- "check: prod readiness" --> PROD["production-readiness-checker"]
-  VER_S -- "check: reality alignment" --> REAL["reality-assessor"]
+  VER_S["🧠 implementation-verifier"] -- "check: completeness" --> COMP["🤖 implementation-completeness-checker"]
+  VER_S -- "check: test suite" --> TEST["🤖 test-suite-runner"]
+  VER_S -- "check: code review" --> REVIEW["🤖 code-reviewer"]
+  VER_S -- "check: pragmatic quality" --> PRAG["🤖 code-quality-pragmatist"]
+  VER_S -- "check: prod readiness" --> PROD["🤖 production-readiness-checker"]
+  VER_S -- "check: reality alignment" --> REAL["🤖 reality-assessor"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class VER_S skill;
+  class COMP,TEST,REVIEW,PRAG,PROD,REAL agent;
 ```
