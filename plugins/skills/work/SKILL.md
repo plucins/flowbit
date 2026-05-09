@@ -144,6 +144,14 @@ Examples:
 - Restart from phase: `skill: "flowbit-development"` with `args: "--resume .flowbit/tasks/development/2025-10-26-auth --from=verify"`
 - Fresh attempts: `skill: "flowbit-migration"` with `args: "--resume .flowbit/tasks/migrations/2025-10-20-redux --reset-attempts"`
 
+6. **Optional visualization (when user wants flow clarity):**
+```
+Use Skill tool:
+  skill: "flowbit-diagrams-mermaid"
+  args: "Visualize routing/resume flow using current task state.
+         IMPORTANT: refine existing status/context only; do not invent domain details."
+```
+
 ### Step 3: Classify & Route New Task
 
 **For new task descriptions:**
@@ -190,6 +198,14 @@ Use Skill tool:
 - development (92%): `skill: "flowbit-development"` with `args: "Fix login timeout error"`
 - development (88%): `skill: "flowbit-development"` with `args: "Add filtering to user table"`
 - performance (95%): `skill: "flowbit-performance"` with `args: "Optimize slow dashboard queries"`
+
+4. **Optional visualization (when user asks for visual map):**
+```
+Use Skill tool:
+  skill: "flowbit-diagrams-mermaid"
+  args: "Visualize classification -> orchestrator routing for this task.
+         Use only confirmed classification data."
+```
 
 ---
 

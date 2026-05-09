@@ -8,7 +8,7 @@ argument-hint: [--standards-from=PATH]
 
 Initialize `.flowbit/docs/` with intelligent project analysis and meaningful documentation generation based on actual codebase inspection.
 
-**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `flowbit-docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** only for standards-discover (Phase 8, last phase). The Task tool returns control to this skill after completion; the Skill tool does not.
+**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `flowbit-docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** for standards-discover (Phase 8, last phase) and diagrams-mermaid (Phase 6 doc refinement). The Task tool returns control to this skill after completion; the Skill tool does not.
 
 ## Phase Configuration
 
@@ -133,6 +133,21 @@ Fill templates using:
 - Auto-detected project characteristics
 
 Write each file to `.flowbit/docs/project/`.
+
+**Diagram refinement (content-preserving, do NOT replace prose):**
+
+- If Architecture doc is selected and `.flowbit/docs/project/architecture.md` exists:
+  1. Invoke Skill tool: `flowbit-diagrams-mermaid`
+  2. Pass context from analysis + generated architecture content
+  3. Add Mermaid sections that **refine** the document:
+     - `## Visual Architecture Context` (prefer `C4Context` or `C4Container`)
+     - `## Component Communication Flow` (prefer `sequenceDiagram` or `flowchart`)
+  4. Keep existing architecture narrative intact; diagrams must supplement, not replace sections.
+
+- If Tech Stack doc is selected and `.flowbit/docs/project/tech-stack.md` exists:
+  1. Invoke Skill tool: `flowbit-diagrams-mermaid`
+  2. Add one lightweight visual section (e.g., runtime/build dependency flow) only if context is sufficient
+  3. If context is insufficient, keep text-only output and list missing details (no invented dependencies).
 
 ---
 

@@ -57,6 +57,7 @@ Opis:
 - Sciezka dotyczy tylko komendy `/work`.
 - `task-classifier` decyduje, ktory orchestrator uruchomic.
 - Kazdy wynik klasyfikacji prowadzi do jednego z flow: `development`, `performance`, `migration`, `research`, `product-design`.
+- Opcjonalnie `diagrams-mermaid` moze zwizualizowac routing/resume na bazie potwierdzonego stanu.
 - Dalsze zaleznosci tych flow sa opisane w [Delivery orchestrators and shared skills](#delivery-orchestrators-and-shared-skills) oraz [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
@@ -67,12 +68,13 @@ graph TD
   CLASS -- "decyzja: migration task" --> S_MIG["🧠 migration"]
   CLASS -- "decyzja: research task" --> S_RES["🧠 research"]
   CLASS -- "decyzja: product-design task" --> S_PD["🧠 product-design"]
+  CLASS -- "opcjonalnie: visual routing map" --> S_DIAG_WR["🧠 diagrams-mermaid"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
   class WORK cmd;
-  class S_DEV,S_PERF,S_MIG,S_RES,S_PD skill;
+  class S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_DIAG_WR skill;
   class CLASS agent;
 ```
 
@@ -108,17 +110,20 @@ graph TD
 Opis:
 - `init` uruchamia discovery standardow oraz synchronizacje dokumentacji.
 - Zarowno `standards-discover`, jak i `standards-update` koncza w `docs-manager (via docs-operator)`.
+- `init` moze wywolac `diagrams-mermaid`, zeby uszczegolowic wygenerowane dokumenty (np. architecture/tech-stack) bez zastepowania tresci.
 - Ten flow spina setup projektu z utrzymaniem standardow i docs.
 
 ```mermaid
 graph TD
   S_INIT["🧠 init"] -- "etap: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
   S_INIT -- "etap: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
+  S_INIT -- "etap: visual refinement (opcjonalnie)" --> S_DIAG["🧠 diagrams-mermaid"]
   S_STD_DISC -- "etap: docs sync" --> S_DOCS
   S_STD_UPD["🧠 standards-update"] -- "etap: docs update" --> S_DOCS
+  S_DIAG -- "uzupelnia: architecture/tech-stack docs" --> S_DOCS
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD skill;
+  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD,S_DIAG skill;
 ```
 
 <a id="delivery-orchestrators-and-shared-skills"></a>
@@ -126,27 +131,31 @@ graph TD
 
 Opis:
 - `development`, `performance`, `migration` wspoldziela te same trzy capability: `codebase-analyzer`, `implementation-plan-executor`, `implementation-verifier`.
+- Te orchestratory moga wywolywac `diagrams-mermaid` do uszczegolowienia `spec` i `implementation-plan` (diagramy jako dodatek do opisu).
 - `product-design` uzywa wspolnego `codebase-analyzer`.
 - To jest trzon wspolnych zaleznosci wykonawczych; szczegoly agentowe sa w [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
 graph TD
   S_DEV["🧠 development"] -- "faza: analiza kodu" --> S_CODEBASE["🧠 codebase-analyzer"]
+  S_DEV -- "faza: diagram refinement (spec/plan)" --> S_DIAG["🧠 diagrams-mermaid"]
   S_DEV -- "faza: wykonanie planu" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
   S_DEV -- "faza: weryfikacja" --> S_IMPL_VER["🧠 implementation-verifier"]
 
   S_PERF["🧠 performance"] -- "faza: analiza kodu" --> S_CODEBASE
+  S_PERF -- "faza: diagram refinement (spec/plan)" --> S_DIAG
   S_PERF -- "faza: wykonanie planu" --> S_IMPL_EXEC
   S_PERF -- "faza: weryfikacja" --> S_IMPL_VER
 
   S_MIG["🧠 migration"] -- "faza: analiza kodu" --> S_CODEBASE
+  S_MIG -- "faza: diagram refinement (spec/plan)" --> S_DIAG
   S_MIG -- "faza: wykonanie planu" --> S_IMPL_EXEC
   S_MIG -- "faza: weryfikacja" --> S_IMPL_VER
 
   S_PD["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> S_CODEBASE
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD skill;
+  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG skill;
 ```
 
 <a id="orchestrators-to-specialized-agent-families"></a>
@@ -157,6 +166,7 @@ Opis:
 - `A_RESEARCH` obsluguje glowne flow badawcze i wspiera `product-design`.
 - `A_QUALITY` jest uruchamiane przez `implementation-verifier` i review command.
 - `A_OTHER` grupuje narzedzia pomocnicze (analyzery, UI mockup, user docs itp.).
+- `diagrams-mermaid` jest skillowym capability do wizualizacji przeplywow i komunikacji na bazie istniejacego contentu.
 
 ```mermaid
 graph TD
@@ -169,6 +179,7 @@ graph TD
   S_MIG -- "delegacja: planning/execution" --> A_PLAN
 
   S_RES["🧠 research"] -- "delegacja: research pipeline" --> A_RESEARCH["🤖 research-planner / gatherer / synthesizer / brainstormer / designer"]
+  S_RES -- "delegacja: visual refinement (design docs)" --> S_DIAG["🧠 diagrams-mermaid"]
   S_PD["🧠 product-design"] -- "delegacja: mini-research support" --> A_RESEARCH
 
   S_IMPL_VER["🧠 implementation-verifier"] -- "quality gates" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]

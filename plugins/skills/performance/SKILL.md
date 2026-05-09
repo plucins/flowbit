@@ -162,6 +162,11 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 
 **SELF-CHECK**: Did you just invoke the Task tool with `flowbit-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP and invoke the Task tool.
 
+**Part C — Diagram Refinement (Skill, content-preserving)**:
+5. Invoke Skill tool: `flowbit-diagrams-mermaid` to refine `implementation/spec.md`
+6. Add diagrams that clarify bottleneck flows and optimization boundaries without replacing specification text.
+7. If context for a diagram is missing, document gaps and avoid speculative dependencies.
+
 → Pause
 
 ask_user - Display executive summary before asking. Read `implementation/spec.md` and extract: optimization targets, approach chosen, number of changes planned, expected impact. Format as brief overview then "Continue to specification audit?"
@@ -209,6 +214,11 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 **Context to pass**: task_path, task_type="performance", task_description, phase_summaries (specification, bottleneck_analysis, codebase_analysis)
 
 **SELF-CHECK**: Did you just invoke the Task tool with `flowbit-implementation-planner`? Or did you start writing the plan yourself? If the latter, STOP and invoke the Task tool.
+
+**Post-plan diagram refinement (Skill, content-preserving)**:
+- Invoke Skill tool: `flowbit-diagrams-mermaid` for `implementation/implementation-plan.md`
+- Add one compact optimization execution flow (task-group dependency or state flow).
+- Keep plan steps authoritative; diagrams are explanatory additions only.
 
 → Pause
 

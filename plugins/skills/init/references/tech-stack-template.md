@@ -8,6 +8,9 @@ Always generated (required documentation). Fill in all detected technologies, ve
 ## Overview
 This document describes the technology choices and rationale for [PROJECT_NAME].
 
+## Visual Stack Flow
+[Optional Mermaid flow generated via `flowbit-diagrams-mermaid` to show runtime/build/deployment relations. Keep this as supplemental to textual sections.]
+
 ## Languages
 
 ### [Primary Language] ([Version])
