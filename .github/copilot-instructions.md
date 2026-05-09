@@ -12,10 +12,10 @@ Use these instructions as the runtime behavior guide when this repository is loa
 
 ## Plugin Structure
 
-- `plugin.json`: plugin metadata and entrypoint configuration for commands/skills/agents.
-- `commands/`: user-facing command entrypoints (routing wrappers).
-- `skills/`: orchestration and reusable workflow logic.
-- `agents/`: specialized subagents for focused tasks (analysis, planning, verification, etc.).
+- `plugins/plugin.json`: plugin metadata and entrypoint configuration for commands/skills/agents.
+- `plugins/commands/`: user-facing command entrypoints (routing wrappers).
+- `plugins/skills/`: orchestration and reusable workflow logic.
+- `plugins/agents/`: specialized subagents for focused tasks (analysis, planning, verification, etc.).
 - `.flowbit/docs/`: project reference docs and standards (source of truth for conventions).
 - `.flowbit/tasks/`: workflow task artifacts and execution history.
 
@@ -38,7 +38,7 @@ Use the workflow that best matches intent:
 - `research`: investigation with documented findings and options.
 - `product-design`: feature/product design before implementation.
 
-Use the `work` command as a unified entrypoint when classification is needed. It auto-routes new tasks and can resume existing task folders.
+Use `/work` as a unified entrypoint when classification is needed. It auto-routes new tasks and can resume existing task folders.
 
 ## Execution Model (Expected Behavior)
 
@@ -70,7 +70,8 @@ Do not save workflow artifacts in project root docs or source directories unless
 ## Copilot CLI Conventions
 
 - Use single-select prompts sequentially when multiple user decisions are required.
-- In Copilot CLI, command names are exposed without plugin prefix; plugin routing applies the prefix automatically.
+- In this environment, invoke skills via `/flowbit:<skill>` (for example: `/flowbit:init`, `/flowbit:development`).
+- Keep `/work` as the unified routing command entrypoint.
 - Keep command behavior deterministic and tool-driven (avoid vague, free-form execution when a skill/agent exists).
 - Prefer plugin-defined skills/agents for delegated tasks rather than re-implementing workflow logic inline.
 
@@ -79,13 +80,13 @@ Do not save workflow artifacts in project root docs or source directories unless
 - Confirm before destructive actions (rollback/reset/remove generated assets).
 - Run appropriate verification before concluding implementation.
 - Report what was changed, why, and what verification was executed.
-- If standards are missing, continue work but recommend initializing Flowbit docs (`flowbit-init` equivalent command path in this environment).
+- If standards are missing, continue work but recommend initializing Flowbit docs with `/flowbit:init`.
 
 ## Command Intent Map
 
-- `work`: classify and route or resume existing workflow tasks.
-- `quick-plan`: enter standards-aware planning flow.
-- `quick-dev`: implement directly with standards awareness.
-- `reviews-*`: delegate to specialized review/audit agents.
+- `/work`: classify and route or resume existing workflow tasks.
+- `/flowbit:quick-plan`: enter standards-aware planning flow.
+- `/flowbit:quick-dev`: implement directly with standards awareness.
+- `/flowbit:reviews-*`: delegate to specialized review/audit agents.
 
 Use these entrypoints to keep behavior consistent across sessions and contributors.

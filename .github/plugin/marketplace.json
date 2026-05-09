@@ -4,15 +4,15 @@
     "name": "plucins"
   },
   "metadata": {
-    "description": "Marketplace for the Flowbit SDLC workflow plugin",
+    "description": "Marketplace for the Flowbit GitHub Copilot CLI plugin",
     "version": "1.0.0"
   },
   "plugins": [
     {
       "name": "flowbit",
-      "description": "AI SDLC workflows for GitHub Copilot CLI projects",
-      "version": "1.1.0",
-      "source": "."
+      "description": "Structured SDLC workflows and agents for GitHub Copilot CLI",
+      "version": "1.2.0",
+      "source": "plugins"
     }
   ]
 }

@@ -69,11 +69,11 @@ Wait for completion. Store analysis results for use in Phases 3 and 6.
 - "Vision" — Project vision, goals, and purpose
 - "Roadmap" — Development roadmap and planned features
 - "Tech Stack" — Technology choices and rationale (ALWAYS selected, required)
-- "Architecture" — System architecture and design patterns (optional)
+- "Architecture" — System architecture and design patterns (ALWAYS selected, required)
 
 Smart defaults based on `projectArchitectureType`:
 - Standard/Frontend-only/Backend-only: All selected
-- Monorepo/Umbrella: Only "Tech Stack" selected
+- Monorepo/Umbrella: "Tech Stack" and "Architecture" selected
 
 Store selections for Phase 6.
 
@@ -125,7 +125,7 @@ For each selected doc type, read the corresponding reference template:
 - Vision selected → Read `references/vision-templates.md`, select template by project type (new/existing/legacy)
 - Roadmap selected → Read `references/roadmap-templates.md`, select template by project type
 - Tech Stack (always) → Read `references/tech-stack-template.md`
-- Architecture selected → Read `references/architecture-template.md`
+- Architecture (always) → Read `references/architecture-template.md`
 
 Fill templates using:
 - Analysis report data (tech stack, age, structure)
@@ -147,6 +147,7 @@ Wait for docs-operator to complete, then immediately continue with Step 2.
 **Step 2**: Run validation checks:
 - Verify INDEX.md exists
 - Verify tech-stack.md exists (required)
+- Verify architecture.md exists (required)
 - Verify selected docs exist
 - Verify selected standards directories exist
 - Verify .github/copilot-instructions.md integration

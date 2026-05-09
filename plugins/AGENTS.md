@@ -138,7 +138,7 @@ Core workflow skills:
 - `implementation-verifier`
 - `standards-discover`
 - `docs-manager` (internal engine used by `docs-operator`)
-- `flowbit-init`
+- `init`
 - `standards-update`
 - `quick-bugfix`
 
@@ -156,32 +156,32 @@ See `skills/*/SKILL.md` for details.
 
 Setup/standards:
 
-- `/flowbit-init`
-- `/flowbit-standards-update`
-- `/flowbit-standards-discover`
+- `/flowbit:init`
+- `/flowbit:standards-update`
+- `/flowbit:standards-discover`
 
 Workflow:
 
 - `/work`
-- `/flowbit-development`
-- `/flowbit-performance`
-- `/flowbit-migration`
-- `/flowbit-research`
-- `/flowbit-product-design`
+- `/flowbit:development`
+- `/flowbit:performance`
+- `/flowbit:migration`
+- `/flowbit:research`
+- `/flowbit:product-design`
 
 Reviews/audits:
 
-- `/flowbit-reviews-code`
-- `/flowbit-reviews-pragmatic`
-- `/flowbit-reviews-spec-audit`
-- `/flowbit-reviews-reality-check`
-- `/flowbit-reviews-production-readiness`
+- `/flowbit:reviews-code`
+- `/flowbit:reviews-pragmatic`
+- `/flowbit:reviews-spec-audit`
+- `/flowbit:reviews-reality-check`
+- `/flowbit:reviews-production-readiness`
 
 Quick commands:
 
-- `/flowbit-quick-plan`
-- `/flowbit-quick-dev`
-- `/flowbit-quick-bugfix`
+- `/flowbit:quick-plan`
+- `/flowbit:quick-dev`
+- `/flowbit:quick-bugfix`
 
 ## Available Agents
 

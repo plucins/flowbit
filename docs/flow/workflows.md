@@ -1,0 +1,186 @@
+# Workflows
+
+Ten dokument pokazuje workflow jako osobne diagramy oraz opisuje zaleznosci miedzy nimi.
+
+## Nawigacja
+
+- [Work routing](#work-routing)
+- [Init + standards](#init-standards)
+- [Development](#development)
+- [Performance](#performance)
+- [Migration](#migration)
+- [Research](#research)
+- [Product design](#product-design)
+- [Shared internals: codebase-analyzer](#shared-codebase-analyzer)
+- [Shared internals: implementation executor](#shared-implementation-executor)
+- [Shared internals: implementation verifier](#shared-implementation-verifier)
+
+<a id="work-routing"></a>
+## Work routing
+
+Opis:
+- Wejscie przez komende `/work` trafia do `task-classifier`.
+- `task-classifier` wybiera jedna z 5 sciezek: [Development](#development), [Performance](#performance), [Migration](#migration), [Research](#research), [Product design](#product-design).
+- Ten diagram jest punktem startowym calego flow.
+
+```mermaid
+graph TD
+  WORK["/work"] -- "komenda: /work -> routing" --> CLASS["task-classifier"]
+  CLASS -- "decyzja: typ zadania" --> DEV["development"]
+  CLASS -- "decyzja: typ zadania" --> PERF["performance"]
+  CLASS -- "decyzja: typ zadania" --> MIG["migration"]
+  CLASS -- "decyzja: typ zadania" --> RES["research"]
+  CLASS -- "decyzja: typ zadania" --> PD["product-design"]
+```
+
+<a id="init-standards"></a>
+## Init + standards
+
+Opis:
+- Komenda `/flowbit:init` uruchamia `init skill`.
+- `init skill` odpala analize projektu i odkrywanie standardow.
+- `docs-operator` agreguje standardy i aktualizuje [docs-manager](#shared-codebase-analyzer) (powiazanie przez wspolne wewnetrzne capability opisu i raportowania).
+- Komenda `/flowbit:standards-update` pozwala dograc standardy poza init.
+
+```mermaid
+graph TD
+  INIT_CMD["/flowbit:init"] -- "komenda: bootstrap" --> INIT["init skill"]
+  INIT -- "etap: discovery" --> PROJ["project-analyzer"]
+  INIT -- "etap: standards discovery" --> STD_DISC["standards-discover skill"]
+  INIT -- "etap: docs sync" --> DOCS_OP["docs-operator"]
+  STD_DISC -- "wejscie: zebrane standardy" --> DOCS_OP
+  STD_UPD["/flowbit:standards-update"] -- "komenda: update standards" --> DOCS_OP
+  DOCS_OP -- "etap: utrwalenie dokumentacji" --> DOCS["docs-manager (preloaded)"]
+```
+
+<a id="development"></a>
+## Development
+
+Opis:
+- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `development`.
+- Wykorzystuje wspolne komponenty z [Shared internals: codebase-analyzer](#shared-codebase-analyzer), [Shared internals: implementation executor](#shared-implementation-executor) i [Shared internals: implementation verifier](#shared-implementation-verifier).
+- Opcjonalne galezie (`ui-mockup`, `e2e-test-verifier`, `user-docs-generator`) sa zalezne od typu zmian i kryteriow akceptacji.
+
+```mermaid
+graph TD
+  DEV2["development"] -- "faza: analiza kodu" --> CODEBASE_D["codebase-analyzer"]
+  DEV2 -- "faza: analiza brakow" --> GAP_D["gap-analyzer"]
+  DEV2 -- "faza: specyfikacja" --> SPEC_D["specification-creator"]
+  DEV2 -- "faza: quality gate (warunkowo)" --> AUD_D["spec-auditor (conditional)"]
+  DEV2 -- "faza: plan implementacji" --> PLAN_D["implementation-planner"]
+  DEV2 -- "faza: wykonanie planu" --> EXEC_D["implementation-plan-executor"]
+  DEV2 -- "faza: weryfikacja" --> VER_D["implementation-verifier"]
+  DEV2 -- "faza: UI (jesli ui_heavy)" --> UI_D["ui-mockup (if ui_heavy)"]
+  DEV2 -- "faza: testy E2E (opcjonalnie)" --> E2E_D["e2e-test-verifier (optional)"]
+  DEV2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_D["user-docs-generator (optional)"]
+```
+
+<a id="performance"></a>
+## Performance
+
+Opis:
+- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `performance`.
+- Rozszerza flow o `bottleneck-analyzer`, ale dalej korzysta z [Shared internals: implementation executor](#shared-implementation-executor) i [Shared internals: implementation verifier](#shared-implementation-verifier).
+
+```mermaid
+graph TD
+  PERF2["performance"] -- "faza: analiza kodu" --> CODEBASE_P["codebase-analyzer"]
+  PERF2 -- "faza: analiza bottleneckow" --> BOT_P["bottleneck-analyzer"]
+  PERF2 -- "faza: specyfikacja optymalizacji" --> SPEC_P["specification-creator"]
+  PERF2 -- "faza: quality gate (warunkowo)" --> AUD_P["spec-auditor (conditional)"]
+  PERF2 -- "faza: plan implementacji" --> PLAN_P["implementation-planner"]
+  PERF2 -- "faza: wykonanie planu" --> EXEC_P["implementation-plan-executor"]
+  PERF2 -- "faza: weryfikacja efektu" --> VER_P["implementation-verifier"]
+```
+
+<a id="migration"></a>
+## Migration
+
+Opis:
+- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `migration`.
+- Podobna do [Development](#development), ale nacisk jest na domkniecie migracji i ewentualny output dokumentacyjny dla usera.
+
+```mermaid
+graph TD
+  MIG2["migration"] -- "faza: analiza kodu" --> CODEBASE_M["codebase-analyzer"]
+  MIG2 -- "faza: analiza brakow" --> GAP_M["gap-analyzer"]
+  MIG2 -- "faza: specyfikacja migracji" --> SPEC_M["specification-creator"]
+  MIG2 -- "faza: plan implementacji" --> PLAN_M["implementation-planner"]
+  MIG2 -- "faza: wykonanie planu" --> EXEC_M["implementation-plan-executor"]
+  MIG2 -- "faza: weryfikacja migracji" --> VER_M["implementation-verifier"]
+  MIG2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_M["user-docs-generator (optional)"]
+```
+
+<a id="research"></a>
+## Research
+
+Opis:
+- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `research`.
+- To flow badawcze, ktore moze zasilic [Product design](#product-design) lub [Development](#development) wynikami.
+
+```mermaid
+graph TD
+  RES2["research"] -- "faza: plan badania" --> RPLAN["research-planner"]
+  RES2 -- "faza: zbieranie danych (rownolegle)" --> GATHER_R["information-gatherer (parallel)"]
+  RES2 -- "faza: synteza" --> SYN_R["research-synthesizer"]
+  RES2 -- "faza: ideacja (opcjonalnie)" --> BRAIN_R["solution-brainstormer (optional)"]
+  RES2 -- "faza: projekt rozwiazania (opcjonalnie)" --> DESIGN_R["solution-designer (optional)"]
+```
+
+<a id="product-design"></a>
+## Product design
+
+Opis:
+- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `product-design`.
+- Lacznik miedzy mini-research a konceptem UI; moze konsumowac wyniki z [Research](#research).
+- Korzysta tez z elementow analizy kodu jak w [Shared internals: codebase-analyzer](#shared-codebase-analyzer).
+
+```mermaid
+graph TD
+  PD2["product-design"] -- "faza: analiza kodu (enhancement)" --> CODEBASE_PD["codebase-analyzer (enhancement)"]
+  PD2 -- "faza: mini-research" --> GATHER_PD["information-gatherer (mini-research)"]
+  PD2 -- "faza: ideacja rozwiazania" --> BRAIN_PD["solution-brainstormer"]
+  PD2 -- "faza: fallback UI-focused" --> UI_PD["ui-mockup-generator (UI-focused fallback)"]
+```
+
+<a id="shared-codebase-analyzer"></a>
+## Shared internals: codebase-analyzer
+
+Opis:
+- Ten wewnetrzny flow jest wspolny dla [Development](#development), [Performance](#performance), [Migration](#migration) i [Product design](#product-design).
+- `Explore agents` realizuja etap eksploracji kodu, a `codebase-analysis-reporter` domyka raport.
+
+```mermaid
+graph TD
+  CODEBASE_S["codebase-analyzer"] -- "faza: eksploracja (parallel)" --> EXPLORE["Explore agents (parallel)"]
+  CODEBASE_S -- "faza: raport" --> REPORT["codebase-analysis-reporter"]
+```
+
+<a id="shared-implementation-executor"></a>
+## Shared internals: implementation executor
+
+Opis:
+- Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
+- `implementation-plan-executor` deleguje wykonanie do `task-group-implementer`.
+
+```mermaid
+graph TD
+  EXEC_S["implementation-plan-executor"] -- "faza: realizacja task groups" --> TG["task-group-implementer"]
+```
+
+<a id="shared-implementation-verifier"></a>
+## Shared internals: implementation verifier
+
+Opis:
+- Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
+- `implementation-verifier` uruchamia wiele quality gates i raportuje gotowosc produkcyjna.
+
+```mermaid
+graph TD
+  VER_S["implementation-verifier"] -- "check: completeness" --> COMP["implementation-completeness-checker"]
+  VER_S -- "check: test suite" --> TEST["test-suite-runner"]
+  VER_S -- "check: code review" --> REVIEW["code-reviewer"]
+  VER_S -- "check: pragmatic quality" --> PRAG["code-quality-pragmatist"]
+  VER_S -- "check: prod readiness" --> PROD["production-readiness-checker"]
+  VER_S -- "check: reality alignment" --> REAL["reality-assessor"]
+```
