@@ -11,6 +11,7 @@ Ten dokument pokazuje workflow jako osobne diagramy oraz opisuje zaleznosci mied
 - [Migration](#migration)
 - [Research](#research)
 - [Product design](#product-design)
+- [Incident](#incident)
 - [Shared internals: codebase-analyzer](#shared-codebase-analyzer)
 - [Shared internals: implementation executor](#shared-implementation-executor)
 - [Shared internals: implementation verifier](#shared-implementation-verifier)
@@ -21,6 +22,7 @@ Ten dokument pokazuje workflow jako osobne diagramy oraz opisuje zaleznosci mied
 Opis:
 - Wejscie przez komende `/work` trafia do `task-classifier`.
 - `task-classifier` wybiera jedna z 5 sciezek: [Development](#development), [Performance](#performance), [Migration](#migration), [Research](#research), [Product design](#product-design).
+- `incident` lane jest uruchamiany bezposrednio przez `/flowbit:incident` (na tym etapie bez zmian routingu `/work`).
 - Opcjonalnie `diagrams-mermaid` moze wygenerowac mape routingu/resume dla biezacego zadania.
 - Ten diagram jest punktem startowym calego flow.
 
@@ -195,6 +197,33 @@ graph TD
   class GATHER_PD,BRAIN_PD,UI_PD agent;
 ```
 
+<a id="incident"></a>
+## Incident
+
+Opis:
+- Sciezka aktywowana bezposrednio przez komende `/flowbit:incident`.
+- To flow operacyjne: intake, triage, evidence, mitigation, verification i postmortem.
+- Dla `code_fix` reuzywa `implementation-planner` oraz `implementation-plan-executor`.
+- Przed uruchomieniem executora obowiazuje twardy gate `ask_user` (approve / revise / stop).
+
+```mermaid
+graph TD
+  INC2["🧠 incident"] -- "faza: intake + severity" --> INTAKE_I["🧠 incident-intake"]
+  INC2 -- "faza: triage + containment" --> TRIAGE_I["🧠 incident-triage"]
+  INC2 -- "faza: evidence + timeline" --> EVID_I["🧠 incident-evidence"]
+  INC2 -- "faza: root cause + strategy" --> MITSEL_I["🤖 mitigation-selector"]
+  INC2 -- "faza: planning (when code_fix)" --> PLAN_I["🤖 implementation-planner (conditional)"]
+  PLAN_I -- "gate: ask_user approval (mandatory)" --> EXEC_I["🧠 implementation-plan-executor (conditional)"]
+  INC2 -- "faza: stabilization verification" --> VER_I["🧠 implementation-verifier"]
+  INC2 -- "faza: closure + followups" --> POST_I["🧠 incident-postmortem"]
+  POST_I -- "delegacja: postmortem draft" --> PM_A["🤖 postmortem-author"]
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class INC2,INTAKE_I,TRIAGE_I,EVID_I,EXEC_I,VER_I,POST_I skill;
+  class MITSEL_I,PLAN_I,PM_A agent;
+```
+
 <a id="shared-codebase-analyzer"></a>
 ## Shared internals: codebase-analyzer
 
@@ -218,6 +247,7 @@ graph TD
 
 Opis:
 - Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
+- W [Incident](#incident) jest uruchamiany warunkowo, gdy mitigation path wymaga `code_fix`.
 - `implementation-plan-executor` deleguje wykonanie do `task-group-implementer`.
 
 ```mermaid
@@ -235,6 +265,7 @@ graph TD
 
 Opis:
 - Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
+- W [Incident](#incident) sluzy jako stabilizacyjny quality gate po wykonaniu mitigacji.
 - `implementation-verifier` uruchamia wiele quality gates i raportuje gotowosc produkcyjna.
 
 ```mermaid

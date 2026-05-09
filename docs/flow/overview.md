@@ -11,6 +11,7 @@ Ten dokument rozbija overview na osobne, czytelne diagramy oraz opisuje zaleznos
 - [Delivery orchestrators and shared skills](#delivery-orchestrators-and-shared-skills)
 - [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families)
 - [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings)
+- [Incident response lane](#incident-response-lane)
 
 <a id="entry-points"></a>
 ## Entry points
@@ -20,6 +21,7 @@ Opis:
 - `/work` przechodzi przez [Work routing](#work-routing).
 - Komendy skillowe `/flowbit:*` mapuja sie bezposrednio do orchestratorow w [Direct command to orchestrator mapping](#direct-command-to-orchestrator-mapping).
 - Komendy review (`/flowbit:reviews-*`) i quick bugfix (`/flowbit:quick-bugfix`) maja dodatkowe powiazania opisane w [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings).
+- `/flowbit:incident` uruchamia dedykowany lane operacyjny opisany w [Incident response lane](#incident-response-lane).
 
 ```mermaid
 graph LR
@@ -36,6 +38,7 @@ graph LR
     DEV["⚡ /flowbit:development"]
     MIG["⚡ /flowbit:migration"]
     PD["⚡ /flowbit:product-design"]
+    INC["⚡ /flowbit:incident"]
   end
 
   subgraph C3[" "]
@@ -47,7 +50,7 @@ graph LR
   end
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
-  class WORK,INIT,DEV,PERF,MIG,RES,PD,STD_DISC,STD_UPD,REV,QBUG cmd;
+  class WORK,INIT,DEV,PERF,MIG,RES,PD,INC,STD_DISC,STD_UPD,REV,QBUG cmd;
 ```
 
 <a id="work-routing"></a>
@@ -84,6 +87,7 @@ graph TD
 Opis:
 - Te komendy omijaja klasyfikator i uruchamiaja orchestratory bezposrednio.
 - `/flowbit:quick-bugfix` uruchamia `quick-bugfix` jako osobny, skrocony flow naprawczy.
+- `/flowbit:incident` uruchamia `incident` jako dedykowany flow response + postmortem.
 - Zaleznosci `init` i standardow sa rozszerzone w [Init and standards flow](#init-and-standards-flow).
 
 ```mermaid
@@ -94,14 +98,15 @@ graph TD
   MIG["⚡ /flowbit:migration"] -- "komenda: direct invoke skill" --> S_MIG["🧠 migration"]
   RES["⚡ /flowbit:research"] -- "komenda: direct invoke skill" --> S_RES["🧠 research"]
   PD["⚡ /flowbit:product-design"] -- "komenda: direct invoke skill" --> S_PD["🧠 product-design"]
+  INC["⚡ /flowbit:incident"] -- "komenda: direct invoke skill" --> S_INC["🧠 incident"]
   STD_DISC["⚡ /flowbit:standards-discover"] -- "komenda: direct invoke skill" --> S_STD_DISC["🧠 standards-discover"]
   STD_UPD["⚡ /flowbit:standards-update"] -- "komenda: direct invoke skill" --> S_STD_UPD["🧠 standards-update"]
   QBUG["⚡ /flowbit:quick-bugfix"] -- "komenda: shortcut flow" --> S_QBUG["🧠 quick-bugfix"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class INIT,DEV,PERF,MIG,RES,PD,STD_DISC,STD_UPD,QBUG cmd;
-  class S_INIT,S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_STD_DISC,S_STD_UPD,S_QBUG skill;
+  class INIT,DEV,PERF,MIG,RES,PD,INC,STD_DISC,STD_UPD,QBUG cmd;
+  class S_INIT,S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_INC,S_STD_DISC,S_STD_UPD,S_QBUG skill;
 ```
 
 <a id="init-and-standards-flow"></a>
@@ -133,6 +138,7 @@ Opis:
 - `development`, `performance`, `migration` wspoldziela te same trzy capability: `codebase-analyzer`, `implementation-plan-executor`, `implementation-verifier`.
 - Te orchestratory moga wywolywac `diagrams-mermaid` do uszczegolowienia `spec` i `implementation-plan` (diagramy jako dodatek do opisu).
 - `product-design` uzywa wspolnego `codebase-analyzer`.
+- `incident` korzysta z lane operacyjnego (`incident-intake`, `incident-triage`, `incident-evidence`, `incident-postmortem`) i moze warunkowo wejsc w lane code-fix (`implementation-plan-executor`, `implementation-verifier`).
 - To jest trzon wspolnych zaleznosci wykonawczych; szczegoly agentowe sa w [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
@@ -154,8 +160,15 @@ graph TD
 
   S_PD["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> S_CODEBASE
 
+  S_INC["🧠 incident"] -- "faza: intake" --> S_INC_INTAKE["🧠 incident-intake"]
+  S_INC -- "faza: triage" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "faza: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
+  S_INC -- "faza: mitigation execution (conditional code-fix)" --> S_IMPL_EXEC
+  S_INC -- "faza: stabilization verification" --> S_IMPL_VER
+  S_INC -- "faza: closure + followups" --> S_INC_POST["🧠 incident-postmortem"]
+
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG skill;
+  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG,S_INC,S_INC_INTAKE,S_INC_TRIAGE,S_INC_EVID,S_INC_POST skill;
 ```
 
 <a id="orchestrators-to-specialized-agent-families"></a>
@@ -165,6 +178,7 @@ Opis:
 - `A_SPEC` i `A_PLAN` sa rodzina agentow dla flow wykonawczych (`development`, `performance`, `migration`).
 - `A_RESEARCH` obsluguje glowne flow badawcze i wspiera `product-design`.
 - `A_QUALITY` jest uruchamiane przez `implementation-verifier` i review command.
+- `A_INCIDENT` grupuje agentow operacyjnych dla lane incident.
 - `A_OTHER` grupuje narzedzia pomocnicze (analyzery, UI mockup, user docs itp.).
 - `diagrams-mermaid` jest skillowym capability do wizualizacji przeplywow i komunikacji na bazie istniejacego contentu.
 
@@ -184,15 +198,19 @@ graph TD
 
   S_IMPL_VER["🧠 implementation-verifier"] -- "quality gates" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
 
+  S_INC["🧠 incident"] -- "delegacja: triage + blast radius" --> A_INCIDENT["🤖 incident-triage / blast-radius-analyzer / mitigation-selector / timeline-correlator / postmortem-author"]
+  S_INC -- "delegacja: code-fix planning/execution (conditional)" --> A_PLAN
+
   S_INIT["🧠 init"] -- "delegacja: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
   S_DEV -- "delegacja: helper analyzers" --> A_OTHER
   S_PERF -- "delegacja: helper analyzers" --> A_OTHER
   S_MIG -- "delegacja: helper analyzers" --> A_OTHER
+  S_INC -- "delegacja: evidence gathering support" --> A_OTHER
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
-  class S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_IMPL_VER,S_INIT skill;
-  class A_SPEC,A_PLAN,A_RESEARCH,A_QUALITY,A_OTHER agent;
+  class S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_IMPL_VER,S_INIT,S_INC skill;
+  class A_SPEC,A_PLAN,A_RESEARCH,A_QUALITY,A_OTHER,A_INCIDENT agent;
 ```
 
 <a id="reviews-and-quick-bugfix-bindings"></a>
@@ -214,4 +232,32 @@ graph TD
   class REV,QBUG cmd;
   class S_QBUG skill;
   class A_QUALITY agent;
+```
+
+<a id="incident-response-lane"></a>
+## Incident response lane
+
+Opis:
+- `/flowbit:incident` uruchamia lane operacyjny poza `/work` (na tym etapie bez zmian klasyfikatora).
+- Flow jest state-driven: intake -> triage -> evidence -> mitigation -> verification -> postmortem.
+- Dla sciezki `code_fix` wystepuje twardy gate: `implementation-planner` -> `ask_user` approval -> `implementation-plan-executor`.
+
+```mermaid
+graph TD
+  INC["⚡ /flowbit:incident"] -- "komenda: direct invoke skill" --> S_INC["🧠 incident"]
+  S_INC -- "faza: intake + severity" --> S_INC_INTAKE["🧠 incident-intake"]
+  S_INC -- "faza: triage + containment" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "faza: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
+  S_INC -- "faza: mitigation strategy" --> A_MIT["🤖 mitigation-selector"]
+  A_MIT -- "code-fix path" --> A_PLAN["🤖 implementation-planner"]
+  A_PLAN -- "gate: ask_user approval (mandatory)" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
+  S_INC -- "faza: stabilization checks" --> S_IMPL_VER["🧠 implementation-verifier"]
+  S_INC -- "faza: closure + postmortem" --> S_INC_POST["🧠 incident-postmortem"]
+
+  classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class INC cmd;
+  class S_INC,S_INC_INTAKE,S_INC_TRIAGE,S_INC_EVID,S_IMPL_EXEC,S_IMPL_VER,S_INC_POST skill;
+  class A_MIT,A_PLAN agent;
 ```

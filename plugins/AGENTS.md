@@ -28,7 +28,7 @@ All workflows follow this pattern when failures occur:
 
 ## Workflow Types Supported
 
-This plugin supports 5 workflow types routed to specialized orchestrators:
+This plugin supports 6 workflow types routed to specialized orchestrators:
 
 | Workflow Type | Purpose | Orchestrator | Classification Keywords |
 |---------------|---------|-------------|------------------------|
@@ -37,6 +37,7 @@ This plugin supports 5 workflow types routed to specialized orchestrators:
 | **Migration** | Move tech/patterns | migration | "migrate", "move from X to Y", "upgrade" |
 | **Research** | Investigate and document findings | research | "research", "investigate", "explore options" |
 | **Product Design** | Design features/products before building | product-design | "design", "product design", "feature design", "wireframe", "prototype" |
+| **Incident** | Respond to production incidents and outages | incident | "incident", "outage", "sev", "production down", "5xx spike", "degraded" |
 
 ### Design Principles
 
@@ -80,6 +81,7 @@ This plugin supports 5 workflow types routed to specialized orchestrators:
 │   └── standards/
 └── tasks/
     ├── development/
+    ├── incidents/
     ├── performance/
     ├── migrations/
     ├── research/
@@ -102,7 +104,7 @@ YYYY-MM-DD-task-name/
 
 ### Naming Conventions
 
-- Workflow directories: `development/`, `performance/`, `migrations/`, `research/`, `product-design/`
+- Workflow directories: `development/`, `incidents/`, `performance/`, `migrations/`, `research/`, `product-design/`
 - Task directories: `YYYY-MM-DD-task-name`
 
 ## Plugin Documentation Principles
@@ -141,6 +143,10 @@ Core workflow skills:
 - `init`
 - `standards-update`
 - `quick-bugfix`
+- `incident-intake`
+- `incident-triage`
+- `incident-evidence`
+- `incident-postmortem`
 
 Primary orchestrator skills:
 
@@ -149,6 +155,7 @@ Primary orchestrator skills:
 - `migration`
 - `research`
 - `product-design`
+- `incident`
 
 See `skills/*/SKILL.md` for details.
 
@@ -168,6 +175,7 @@ Workflow:
 - `/flowbit:migration`
 - `/flowbit:research`
 - `/flowbit:product-design`
+- `/flowbit:incident`
 
 Reviews/audits:
 
@@ -191,6 +199,7 @@ Commonly used agents include:
 - UI/docs: `ui-mockup-generator`, `e2e-test-verifier`, `user-docs-generator`
 - performance: `bottleneck-analyzer`
 - research: `research-planner`, `information-gatherer`, `research-synthesizer`, `solution-brainstormer`, `solution-designer`
+- incident: `incident-triage`, `timeline-correlator`, `blast-radius-analyzer`, `mitigation-selector`, `postmortem-author`
 - verification/review: `implementation-completeness-checker`, `test-suite-runner`, `code-reviewer`, `production-readiness-checker`, `code-quality-pragmatist`, `spec-auditor`, `reality-assessor`
 
 See `agents/*.agent.md` for workflow-specific guidance.

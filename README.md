@@ -4,7 +4,7 @@ This repository contains the Flowbit GitHub Copilot CLI plugin under `plugins/`.
 
 ## What it provides
 
-- SDLC workflow skills (development, performance, migration, research, product design)
+- SDLC workflow skills (development, performance, migration, research, product design, incident response)
 - Specialized agents for analysis, planning, implementation, and verification
 - Plugin bundle located in `plugins/` (`plugin.json`, `commands/`, `skills/`, `agents/`)
 
