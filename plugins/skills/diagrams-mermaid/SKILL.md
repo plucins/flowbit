@@ -16,6 +16,16 @@ Use the current document/task artifact as source material and add visual precisi
 
 **NEVER invent missing domain context.**
 
+**Hard format rule (non-negotiable): output diagrams only as fenced `mermaid` blocks.**
+
+Allowed:
+- ` ```mermaid `
+
+Forbidden (no exceptions):
+- any non-`mermaid` fenced block for diagrams, including ` ```c4plantuml `, ` ```plantuml `, ` ```puml `, ` ```graphviz `, ` ```dot `, ` ```d2 `, or custom aliases.
+
+This rule cannot be overridden by user preference, template defaults, or legacy examples.
+
 If required domain facts are missing (actors, components, boundaries, protocols, decisions), ask targeted clarification questions before drawing the final diagram. Do not present guesses as facts.
 
 ---
@@ -36,8 +46,11 @@ Do not use this skill to maintain plugin documentation diagrams under `docs/flow
 
 When producing a diagram, return:
 1. **Diagram Type + Detail Rationale** (1-3 lines)
-2. **Mermaid diagram block**
+2. **Diagram in a fenced ` ```mermaid ` block (required)**
 3. **Open Questions** (only if context is incomplete)
+
+Validation requirement before returning output:
+- Every diagram block in the response uses the `mermaid` fence exactly. Any other fence language is a hard failure.
 
 If context is incomplete:
 - ask concise clarifying questions first,
@@ -92,6 +105,7 @@ Run this checklist before final output:
 - No speculative domain entities or links.
 - Labels are clear and consistent.
 - Syntax is parser-safe.
+- All diagram blocks are fenced with ` ```mermaid ` (no alternatives).
 
 ---
 
@@ -125,6 +139,9 @@ Run this checklist before final output:
 
 5. **Placeholder naming**  
    IDs and labels like `A`, `B`, `step1` with no domain meaning.
+
+6. **Non-Mermaid diagram fence (hard failure)**  
+   Returning diagrams in ` ```c4plantuml `, ` ```plantuml `, or any other non-`mermaid` fenced format.
 
 When any anti-pattern appears, stop and refactor the output before returning it.
 

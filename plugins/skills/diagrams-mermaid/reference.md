@@ -2,6 +2,10 @@
 
 Quick reference for selecting and writing diagrams in planning workflows.
 
+Hard rule for output artifacts:
+- Every diagram must be emitted only in fenced ` ```mermaid ` blocks.
+- Any other fenced diagram format (for example ` ```c4plantuml ` or ` ```plantuml `) is not allowed.
+
 ## Quick Type Selector
 
 ```mermaid
@@ -101,6 +105,9 @@ C4Container
 
 5. **Sequence misuse**  
    Interaction diagram without meaningful order/branches.
+
+6. **Non-Mermaid fenced output (hard failure)**  
+   Emitting any diagram in a non-`mermaid` fenced block.
 
 ## "Bad -> Better" Examples
 
