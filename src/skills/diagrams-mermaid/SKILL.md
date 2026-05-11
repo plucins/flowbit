@@ -1,7 +1,6 @@
 ---
 name: diagrams-mermaid
-description: Creates Mermaid diagrams for planning flows, component communication, and architecture views with adaptive detail selection (including C4 levels). Use when the user asks for a workflow, interaction, or architecture visualization from provided task context.
-argument-hint: "[diagram intent or task context]"
+description: Creates Mermaid diagrams for planning flows, component communication, and architecture views with adaptive detail selection (including C4 levels). This skill should be used when the user asks for a workflow, interaction, or architecture visualization from provided task context.
 ---
 
 # Mermaid Diagram Builder
@@ -10,7 +9,7 @@ Generate Mermaid diagrams from task context. Focus on visual structure and commu
 
 ## 🚨 Core Rules
 
-1. **Read `reference.md`** (located alongside this file) before generating any diagram.
+1. **Read `references/reference.md`** (located in the `references/` subdirectory of this skill) before generating any diagram.
 2. **Refine, don't replace** — use the current document or task artifact as source material; add visual precision on top of it and keep required narrative sections intact.
 3. **Never invent domain context** — if required facts are missing (actors, components, boundaries, protocols, decisions), ask targeted clarification questions before drawing the final diagram.
 4. **Output diagrams only as fenced `mermaid` blocks** (non-negotiable):
