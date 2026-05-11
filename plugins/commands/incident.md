@@ -36,4 +36,4 @@ Use this command when production behavior is degraded, unavailable, or risky eno
 
 - This command is optimized for active production incidents and urgent service degradation.
 - For small, well-scoped code issues without incident process overhead, use `/flowbit:quick-bugfix`.
-- For planned feature work, use `/work` or `/flowbit:development`.
+- For planned feature work, use `/flowbit:work` or `/flowbit:development`.

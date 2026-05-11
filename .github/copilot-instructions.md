@@ -38,7 +38,7 @@ Use the workflow that best matches intent:
 - `research`: investigation with documented findings and options.
 - `product-design`: feature/product design before implementation.
 
-Use `/work` as a unified entrypoint when classification is needed. It auto-routes new tasks and can resume existing task folders.
+Use `/flowbit:work` as a unified entrypoint when classification is needed. It auto-routes new tasks and can resume existing task folders.
 
 ## Execution Model (Expected Behavior)
 
@@ -71,7 +71,7 @@ Do not save workflow artifacts in project root docs or source directories unless
 
 - Use single-select prompts sequentially when multiple user decisions are required.
 - In this environment, invoke skills via `/flowbit:<skill>` (for example: `/flowbit:init`, `/flowbit:development`).
-- Keep `/work` as the unified routing command entrypoint.
+- Keep `/flowbit:work` as the unified routing command entrypoint.
 - Keep command behavior deterministic and tool-driven (avoid vague, free-form execution when a skill/agent exists).
 - Prefer plugin-defined skills/agents for delegated tasks rather than re-implementing workflow logic inline.
 
@@ -84,7 +84,7 @@ Do not save workflow artifacts in project root docs or source directories unless
 
 ## Command Intent Map
 
-- `/work`: classify and route or resume existing workflow tasks.
+- `/flowbit:work`: classify and route or resume existing workflow tasks.
 - `/flowbit:quick-plan`: enter standards-aware planning flow.
 - `/flowbit:quick-dev`: implement directly with standards awareness.
 - `/flowbit:reviews-*`: delegate to specialized review/audit agents.

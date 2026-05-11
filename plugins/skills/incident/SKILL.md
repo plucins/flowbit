@@ -44,7 +44,7 @@ Use for:
 
 Do not use for:
 
-- routine feature implementation without active incident pressure (use `/work` or `/flowbit:development`),
+- routine feature implementation without active incident pressure (use `/flowbit:work` or `/flowbit:development`),
 - small local bug fixes with no incident workflow needs (use `/flowbit:quick-bugfix`).
 
 ---

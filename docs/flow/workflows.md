@@ -1,8 +1,8 @@
 # Workflows
 
-Ten dokument pokazuje workflow jako osobne diagramy oraz opisuje zaleznosci miedzy nimi.
+This document shows each workflow as a separate diagram and describes dependencies between them.
 
-## Nawigacja
+## Navigation
 
 - [Work routing](#work-routing)
 - [Init + standards](#init-standards)
@@ -19,22 +19,22 @@ Ten dokument pokazuje workflow jako osobne diagramy oraz opisuje zaleznosci mied
 <a id="work-routing"></a>
 ## Work routing
 
-Opis:
-- Wejscie przez komende `/work` trafia do `task-classifier`.
-- `task-classifier` wybiera jedna z 5 sciezek: [Development](#development), [Performance](#performance), [Migration](#migration), [Research](#research), [Product design](#product-design).
-- `incident` lane jest uruchamiany bezposrednio przez `/flowbit:incident` (na tym etapie bez zmian routingu `/work`).
-- Opcjonalnie `diagrams-mermaid` moze wygenerowac mape routingu/resume dla biezacego zadania.
-- Ten diagram jest punktem startowym calego flow.
+Description:
+- Entry via the `/flowbit:work` command goes to `task-classifier`.
+- `task-classifier` selects one of 5 paths: [Development](#development), [Performance](#performance), [Migration](#migration), [Research](#research), [Product design](#product-design).
+- The `incident` lane is triggered directly by `/flowbit:incident` (no `/flowbit:work` routing changes at this stage).
+- Optionally, `diagrams-mermaid` can generate a routing/resume map for the current task.
+- This diagram is the starting point of the entire flow.
 
 ```mermaid
 graph TD
-  WORK["⚡ /work"] -- "komenda: /work -> routing" --> CLASS["🤖 task-classifier"]
-  CLASS -- "decyzja: typ zadania" --> DEV["🧠 development"]
-  CLASS -- "decyzja: typ zadania" --> PERF["🧠 performance"]
-  CLASS -- "decyzja: typ zadania" --> MIG["🧠 migration"]
-  CLASS -- "decyzja: typ zadania" --> RES["🧠 research"]
-  CLASS -- "decyzja: typ zadania" --> PD["🧠 product-design"]
-  CLASS -- "opcjonalnie: visual routing map" --> DIAG_W["🧠 diagrams-mermaid"]
+  WORK["⚡ /flowbit:work"] -- "command: /flowbit:work -> routing" --> CLASS["🤖 task-classifier"]
+  CLASS -- "decision: task type" --> DEV["🧠 development"]
+  CLASS -- "decision: task type" --> PERF["🧠 performance"]
+  CLASS -- "decision: task type" --> MIG["🧠 migration"]
+  CLASS -- "decision: task type" --> RES["🧠 research"]
+  CLASS -- "decision: task type" --> PD["🧠 product-design"]
+  CLASS -- "optional: visual routing map" --> DIAG_W["🧠 diagrams-mermaid"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
@@ -47,24 +47,24 @@ graph TD
 <a id="init-standards"></a>
 ## Init + standards
 
-Opis:
-- Komenda `/flowbit:init` uruchamia `init skill`.
-- `init skill` odpala analize projektu i odkrywanie standardow.
-- `init skill` moze wywolac `diagrams-mermaid`, aby uszczegolowic dokumenty `architecture` i `tech-stack` bez zastapienia opisu.
-- `docs-operator` agreguje standardy i aktualizuje [docs-manager](#shared-codebase-analyzer) (powiazanie przez wspolne wewnetrzne capability opisu i raportowania).
-- Komenda `/flowbit:standards-update` pozwala dograc standardy poza init.
+Description:
+- The `/flowbit:init` command starts the `init skill`.
+- `init skill` triggers project analysis and standards discovery.
+- `init skill` can call `diagrams-mermaid` to refine `architecture` and `tech-stack` documents without replacing their descriptions.
+- `docs-operator` aggregates standards and updates `docs-manager`.
+- The `/flowbit:standards-update` command allows updating standards outside of init.
 
 ```mermaid
 graph TD
-  INIT_CMD["⚡ /flowbit:init"] -- "komenda: bootstrap" --> INIT["🧠 init skill"]
-  INIT -- "etap: discovery" --> PROJ["🤖 project-analyzer"]
-  INIT -- "etap: standards discovery" --> STD_DISC["🧠 standards-discover skill"]
-  INIT -- "etap: visual refinement (opcjonalnie)" --> DIAG_I["🧠 diagrams-mermaid"]
-  INIT -- "etap: docs sync" --> DOCS_OP["🤖 docs-operator"]
-  STD_DISC -- "wejscie: zebrane standardy" --> DOCS_OP
-  STD_UPD["⚡ /flowbit:standards-update"] -- "komenda: update standards" --> DOCS_OP
-  DIAG_I -- "uzupelnia architecture/tech-stack" --> DOCS_OP
-  DOCS_OP -- "etap: utrwalenie dokumentacji" --> DOCS["🧠 docs-manager (preloaded)"]
+  INIT_CMD["⚡ /flowbit:init"] -- "command: bootstrap" --> INIT["🧠 init skill"]
+  INIT -- "phase: discovery" --> PROJ["🤖 project-analyzer"]
+  INIT -- "phase: standards discovery" --> STD_DISC["🧠 standards-discover skill"]
+  INIT -- "phase: visual refinement (optional)" --> DIAG_I["🧠 diagrams-mermaid"]
+  INIT -- "phase: docs sync" --> DOCS_OP["🤖 docs-operator"]
+  STD_DISC -- "input: collected standards" --> DOCS_OP
+  STD_UPD["⚡ /flowbit:standards-update"] -- "command: update standards" --> DOCS_OP
+  DIAG_I -- "supplements architecture/tech-stack" --> DOCS_OP
+  DOCS_OP -- "phase: documentation persistence" --> DOCS["🧠 docs-manager"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
@@ -77,25 +77,25 @@ graph TD
 <a id="development"></a>
 ## Development
 
-Opis:
-- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `development`.
-- Wykorzystuje wspolne komponenty z [Shared internals: codebase-analyzer](#shared-codebase-analyzer), [Shared internals: implementation executor](#shared-implementation-executor) i [Shared internals: implementation verifier](#shared-implementation-verifier).
-- Moze uszczegolawiac `spec.md` i `implementation-plan.md` przez `diagrams-mermaid` (diagramy jako dopelnienie tekstu).
-- Opcjonalne galezie (`ui-mockup`, `e2e-test-verifier`, `user-docs-generator`) sa zalezne od typu zmian i kryteriow akceptacji.
+Description:
+- Path activated by [Work routing](#work-routing) when the classifier returns `development`.
+- Uses shared components from [Shared internals: codebase-analyzer](#shared-codebase-analyzer), [Shared internals: implementation executor](#shared-implementation-executor) and [Shared internals: implementation verifier](#shared-implementation-verifier).
+- Can refine `spec.md` and `implementation-plan.md` via `diagrams-mermaid` (diagrams as a complement to text).
+- Optional branches (`ui-mockup`, `e2e-test-verifier`, `user-docs-generator`) depend on the type of changes and acceptance criteria.
 
 ```mermaid
 graph TD
-  DEV2["🧠 development"] -- "faza: analiza kodu" --> CODEBASE_D["🧠 codebase-analyzer"]
-  DEV2 -- "faza: analiza brakow" --> GAP_D["🤖 gap-analyzer"]
-  DEV2 -- "faza: specyfikacja" --> SPEC_D["🤖 specification-creator"]
-  DEV2 -- "faza: uszczegolowienie diagramami" --> DIAG_D["🧠 diagrams-mermaid"]
-  DEV2 -- "faza: quality gate (warunkowo)" --> AUD_D["🤖 spec-auditor (conditional)"]
-  DEV2 -- "faza: plan implementacji" --> PLAN_D["🤖 implementation-planner"]
-  DEV2 -- "faza: wykonanie planu" --> EXEC_D["🧠 implementation-plan-executor"]
-  DEV2 -- "faza: weryfikacja" --> VER_D["🧠 implementation-verifier"]
-  DEV2 -- "faza: UI (jesli ui_heavy)" --> UI_D["🤖 ui-mockup (if ui_heavy)"]
-  DEV2 -- "faza: testy E2E (opcjonalnie)" --> E2E_D["🤖 e2e-test-verifier (optional)"]
-  DEV2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_D["🤖 user-docs-generator (optional)"]
+  DEV2["🧠 development"] -- "phase: code analysis" --> CODEBASE_D["🧠 codebase-analyzer"]
+  DEV2 -- "phase: gap analysis" --> GAP_D["🤖 gap-analyzer"]
+  DEV2 -- "phase: specification" --> SPEC_D["🤖 specification-creator"]
+  DEV2 -- "phase: diagram refinement" --> DIAG_D["🧠 diagrams-mermaid"]
+  DEV2 -- "phase: quality gate (conditional)" --> AUD_D["🤖 spec-auditor (conditional)"]
+  DEV2 -- "phase: implementation plan" --> PLAN_D["🤖 implementation-planner"]
+  DEV2 -- "phase: plan execution" --> EXEC_D["🧠 implementation-plan-executor"]
+  DEV2 -- "phase: verification" --> VER_D["🧠 implementation-verifier"]
+  DEV2 -- "phase: UI (if ui_heavy)" --> UI_D["🤖 ui-mockup (if ui_heavy)"]
+  DEV2 -- "phase: E2E tests (optional)" --> E2E_D["🤖 e2e-test-verifier (optional)"]
+  DEV2 -- "phase: user-facing docs (optional)" --> UDOCS_D["🤖 user-docs-generator (optional)"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -106,21 +106,21 @@ graph TD
 <a id="performance"></a>
 ## Performance
 
-Opis:
-- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `performance`.
-- Rozszerza flow o `bottleneck-analyzer`, ale dalej korzysta z [Shared internals: implementation executor](#shared-implementation-executor) i [Shared internals: implementation verifier](#shared-implementation-verifier).
-- Moze dodac warstwe wizualna planu/spec przez `diagrams-mermaid`.
+Description:
+- Path activated by [Work routing](#work-routing) when the classifier returns `performance`.
+- Extends the flow with `bottleneck-analyzer`, but still uses [Shared internals: implementation executor](#shared-implementation-executor) and [Shared internals: implementation verifier](#shared-implementation-verifier).
+- Can add a visual layer to the plan/spec via `diagrams-mermaid`.
 
 ```mermaid
 graph TD
-  PERF2["🧠 performance"] -- "faza: analiza kodu" --> CODEBASE_P["🧠 codebase-analyzer"]
-  PERF2 -- "faza: analiza bottleneckow" --> BOT_P["🤖 bottleneck-analyzer"]
-  PERF2 -- "faza: specyfikacja optymalizacji" --> SPEC_P["🤖 specification-creator"]
-  PERF2 -- "faza: uszczegolowienie diagramami" --> DIAG_P["🧠 diagrams-mermaid"]
-  PERF2 -- "faza: quality gate (warunkowo)" --> AUD_P["🤖 spec-auditor (conditional)"]
-  PERF2 -- "faza: plan implementacji" --> PLAN_P["🤖 implementation-planner"]
-  PERF2 -- "faza: wykonanie planu" --> EXEC_P["🧠 implementation-plan-executor"]
-  PERF2 -- "faza: weryfikacja efektu" --> VER_P["🧠 implementation-verifier"]
+  PERF2["🧠 performance"] -- "phase: code analysis" --> CODEBASE_P["🧠 codebase-analyzer"]
+  PERF2 -- "phase: bottleneck analysis" --> BOT_P["🤖 bottleneck-analyzer"]
+  PERF2 -- "phase: optimization specification" --> SPEC_P["🤖 specification-creator"]
+  PERF2 -- "phase: diagram refinement" --> DIAG_P["🧠 diagrams-mermaid"]
+  PERF2 -- "phase: quality gate (conditional)" --> AUD_P["🤖 spec-auditor (conditional)"]
+  PERF2 -- "phase: implementation plan" --> PLAN_P["🤖 implementation-planner"]
+  PERF2 -- "phase: plan execution" --> EXEC_P["🧠 implementation-plan-executor"]
+  PERF2 -- "phase: effect verification" --> VER_P["🧠 implementation-verifier"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -131,21 +131,21 @@ graph TD
 <a id="migration"></a>
 ## Migration
 
-Opis:
-- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `migration`.
-- Podobna do [Development](#development), ale nacisk jest na domkniecie migracji i ewentualny output dokumentacyjny dla usera.
-- Moze uszczegolowic plan migracji przez `diagrams-mermaid`.
+Description:
+- Path activated by [Work routing](#work-routing) when the classifier returns `migration`.
+- Similar to [Development](#development), but the focus is on completing the migration and optionally producing user-facing documentation.
+- Can refine the migration plan via `diagrams-mermaid`.
 
 ```mermaid
 graph TD
-  MIG2["🧠 migration"] -- "faza: analiza kodu" --> CODEBASE_M["🧠 codebase-analyzer"]
-  MIG2 -- "faza: analiza brakow" --> GAP_M["🤖 gap-analyzer"]
-  MIG2 -- "faza: specyfikacja migracji" --> SPEC_M["🤖 specification-creator"]
-  MIG2 -- "faza: uszczegolowienie diagramami" --> DIAG_M["🧠 diagrams-mermaid"]
-  MIG2 -- "faza: plan implementacji" --> PLAN_M["🤖 implementation-planner"]
-  MIG2 -- "faza: wykonanie planu" --> EXEC_M["🧠 implementation-plan-executor"]
-  MIG2 -- "faza: weryfikacja migracji" --> VER_M["🧠 implementation-verifier"]
-  MIG2 -- "faza: docs user-facing (opcjonalnie)" --> UDOCS_M["🤖 user-docs-generator (optional)"]
+  MIG2["🧠 migration"] -- "phase: code analysis" --> CODEBASE_M["🧠 codebase-analyzer"]
+  MIG2 -- "phase: gap analysis" --> GAP_M["🤖 gap-analyzer"]
+  MIG2 -- "phase: migration specification" --> SPEC_M["🤖 specification-creator"]
+  MIG2 -- "phase: diagram refinement" --> DIAG_M["🧠 diagrams-mermaid"]
+  MIG2 -- "phase: implementation plan" --> PLAN_M["🤖 implementation-planner"]
+  MIG2 -- "phase: plan execution" --> EXEC_M["🧠 implementation-plan-executor"]
+  MIG2 -- "phase: migration verification" --> VER_M["🧠 implementation-verifier"]
+  MIG2 -- "phase: user-facing docs (optional)" --> UDOCS_M["🤖 user-docs-generator (optional)"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -156,19 +156,19 @@ graph TD
 <a id="research"></a>
 ## Research
 
-Opis:
-- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `research`.
-- To flow badawcze, ktore moze zasilic [Product design](#product-design) lub [Development](#development) wynikami.
-- W fazie design moze wywolac `diagrams-mermaid`, zeby doprecyzowac `high-level-design.md`.
+Description:
+- Path activated by [Work routing](#work-routing) when the classifier returns `research`.
+- This is a research flow that can feed [Product design](#product-design) or [Development](#development) with its findings.
+- In the design phase, it can call `diagrams-mermaid` to refine `high-level-design.md`.
 
 ```mermaid
 graph TD
-  RES2["🧠 research"] -- "faza: plan badania" --> RPLAN["🤖 research-planner"]
-  RES2 -- "faza: zbieranie danych (rownolegle)" --> GATHER_R["🤖 information-gatherer (parallel)"]
-  RES2 -- "faza: synteza" --> SYN_R["🤖 research-synthesizer"]
-  RES2 -- "faza: ideacja (opcjonalnie)" --> BRAIN_R["🤖 solution-brainstormer (optional)"]
-  RES2 -- "faza: projekt rozwiazania (opcjonalnie)" --> DESIGN_R["🤖 solution-designer (optional)"]
-  RES2 -- "faza: uszczegolowienie diagramami" --> DIAG_R["🧠 diagrams-mermaid"]
+  RES2["🧠 research"] -- "phase: research plan" --> RPLAN["🤖 research-planner"]
+  RES2 -- "phase: data gathering (parallel)" --> GATHER_R["🤖 information-gatherer (parallel)"]
+  RES2 -- "phase: synthesis" --> SYN_R["🤖 research-synthesizer"]
+  RES2 -- "phase: ideation (optional)" --> BRAIN_R["🤖 solution-brainstormer (optional)"]
+  RES2 -- "phase: solution design (optional)" --> DESIGN_R["🤖 solution-designer (optional)"]
+  RES2 -- "phase: diagram refinement" --> DIAG_R["🧠 diagrams-mermaid"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -179,17 +179,17 @@ graph TD
 <a id="product-design"></a>
 ## Product design
 
-Opis:
-- Sciezka aktywowana przez [Work routing](#work-routing), gdy klasyfikator zwroci `product-design`.
-- Lacznik miedzy mini-research a konceptem UI; moze konsumowac wyniki z [Research](#research).
-- Korzysta tez z elementow analizy kodu jak w [Shared internals: codebase-analyzer](#shared-codebase-analyzer).
+Description:
+- Path activated by [Work routing](#work-routing) when the classifier returns `product-design`.
+- Bridge between mini-research and UI concept; can consume results from [Research](#research).
+- Also uses code analysis elements as in [Shared internals: codebase-analyzer](#shared-codebase-analyzer).
 
 ```mermaid
 graph TD
-  PD2["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> CODEBASE_PD["🧠 codebase-analyzer (enhancement)"]
-  PD2 -- "faza: mini-research" --> GATHER_PD["🤖 information-gatherer (mini-research)"]
-  PD2 -- "faza: ideacja rozwiazania" --> BRAIN_PD["🤖 solution-brainstormer"]
-  PD2 -- "faza: fallback UI-focused" --> UI_PD["🤖 ui-mockup-generator (UI-focused fallback)"]
+  PD2["🧠 product-design"] -- "phase: code analysis (enhancement)" --> CODEBASE_PD["🧠 codebase-analyzer (enhancement)"]
+  PD2 -- "phase: mini-research" --> GATHER_PD["🤖 information-gatherer (mini-research)"]
+  PD2 -- "phase: solution ideation" --> BRAIN_PD["🤖 solution-brainstormer"]
+  PD2 -- "phase: UI-focused fallback" --> UI_PD["🤖 ui-mockup-generator (UI-focused fallback)"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -200,23 +200,23 @@ graph TD
 <a id="incident"></a>
 ## Incident
 
-Opis:
-- Sciezka aktywowana bezposrednio przez komende `/flowbit:incident`.
-- To flow operacyjne: intake, triage, evidence, mitigation, verification i postmortem.
-- Dla `code_fix` reuzywa `implementation-planner` oraz `implementation-plan-executor`.
-- Przed uruchomieniem executora obowiazuje twardy gate `ask_user` (approve / revise / stop).
+Description:
+- Path activated directly by the `/flowbit:incident` command.
+- This is an operational flow: intake, triage, evidence, mitigation, verification, and postmortem.
+- For `code_fix`, it reuses `implementation-planner` and `implementation-plan-executor`.
+- A hard `ask_user` gate (approve / revise / stop) is required before running the executor.
 
 ```mermaid
 graph TD
-  INC2["🧠 incident"] -- "faza: intake + severity" --> INTAKE_I["🧠 incident-intake"]
-  INC2 -- "faza: triage + containment" --> TRIAGE_I["🧠 incident-triage"]
-  INC2 -- "faza: evidence + timeline" --> EVID_I["🧠 incident-evidence"]
-  INC2 -- "faza: root cause + strategy" --> MITSEL_I["🤖 mitigation-selector"]
-  INC2 -- "faza: planning (when code_fix)" --> PLAN_I["🤖 implementation-planner (conditional)"]
+  INC2["🧠 incident"] -- "phase: intake + severity" --> INTAKE_I["🧠 incident-intake"]
+  INC2 -- "phase: triage + containment" --> TRIAGE_I["🧠 incident-triage"]
+  INC2 -- "phase: evidence + timeline" --> EVID_I["🧠 incident-evidence"]
+  INC2 -- "phase: root cause + strategy" --> MITSEL_I["🤖 mitigation-selector"]
+  INC2 -- "phase: planning (when code_fix)" --> PLAN_I["🤖 implementation-planner (conditional)"]
   PLAN_I -- "gate: ask_user approval (mandatory)" --> EXEC_I["🧠 implementation-plan-executor (conditional)"]
-  INC2 -- "faza: stabilization verification" --> VER_I["🧠 implementation-verifier"]
-  INC2 -- "faza: closure + followups" --> POST_I["🧠 incident-postmortem"]
-  POST_I -- "delegacja: postmortem draft" --> PM_A["🤖 postmortem-author"]
+  INC2 -- "phase: stabilization verification" --> VER_I["🧠 implementation-verifier"]
+  INC2 -- "phase: closure + followups" --> POST_I["🧠 incident-postmortem"]
+  POST_I -- "delegation: postmortem draft" --> PM_A["🤖 postmortem-author"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -227,14 +227,14 @@ graph TD
 <a id="shared-codebase-analyzer"></a>
 ## Shared internals: codebase-analyzer
 
-Opis:
-- Ten wewnetrzny flow jest wspolny dla [Development](#development), [Performance](#performance), [Migration](#migration) i [Product design](#product-design).
-- `Explore agents` realizuja etap eksploracji kodu, a `codebase-analysis-reporter` domyka raport.
+Description:
+- This internal flow is shared by [Development](#development), [Performance](#performance), [Migration](#migration), and [Product design](#product-design).
+- `Explore agents` handle the code exploration phase, and `codebase-analysis-reporter` closes the report.
 
 ```mermaid
 graph TD
-  CODEBASE_S["🧠 codebase-analyzer"] -- "faza: eksploracja (parallel)" --> EXPLORE["🤖 Explore agents (parallel)"]
-  CODEBASE_S -- "faza: raport" --> REPORT["🤖 codebase-analysis-reporter"]
+  CODEBASE_S["🧠 codebase-analyzer"] -- "phase: exploration (parallel)" --> EXPLORE["🤖 Explore agents (parallel)"]
+  CODEBASE_S -- "phase: report" --> REPORT["🤖 codebase-analysis-reporter"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -245,14 +245,14 @@ graph TD
 <a id="shared-implementation-executor"></a>
 ## Shared internals: implementation executor
 
-Opis:
-- Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
-- W [Incident](#incident) jest uruchamiany warunkowo, gdy mitigation path wymaga `code_fix`.
-- `implementation-plan-executor` deleguje wykonanie do `task-group-implementer`.
+Description:
+- This fragment is shared by execution flows: [Development](#development), [Performance](#performance), [Migration](#migration).
+- In [Incident](#incident) it is triggered conditionally when the mitigation path requires a `code_fix`.
+- `implementation-plan-executor` delegates execution to `task-group-implementer`.
 
 ```mermaid
 graph TD
-  EXEC_S["🧠 implementation-plan-executor"] -- "faza: realizacja task groups" --> TG["🤖 task-group-implementer"]
+  EXEC_S["🧠 implementation-plan-executor"] -- "phase: task group execution" --> TG["🤖 task-group-implementer"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -263,10 +263,10 @@ graph TD
 <a id="shared-implementation-verifier"></a>
 ## Shared internals: implementation verifier
 
-Opis:
-- Ten fragment jest wspolny dla flow wykonawczych: [Development](#development), [Performance](#performance), [Migration](#migration).
-- W [Incident](#incident) sluzy jako stabilizacyjny quality gate po wykonaniu mitigacji.
-- `implementation-verifier` uruchamia wiele quality gates i raportuje gotowosc produkcyjna.
+Description:
+- This fragment is shared by execution flows: [Development](#development), [Performance](#performance), [Migration](#migration).
+- In [Incident](#incident) it serves as a stabilization quality gate after mitigation execution.
+- `implementation-verifier` runs multiple quality gates and reports production readiness.
 
 ```mermaid
 graph TD

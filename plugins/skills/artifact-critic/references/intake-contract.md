@@ -3,7 +3,7 @@
 Collect this minimal input before critique:
 
 ```yaml
-artifactType: diagram | plan | workflow | architecture | idea | skill-definition | review-report | other
+artifactType: diagram | plan | workflow | architecture | idea | skill-definition | review-report | documentation | other
 artifactPath: "<optional file path>"
 artifactInline: "<optional inline artifact summary>"
 intent: "<what this artifact should achieve>"

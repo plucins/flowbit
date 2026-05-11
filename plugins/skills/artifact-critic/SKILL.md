@@ -39,6 +39,7 @@ Use one of these `artifactType` values:
 - `idea`
 - `skill-definition`
 - `review-report`
+- `documentation`
 - `other` (fallback)
 
 For each type, load the matching adapter file from:

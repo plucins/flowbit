@@ -240,7 +240,7 @@ Display:
 
 ### With Task Classifier
 
-The `/work` command delegates classification to the task-classifier subagent via Task tool, which:
+The `/flowbit:work` command delegates classification to the task-classifier subagent via Task tool, which:
 - Fetches issue details from GitHub/Jira/Azure DevOps (via MCP, CLI tools, or WebFetch)
 - Analyzes codebase context for better classification
 - Uses confidence-based user confirmation

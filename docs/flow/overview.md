@@ -1,8 +1,22 @@
 # Overview
 
-Ten dokument rozbija overview na osobne, czytelne diagramy oraz opisuje zaleznosci miedzy sekcjami.
+This document breaks the overview into separate, readable diagrams and describes dependencies between sections.
 
-## Nawigacja
+## How to read these diagrams
+
+Each diagram uses the following conventions:
+
+| Symbol | Color | Meaning |
+|--------|-------|---------|
+| ⚡ | Blue | **Command** — a user-facing CLI entry point (e.g. `/flowbit:work`, `/flowbit:init`) |
+| 🧠 | Green | **Skill** — an orchestration unit that manages a multi-phase workflow |
+| 🤖 | Orange | **Agent** — a specialized subagent that executes a focused, bounded task |
+
+Arrows show invocation or delegation direction. Edge labels describe the phase or decision that triggers the call.
+
+> **Viewing diagrams:** Mermaid diagrams render natively on GitHub and in IDEs with a Mermaid extension (e.g. [Markdown Preview Mermaid Support](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-mermaid) for VS Code).
+
+## Navigation
 
 - [Entry points](#entry-points)
 - [Work routing](#work-routing)
@@ -16,18 +30,18 @@ Ten dokument rozbija overview na osobne, czytelne diagramy oraz opisuje zaleznos
 <a id="entry-points"></a>
 ## Entry points
 
-Opis:
-- To sa wszystkie komendy wejsciowe, ktore odpalaja routing lub orchestratory.
-- `/work` przechodzi przez [Work routing](#work-routing).
-- Komendy skillowe `/flowbit:*` mapuja sie bezposrednio do orchestratorow w [Direct command to orchestrator mapping](#direct-command-to-orchestrator-mapping).
-- Komendy review (`/flowbit:reviews-*`) i quick bugfix (`/flowbit:quick-bugfix`) maja dodatkowe powiazania opisane w [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings).
-- `/flowbit:incident` uruchamia dedykowany lane operacyjny opisany w [Incident response lane](#incident-response-lane).
+Description:
+- These are all entry commands that trigger routing or orchestrators.
+- `/flowbit:work` goes through [Work routing](#work-routing).
+- Skill commands `/flowbit:*` map directly to orchestrators in [Direct command to orchestrator mapping](#direct-command-to-orchestrator-mapping).
+- Review commands (`/flowbit:reviews-*`) and quick bugfix (`/flowbit:quick-bugfix`) have additional bindings described in [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings).
+- `/flowbit:incident` starts a dedicated operational lane described in [Incident response lane](#incident-response-lane).
 
 ```mermaid
 graph LR
   subgraph C1[" "]
     direction TB
-    WORK["⚡ /work"]
+    WORK["⚡ /flowbit:work"]
     INIT["⚡ /flowbit:init"]
     PERF["⚡ /flowbit:performance"]
     RES["⚡ /flowbit:research"]
@@ -56,22 +70,22 @@ graph LR
 <a id="work-routing"></a>
 ## Work routing
 
-Opis:
-- Sciezka dotyczy tylko komendy `/work`.
-- `task-classifier` decyduje, ktory orchestrator uruchomic.
-- Kazdy wynik klasyfikacji prowadzi do jednego z flow: `development`, `performance`, `migration`, `research`, `product-design`.
-- Opcjonalnie `diagrams-mermaid` moze zwizualizowac routing/resume na bazie potwierdzonego stanu.
-- Dalsze zaleznosci tych flow sa opisane w [Delivery orchestrators and shared skills](#delivery-orchestrators-and-shared-skills) oraz [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
+Description:
+- This path applies only to the `/flowbit:work` command.
+- `task-classifier` decides which orchestrator to start.
+- Each classification result leads to one of the flows: `development`, `performance`, `migration`, `research`, `product-design`.
+- Optionally, `diagrams-mermaid` can visualize routing/resume based on confirmed state.
+- Further dependencies of these flows are described in [Delivery orchestrators and shared skills](#delivery-orchestrators-and-shared-skills) and [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
 graph TD
-  WORK["⚡ /work"] -- "komenda: /work" --> CLASS["🤖 task-classifier"]
-  CLASS -- "decyzja: dev task" --> S_DEV["🧠 development"]
-  CLASS -- "decyzja: perf task" --> S_PERF["🧠 performance"]
-  CLASS -- "decyzja: migration task" --> S_MIG["🧠 migration"]
-  CLASS -- "decyzja: research task" --> S_RES["🧠 research"]
-  CLASS -- "decyzja: product-design task" --> S_PD["🧠 product-design"]
-  CLASS -- "opcjonalnie: visual routing map" --> S_DIAG_WR["🧠 diagrams-mermaid"]
+  WORK["⚡ /flowbit:work"] -- "command: /flowbit:work" --> CLASS["🤖 task-classifier"]
+  CLASS -- "decision: dev task" --> S_DEV["🧠 development"]
+  CLASS -- "decision: perf task" --> S_PERF["🧠 performance"]
+  CLASS -- "decision: migration task" --> S_MIG["🧠 migration"]
+  CLASS -- "decision: research task" --> S_RES["🧠 research"]
+  CLASS -- "decision: product-design task" --> S_PD["🧠 product-design"]
+  CLASS -- "optional: visual routing map" --> S_DIAG_WR["🧠 diagrams-mermaid"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
@@ -84,24 +98,24 @@ graph TD
 <a id="direct-command-to-orchestrator-mapping"></a>
 ## Direct command to orchestrator mapping
 
-Opis:
-- Te komendy omijaja klasyfikator i uruchamiaja orchestratory bezposrednio.
-- `/flowbit:quick-bugfix` uruchamia `quick-bugfix` jako osobny, skrocony flow naprawczy.
-- `/flowbit:incident` uruchamia `incident` jako dedykowany flow response + postmortem.
-- Zaleznosci `init` i standardow sa rozszerzone w [Init and standards flow](#init-and-standards-flow).
+Description:
+- These commands bypass the classifier and invoke orchestrators directly.
+- `/flowbit:quick-bugfix` starts `quick-bugfix` as a separate, shortened fix flow.
+- `/flowbit:incident` starts `incident` as a dedicated response + postmortem flow.
+- Dependencies of `init` and standards are expanded in [Init and standards flow](#init-and-standards-flow).
 
 ```mermaid
 graph TD
-  INIT["⚡ /flowbit:init"] -- "komenda: direct invoke skill" --> S_INIT["🧠 init"]
-  DEV["⚡ /flowbit:development"] -- "komenda: direct invoke skill" --> S_DEV["🧠 development"]
-  PERF["⚡ /flowbit:performance"] -- "komenda: direct invoke skill" --> S_PERF["🧠 performance"]
-  MIG["⚡ /flowbit:migration"] -- "komenda: direct invoke skill" --> S_MIG["🧠 migration"]
-  RES["⚡ /flowbit:research"] -- "komenda: direct invoke skill" --> S_RES["🧠 research"]
-  PD["⚡ /flowbit:product-design"] -- "komenda: direct invoke skill" --> S_PD["🧠 product-design"]
-  INC["⚡ /flowbit:incident"] -- "komenda: direct invoke skill" --> S_INC["🧠 incident"]
-  STD_DISC["⚡ /flowbit:standards-discover"] -- "komenda: direct invoke skill" --> S_STD_DISC["🧠 standards-discover"]
-  STD_UPD["⚡ /flowbit:standards-update"] -- "komenda: direct invoke skill" --> S_STD_UPD["🧠 standards-update"]
-  QBUG["⚡ /flowbit:quick-bugfix"] -- "komenda: shortcut flow" --> S_QBUG["🧠 quick-bugfix"]
+  INIT["⚡ /flowbit:init"] -- "command: direct invoke skill" --> S_INIT["🧠 init"]
+  DEV["⚡ /flowbit:development"] -- "command: direct invoke skill" --> S_DEV["🧠 development"]
+  PERF["⚡ /flowbit:performance"] -- "command: direct invoke skill" --> S_PERF["🧠 performance"]
+  MIG["⚡ /flowbit:migration"] -- "command: direct invoke skill" --> S_MIG["🧠 migration"]
+  RES["⚡ /flowbit:research"] -- "command: direct invoke skill" --> S_RES["🧠 research"]
+  PD["⚡ /flowbit:product-design"] -- "command: direct invoke skill" --> S_PD["🧠 product-design"]
+  INC["⚡ /flowbit:incident"] -- "command: direct invoke skill" --> S_INC["🧠 incident"]
+  STD_DISC["⚡ /flowbit:standards-discover"] -- "command: direct invoke skill" --> S_STD_DISC["🧠 standards-discover"]
+  STD_UPD["⚡ /flowbit:standards-update"] -- "command: direct invoke skill" --> S_STD_UPD["🧠 standards-update"]
+  QBUG["⚡ /flowbit:quick-bugfix"] -- "command: shortcut flow" --> S_QBUG["🧠 quick-bugfix"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
@@ -112,20 +126,20 @@ graph TD
 <a id="init-and-standards-flow"></a>
 ## Init and standards flow
 
-Opis:
-- `init` uruchamia discovery standardow oraz synchronizacje dokumentacji.
-- Zarowno `standards-discover`, jak i `standards-update` koncza w `docs-manager (via docs-operator)`.
-- `init` moze wywolac `diagrams-mermaid`, zeby uszczegolowic wygenerowane dokumenty (np. architecture/tech-stack) bez zastepowania tresci.
-- Ten flow spina setup projektu z utrzymaniem standardow i docs.
+Description:
+- `init` triggers standards discovery and documentation synchronization.
+- Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
+- `init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
+- This flow ties project setup to standards maintenance and docs.
 
 ```mermaid
 graph TD
-  S_INIT["🧠 init"] -- "etap: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
-  S_INIT -- "etap: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
-  S_INIT -- "etap: visual refinement (opcjonalnie)" --> S_DIAG["🧠 diagrams-mermaid"]
-  S_STD_DISC -- "etap: docs sync" --> S_DOCS
-  S_STD_UPD["🧠 standards-update"] -- "etap: docs update" --> S_DOCS
-  S_DIAG -- "uzupelnia: architecture/tech-stack docs" --> S_DOCS
+  S_INIT["🧠 init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
+  S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
+  S_STD_DISC -- "phase: docs sync" --> S_DOCS
+  S_STD_UPD["🧠 standards-update"] -- "phase: docs update" --> S_DOCS
+  S_DIAG -- "supplements: architecture/tech-stack docs" --> S_DOCS
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD,S_DIAG skill;
@@ -134,38 +148,38 @@ graph TD
 <a id="delivery-orchestrators-and-shared-skills"></a>
 ## Delivery orchestrators and shared skills
 
-Opis:
-- `development`, `performance`, `migration` wspoldziela te same trzy capability: `codebase-analyzer`, `implementation-plan-executor`, `implementation-verifier`.
-- Te orchestratory moga wywolywac `diagrams-mermaid` do uszczegolowienia `spec` i `implementation-plan` (diagramy jako dodatek do opisu).
-- `product-design` uzywa wspolnego `codebase-analyzer`.
-- `incident` korzysta z lane operacyjnego (`incident-intake`, `incident-triage`, `incident-evidence`, `incident-postmortem`) i moze warunkowo wejsc w lane code-fix (`implementation-plan-executor`, `implementation-verifier`).
-- To jest trzon wspolnych zaleznosci wykonawczych; szczegoly agentowe sa w [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
+Description:
+- `development`, `performance`, `migration` share the same three capabilities: `codebase-analyzer`, `implementation-plan-executor`, `implementation-verifier`.
+- These orchestrators can call `diagrams-mermaid` to refine `spec` and `implementation-plan` (diagrams as a supplement to descriptions).
+- `product-design` uses the shared `codebase-analyzer`.
+- `incident` uses an operational lane (`incident-intake`, `incident-triage`, `incident-evidence`, `incident-postmortem`) and can conditionally enter the code-fix lane (`implementation-plan-executor`, `implementation-verifier`).
+- This is the core of shared execution dependencies; agent details are in [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
 graph TD
-  S_DEV["🧠 development"] -- "faza: analiza kodu" --> S_CODEBASE["🧠 codebase-analyzer"]
-  S_DEV -- "faza: diagram refinement (spec/plan)" --> S_DIAG["🧠 diagrams-mermaid"]
-  S_DEV -- "faza: wykonanie planu" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
-  S_DEV -- "faza: weryfikacja" --> S_IMPL_VER["🧠 implementation-verifier"]
+  S_DEV["🧠 development"] -- "phase: code analysis" --> S_CODEBASE["🧠 codebase-analyzer"]
+  S_DEV -- "phase: diagram refinement (spec/plan)" --> S_DIAG["🧠 diagrams-mermaid"]
+  S_DEV -- "phase: plan execution" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
+  S_DEV -- "phase: verification" --> S_IMPL_VER["🧠 implementation-verifier"]
 
-  S_PERF["🧠 performance"] -- "faza: analiza kodu" --> S_CODEBASE
-  S_PERF -- "faza: diagram refinement (spec/plan)" --> S_DIAG
-  S_PERF -- "faza: wykonanie planu" --> S_IMPL_EXEC
-  S_PERF -- "faza: weryfikacja" --> S_IMPL_VER
+  S_PERF["🧠 performance"] -- "phase: code analysis" --> S_CODEBASE
+  S_PERF -- "phase: diagram refinement (spec/plan)" --> S_DIAG
+  S_PERF -- "phase: plan execution" --> S_IMPL_EXEC
+  S_PERF -- "phase: verification" --> S_IMPL_VER
 
-  S_MIG["🧠 migration"] -- "faza: analiza kodu" --> S_CODEBASE
-  S_MIG -- "faza: diagram refinement (spec/plan)" --> S_DIAG
-  S_MIG -- "faza: wykonanie planu" --> S_IMPL_EXEC
-  S_MIG -- "faza: weryfikacja" --> S_IMPL_VER
+  S_MIG["🧠 migration"] -- "phase: code analysis" --> S_CODEBASE
+  S_MIG -- "phase: diagram refinement (spec/plan)" --> S_DIAG
+  S_MIG -- "phase: plan execution" --> S_IMPL_EXEC
+  S_MIG -- "phase: verification" --> S_IMPL_VER
 
-  S_PD["🧠 product-design"] -- "faza: analiza kodu (enhancement)" --> S_CODEBASE
+  S_PD["🧠 product-design"] -- "phase: code analysis (enhancement)" --> S_CODEBASE
 
-  S_INC["🧠 incident"] -- "faza: intake" --> S_INC_INTAKE["🧠 incident-intake"]
-  S_INC -- "faza: triage" --> S_INC_TRIAGE["🧠 incident-triage"]
-  S_INC -- "faza: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
-  S_INC -- "faza: mitigation execution (conditional code-fix)" --> S_IMPL_EXEC
-  S_INC -- "faza: stabilization verification" --> S_IMPL_VER
-  S_INC -- "faza: closure + followups" --> S_INC_POST["🧠 incident-postmortem"]
+  S_INC["🧠 incident"] -- "phase: intake" --> S_INC_INTAKE["🧠 incident-intake"]
+  S_INC -- "phase: triage" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "phase: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
+  S_INC -- "phase: mitigation execution (conditional code-fix)" --> S_IMPL_EXEC
+  S_INC -- "phase: stabilization verification" --> S_IMPL_VER
+  S_INC -- "phase: closure + followups" --> S_INC_POST["🧠 incident-postmortem"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG,S_INC,S_INC_INTAKE,S_INC_TRIAGE,S_INC_EVID,S_INC_POST skill;
@@ -174,38 +188,38 @@ graph TD
 <a id="orchestrators-to-specialized-agent-families"></a>
 ## Orchestrators to specialized agent families
 
-Opis:
-- `A_SPEC` i `A_PLAN` sa rodzina agentow dla flow wykonawczych (`development`, `performance`, `migration`).
-- `A_RESEARCH` obsluguje glowne flow badawcze i wspiera `product-design`.
-- `A_QUALITY` jest uruchamiane przez `implementation-verifier` i review command.
-- `A_INCIDENT` grupuje agentow operacyjnych dla lane incident.
-- `A_OTHER` grupuje narzedzia pomocnicze (analyzery, UI mockup, user docs itp.).
-- `diagrams-mermaid` jest skillowym capability do wizualizacji przeplywow i komunikacji na bazie istniejacego contentu.
+Description:
+- `A_SPEC` and `A_PLAN` are the agent family for execution flows (`development`, `performance`, `migration`).
+- `A_RESEARCH` handles the main research flow and supports `product-design`.
+- `A_QUALITY` is triggered by `implementation-verifier` and the review command.
+- `A_INCIDENT` groups operational agents for the incident lane.
+- `A_OTHER` groups helper tools (analyzers, UI mockup, user docs, etc.).
+- `diagrams-mermaid` is a skill capability for visualizing flows and communication based on existing content.
 
 ```mermaid
 graph TD
-  S_DEV["🧠 development"] -- "delegacja: spec creation/audit" --> A_SPEC["🤖 specification-creator / spec-auditor"]
-  S_PERF["🧠 performance"] -- "delegacja: spec creation/audit" --> A_SPEC
-  S_MIG["🧠 migration"] -- "delegacja: spec creation/audit" --> A_SPEC
+  S_DEV["🧠 development"] -- "delegation: spec creation/audit" --> A_SPEC["🤖 specification-creator / spec-auditor"]
+  S_PERF["🧠 performance"] -- "delegation: spec creation/audit" --> A_SPEC
+  S_MIG["🧠 migration"] -- "delegation: spec creation/audit" --> A_SPEC
 
-  S_DEV -- "delegacja: planning/execution" --> A_PLAN["🤖 implementation-planner / task-group-implementer"]
-  S_PERF -- "delegacja: planning/execution" --> A_PLAN
-  S_MIG -- "delegacja: planning/execution" --> A_PLAN
+  S_DEV -- "delegation: planning/execution" --> A_PLAN["🤖 implementation-planner / task-group-implementer"]
+  S_PERF -- "delegation: planning/execution" --> A_PLAN
+  S_MIG -- "delegation: planning/execution" --> A_PLAN
 
-  S_RES["🧠 research"] -- "delegacja: research pipeline" --> A_RESEARCH["🤖 research-planner / gatherer / synthesizer / brainstormer / designer"]
-  S_RES -- "delegacja: visual refinement (design docs)" --> S_DIAG["🧠 diagrams-mermaid"]
-  S_PD["🧠 product-design"] -- "delegacja: mini-research support" --> A_RESEARCH
+  S_RES["🧠 research"] -- "delegation: research pipeline" --> A_RESEARCH["🤖 research-planner / gatherer / synthesizer / brainstormer / designer"]
+  S_RES -- "delegation: visual refinement (design docs)" --> S_DIAG["🧠 diagrams-mermaid"]
+  S_PD["🧠 product-design"] -- "delegation: mini-research support" --> A_RESEARCH
 
   S_IMPL_VER["🧠 implementation-verifier"] -- "quality gates" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
 
-  S_INC["🧠 incident"] -- "delegacja: triage + blast radius" --> A_INCIDENT["🤖 incident-triage / blast-radius-analyzer / mitigation-selector / timeline-correlator / postmortem-author"]
-  S_INC -- "delegacja: code-fix planning/execution (conditional)" --> A_PLAN
+  S_INC["🧠 incident"] -- "delegation: triage + blast radius" --> A_INCIDENT["🤖 incident-triage / blast-radius-analyzer / mitigation-selector / timeline-correlator / postmortem-author"]
+  S_INC -- "delegation: code-fix planning/execution (conditional)" --> A_PLAN
 
-  S_INIT["🧠 init"] -- "delegacja: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
-  S_DEV -- "delegacja: helper analyzers" --> A_OTHER
-  S_PERF -- "delegacja: helper analyzers" --> A_OTHER
-  S_MIG -- "delegacja: helper analyzers" --> A_OTHER
-  S_INC -- "delegacja: evidence gathering support" --> A_OTHER
+  S_INIT["🧠 init"] -- "delegation: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
+  S_DEV -- "delegation: helper analyzers" --> A_OTHER
+  S_PERF -- "delegation: helper analyzers" --> A_OTHER
+  S_MIG -- "delegation: helper analyzers" --> A_OTHER
+  S_INC -- "delegation: evidence gathering support" --> A_OTHER
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
@@ -216,15 +230,15 @@ graph TD
 <a id="reviews-and-quick-bugfix-bindings"></a>
 ## Reviews and quick bugfix bindings
 
-Opis:
-- `/flowbit:reviews-*` uruchamia bezposrednio rodzine quality agentow.
-- `/flowbit:quick-bugfix` uruchamia `quick-bugfix` jako szybka sciezka operacyjna.
-- Ta sekcja domyka mapowanie entry-pointow z [Entry points](#entry-points).
+Description:
+- `/flowbit:reviews-*` directly invokes the quality agent family.
+- `/flowbit:quick-bugfix` starts `quick-bugfix` as a fast operational path.
+- This section closes the entry-point mapping from [Entry points](#entry-points).
 
 ```mermaid
 graph TD
-  REV["⚡ /flowbit:reviews-*"] -- "komenda: quality/review lane" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
-  QBUG["⚡ /flowbit:quick-bugfix"] -- "komenda: shortcut to fix lane" --> S_QBUG["🧠 quick-bugfix"]
+  REV["⚡ /flowbit:reviews-*"] -- "command: quality/review lane" --> A_QUALITY["🤖 code-reviewer / pragmatist / readiness / reality / tests"]
+  QBUG["⚡ /flowbit:quick-bugfix"] -- "command: shortcut to fix lane" --> S_QBUG["🧠 quick-bugfix"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
@@ -237,22 +251,22 @@ graph TD
 <a id="incident-response-lane"></a>
 ## Incident response lane
 
-Opis:
-- `/flowbit:incident` uruchamia lane operacyjny poza `/work` (na tym etapie bez zmian klasyfikatora).
-- Flow jest state-driven: intake -> triage -> evidence -> mitigation -> verification -> postmortem.
-- Dla sciezki `code_fix` wystepuje twardy gate: `implementation-planner` -> `ask_user` approval -> `implementation-plan-executor`.
+Description:
+- `/flowbit:incident` starts the operational lane outside `/flowbit:work` (no classifier changes at this stage).
+- The flow is state-driven: intake -> triage -> evidence -> mitigation -> verification -> postmortem.
+- For the `code_fix` path there is a hard gate: `implementation-planner` -> `ask_user` approval -> `implementation-plan-executor`.
 
 ```mermaid
 graph TD
-  INC["⚡ /flowbit:incident"] -- "komenda: direct invoke skill" --> S_INC["🧠 incident"]
-  S_INC -- "faza: intake + severity" --> S_INC_INTAKE["🧠 incident-intake"]
-  S_INC -- "faza: triage + containment" --> S_INC_TRIAGE["🧠 incident-triage"]
-  S_INC -- "faza: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
-  S_INC -- "faza: mitigation strategy" --> A_MIT["🤖 mitigation-selector"]
+  INC["⚡ /flowbit:incident"] -- "command: direct invoke skill" --> S_INC["🧠 incident"]
+  S_INC -- "phase: intake + severity" --> S_INC_INTAKE["🧠 incident-intake"]
+  S_INC -- "phase: triage + containment" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "phase: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
+  S_INC -- "phase: mitigation strategy" --> A_MIT["🤖 mitigation-selector"]
   A_MIT -- "code-fix path" --> A_PLAN["🤖 implementation-planner"]
   A_PLAN -- "gate: ask_user approval (mandatory)" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
-  S_INC -- "faza: stabilization checks" --> S_IMPL_VER["🧠 implementation-verifier"]
-  S_INC -- "faza: closure + postmortem" --> S_INC_POST["🧠 incident-postmortem"]
+  S_INC -- "phase: stabilization checks" --> S_IMPL_VER["🧠 implementation-verifier"]
+  S_INC -- "phase: closure + postmortem" --> S_INC_POST["🧠 incident-postmortem"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;

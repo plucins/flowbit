@@ -169,7 +169,7 @@ Setup/standards:
 
 Workflow:
 
-- `/work`
+- `/flowbit:work`
 - `/flowbit:development`
 - `/flowbit:performance`
 - `/flowbit:migration`
