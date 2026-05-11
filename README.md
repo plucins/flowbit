@@ -1,12 +1,12 @@
 # Flowbit Plugin for GitHub Copilot CLI
 
-This repository contains the Flowbit GitHub Copilot CLI plugin under `plugins/`.
+This repository contains the Flowbit GitHub Copilot CLI plugin under `src/`.
 
 ## What it provides
 
 - SDLC workflow skills (development, performance, migration, research, product design, incident response)
 - Specialized agents for analysis, planning, implementation, and verification
-- Plugin bundle located in `plugins/` (`plugin.json`, `commands/`, `skills/`, `agents/`)
+- Plugin bundle located in `src/` (`plugin.json`, `commands/`, `skills/`, `agents/`)
 
 ## Install from marketplace (recommended)
 
@@ -33,7 +33,7 @@ copilot plugin install flowbit@flowbit
 Install from plugin subdirectory:
 
 ```bash
-copilot plugin install https://github.com/plucins/flowbit:plugins
+copilot plugin install https://github.com/plucins/flowbit:src
 ```
 
 Verify:

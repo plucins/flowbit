@@ -136,10 +136,10 @@ Better:
 
 ## Integration Candidates
 
-- `plugins/skills/init/SKILL.md`
-- `plugins/skills/init/references/architecture-template.md`
-- `plugins/skills/work/SKILL.md`
-- `plugins/skills/orchestrator-framework/references/orchestrator-patterns.md`
+- `src/skills/init/SKILL.md`
+- `src/skills/init/references/architecture-template.md`
+- `src/skills/work/SKILL.md`
+- `src/skills/orchestrator-framework/references/orchestrator-patterns.md`
 
 Not targeted:
 - `docs/flow/overview.md`

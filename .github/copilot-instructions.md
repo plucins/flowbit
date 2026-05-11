@@ -12,10 +12,10 @@ Use these instructions as the runtime behavior guide when this repository is loa
 
 ## Plugin Structure
 
-- `plugins/plugin.json`: plugin metadata and entrypoint configuration for commands/skills/agents.
-- `plugins/commands/`: user-facing command entrypoints (routing wrappers).
-- `plugins/skills/`: orchestration and reusable workflow logic.
-- `plugins/agents/`: specialized subagents for focused tasks (analysis, planning, verification, etc.).
+- `src/plugin.json`: plugin metadata and entrypoint configuration for commands/skills/agents.
+- `src/commands/`: user-facing command entrypoints (routing wrappers).
+- `src/skills/`: orchestration and reusable workflow logic.
+- `src/agents/`: specialized subagents for focused tasks (analysis, planning, verification, etc.).
 - `.flowbit/docs/`: project reference docs and standards (source of truth for conventions).
 - `.flowbit/tasks/`: workflow task artifacts and execution history.
 

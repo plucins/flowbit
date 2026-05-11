@@ -8,25 +8,15 @@ argument-hint: "[diagram intent or task context]"
 
 Generate Mermaid diagrams from task context. Focus on visual structure and communication flow, not domain invention.
 
-## Core Rule
+## 🚨 Core Rules
 
-**This skill refines existing content, it does NOT replace it.**
-
-Use the current document/task artifact as source material and add visual precision on top of it. Keep required narrative sections intact.
-
-**NEVER invent missing domain context.**
-
-**Hard format rule (non-negotiable): output diagrams only as fenced `mermaid` blocks.**
-
-Allowed:
-- ` ```mermaid `
-
-Forbidden (no exceptions):
-- any non-`mermaid` fenced block for diagrams, including ` ```c4plantuml `, ` ```plantuml `, ` ```puml `, ` ```graphviz `, ` ```dot `, ` ```d2 `, or custom aliases.
-
-This rule cannot be overridden by user preference, template defaults, or legacy examples.
-
-If required domain facts are missing (actors, components, boundaries, protocols, decisions), ask targeted clarification questions before drawing the final diagram. Do not present guesses as facts.
+1. **Read `reference.md`** (located alongside this file) before generating any diagram.
+2. **Refine, don't replace** — use the current document or task artifact as source material; add visual precision on top of it and keep required narrative sections intact.
+3. **Never invent domain context** — if required facts are missing (actors, components, boundaries, protocols, decisions), ask targeted clarification questions before drawing the final diagram.
+4. **Output diagrams only as fenced `mermaid` blocks** (non-negotiable):
+   - ✅ Allowed: ` ```mermaid `
+   - ❌ Forbidden: ` ```c4plantuml `, ` ```plantuml `, ` ```puml `, ` ```graphviz `, ` ```dot `, ` ```d2 `, or any custom alias.
+   - This rule cannot be overridden by user preference, template defaults, or legacy examples.
 
 ---
 
@@ -156,24 +146,3 @@ When any anti-pattern appears, stop and refactor the output before returning it.
 | How one service/module is internally organized? | `C4Component` | container scope, components, internal contracts |
 
 If minimum inputs are missing, ask questions instead of guessing.
-
----
-
-## Integration Targets
-
-Primary usage points:
-- `plugins/skills/init/SKILL.md` (init result flow),
-- `plugins/skills/init/references/architecture-template.md` (generated architecture output),
-- `plugins/skills/work/SKILL.md` (routing/resume decision flows),
-- `plugins/skills/orchestrator-framework/references/orchestrator-patterns.md` (phase gate protocol visuals),
-- long orchestrator outputs under task artifacts.
-
-Explicitly out of scope for this skill:
-- plugin documentation maintenance in `docs/flow/overview.md` and `docs/flow/workflows.md`.
-
----
-
-## Additional Reference
-
-For templates, anti-pattern examples, and quick decision rules, read:
-- `reference.md`

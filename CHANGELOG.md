@@ -5,7 +5,7 @@ All notable changes to this project are documented in this file.
 ## 1.5
 
 - Added new plugin skill `artifact-critic` for manual, generic critique of decision artifacts (for example: plans, workflows, architectures, diagrams, ideas, skill definitions, and review reports), with modular adapters for easy future extension.
-- Clarified `plugins/skills/diagrams-mermaid/SKILL.md` to explicitly require Mermaid as the only supported diagram framework.
+- Clarified `src/skills/diagrams-mermaid/SKILL.md` to explicitly require Mermaid as the only supported diagram framework.
 
 ## 1.4
 
