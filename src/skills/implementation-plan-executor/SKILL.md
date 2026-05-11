@@ -1,6 +1,6 @@
 ---
 name: implementation-plan-executor
-description: Execute implementation plans by delegating each task group to task-group-implementer subagent. Main agent coordinates prepares context, invokes subagent, processes output, marks checkboxes, updates work-log. Uses lazy standards loading from INDEX.md with keyword-triggered discovery.
+description: Executes implementation plans by delegating each task group to task-group-implementer. Coordinates context preparation, progress tracking, and work-log updates with lazy standards loading from INDEX.md.
 user-invocable: false
 ---
 

@@ -152,7 +152,7 @@ Description:
 - `development`, `performance`, `migration` share the same three capabilities: `codebase-analyzer`, `implementation-plan-executor`, `implementation-verifier`.
 - These orchestrators can call `diagrams-mermaid` to refine `spec` and `implementation-plan` (diagrams as a supplement to descriptions).
 - `product-design` uses the shared `codebase-analyzer`.
-- `incident` uses an operational lane (`incident-intake`, `incident-triage`, `incident-evidence`, `incident-postmortem`) and can conditionally enter the code-fix lane (`implementation-plan-executor`, `implementation-verifier`).
+- `incident` uses an operational lane (`incident-intake`, `incident-evidence`, `incident-postmortem`) and delegates triage to the `incident-triage` agent. It can conditionally enter the code-fix lane (`implementation-plan-executor`, `implementation-verifier`). For operational mitigation, stabilization uses `reality-assessor` directly.
 - This is the core of shared execution dependencies; agent details are in [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families).
 
 ```mermaid
@@ -175,14 +175,17 @@ graph TD
   S_PD["🧠 product-design"] -- "phase: code analysis (enhancement)" --> S_CODEBASE
 
   S_INC["🧠 incident"] -- "phase: intake" --> S_INC_INTAKE["🧠 incident-intake"]
-  S_INC -- "phase: triage" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "phase: triage" --> A_INC_TRIAGE["🤖 incident-triage"]
   S_INC -- "phase: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
   S_INC -- "phase: mitigation execution (conditional code-fix)" --> S_IMPL_EXEC
-  S_INC -- "phase: stabilization verification" --> S_IMPL_VER
+  S_INC -- "phase: stabilization (code_fix/hybrid)" --> S_IMPL_VER
+  S_INC -- "phase: stabilization (operational)" --> A_REAL_OPS["🤖 reality-assessor"]
   S_INC -- "phase: closure + followups" --> S_INC_POST["🧠 incident-postmortem"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG,S_INC,S_INC_INTAKE,S_INC_TRIAGE,S_INC_EVID,S_INC_POST skill;
+  classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
+  class S_DEV,S_CODEBASE,S_IMPL_EXEC,S_IMPL_VER,S_PERF,S_MIG,S_PD,S_DIAG,S_INC,S_INC_INTAKE,S_INC_EVID,S_INC_POST skill;
+  class A_INC_TRIAGE,A_REAL_OPS agent;
 ```
 
 <a id="orchestrators-to-specialized-agent-families"></a>
@@ -255,23 +258,26 @@ Description:
 - `/flowbit:incident` starts the operational lane outside `/flowbit:work` (no classifier changes at this stage).
 - The flow is state-driven: intake -> triage -> evidence -> mitigation -> verification -> postmortem.
 - For the `code_fix` path there is a hard gate: `implementation-planner` -> `ask_user` approval -> `implementation-plan-executor`.
+- For `operational` mitigation, stabilization uses `reality-assessor` directly. For `code_fix`/`hybrid`, `implementation-verifier` is called.
+- `incident-triage` is an agent (not a skill wrapper).
 
 ```mermaid
 graph TD
   INC["⚡ /flowbit:incident"] -- "command: direct invoke skill" --> S_INC["🧠 incident"]
   S_INC -- "phase: intake + severity" --> S_INC_INTAKE["🧠 incident-intake"]
-  S_INC -- "phase: triage + containment" --> S_INC_TRIAGE["🧠 incident-triage"]
+  S_INC -- "phase: triage + containment" --> A_INC_TRIAGE["🤖 incident-triage"]
   S_INC -- "phase: evidence + timeline" --> S_INC_EVID["🧠 incident-evidence"]
   S_INC -- "phase: mitigation strategy" --> A_MIT["🤖 mitigation-selector"]
   A_MIT -- "code-fix path" --> A_PLAN["🤖 implementation-planner"]
   A_PLAN -- "gate: ask_user approval (mandatory)" --> S_IMPL_EXEC["🧠 implementation-plan-executor"]
-  S_INC -- "phase: stabilization checks" --> S_IMPL_VER["🧠 implementation-verifier"]
+  S_INC -- "phase: stabilization (code_fix/hybrid)" --> S_IMPL_VER["🧠 implementation-verifier"]
+  S_INC -- "phase: stabilization (operational)" --> A_REAL_I["🤖 reality-assessor"]
   S_INC -- "phase: closure + postmortem" --> S_INC_POST["🧠 incident-postmortem"]
 
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
   class INC cmd;
-  class S_INC,S_INC_INTAKE,S_INC_TRIAGE,S_INC_EVID,S_IMPL_EXEC,S_IMPL_VER,S_INC_POST skill;
-  class A_MIT,A_PLAN agent;
+  class S_INC,S_INC_INTAKE,S_INC_EVID,S_IMPL_EXEC,S_IMPL_VER,S_INC_POST skill;
+  class A_MIT,A_PLAN,A_INC_TRIAGE,A_REAL_I agent;
 ```

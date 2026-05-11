@@ -144,7 +144,6 @@ Core workflow skills:
 - `standards-update`
 - `quick-bugfix`
 - `incident-intake`
-- `incident-triage`
 - `incident-evidence`
 - `incident-postmortem`
 

@@ -205,23 +205,26 @@ Description:
 - This is an operational flow: intake, triage, evidence, mitigation, verification, and postmortem.
 - For `code_fix`, it reuses `implementation-planner` and `implementation-plan-executor`.
 - A hard `ask_user` gate (approve / revise / stop) is required before running the executor.
+- For `operational` mitigation, stabilization uses `reality-assessor` directly. For `code_fix`/`hybrid`, `implementation-verifier` is called.
+- `incident-triage` is an agent (not a skill wrapper).
 
 ```mermaid
 graph TD
   INC2["🧠 incident"] -- "phase: intake + severity" --> INTAKE_I["🧠 incident-intake"]
-  INC2 -- "phase: triage + containment" --> TRIAGE_I["🧠 incident-triage"]
+  INC2 -- "phase: triage + containment" --> TRIAGE_I["🤖 incident-triage"]
   INC2 -- "phase: evidence + timeline" --> EVID_I["🧠 incident-evidence"]
   INC2 -- "phase: root cause + strategy" --> MITSEL_I["🤖 mitigation-selector"]
   INC2 -- "phase: planning (when code_fix)" --> PLAN_I["🤖 implementation-planner (conditional)"]
   PLAN_I -- "gate: ask_user approval (mandatory)" --> EXEC_I["🧠 implementation-plan-executor (conditional)"]
-  INC2 -- "phase: stabilization verification" --> VER_I["🧠 implementation-verifier"]
+  INC2 -- "phase: stabilization (code_fix/hybrid)" --> VER_I["🧠 implementation-verifier"]
+  INC2 -- "phase: stabilization (operational)" --> REAL_I["🤖 reality-assessor (conditional)"]
   INC2 -- "phase: closure + followups" --> POST_I["🧠 incident-postmortem"]
   POST_I -- "delegation: postmortem draft" --> PM_A["🤖 postmortem-author"]
 
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   classDef agent fill:#FFF4E8,stroke:#EA580C,stroke-width:2px,color:#7C2D12;
-  class INC2,INTAKE_I,TRIAGE_I,EVID_I,EXEC_I,VER_I,POST_I skill;
-  class MITSEL_I,PLAN_I,PM_A agent;
+  class INC2,INTAKE_I,EVID_I,EXEC_I,VER_I,POST_I skill;
+  class MITSEL_I,PLAN_I,PM_A,TRIAGE_I,REAL_I agent;
 ```
 
 <a id="shared-codebase-analyzer"></a>

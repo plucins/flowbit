@@ -115,7 +115,7 @@ ask_user: show severity + impact summary and ask:
 **Purpose**: Decide immediate operational posture (contain now vs continue diagnosis).
 
 **Execute**:
-1. Skill tool - `flowbit-incident-triage`
+1. Task tool - `flowbit-incident-triage`
 2. Persist triage result in `analysis/triage-decision.md`
 3. If triage proposes rollback, hot disable, or risk-heavy containment, require explicit `ask_user` confirmation before execution.
 4. Update state:
@@ -219,15 +219,22 @@ ask_user:
 **Purpose**: Validate incident is mitigated and service is stable.
 
 **Execute**:
+
+#### Branch A: `operational` mitigation path
+1. Task tool - `flowbit-reality-assessor`
+   - Pass `task_path` and context of applied operational mitigations.
+   - Saves to `verification/incident-verification.md`.
+
+#### Branch B: `code_fix` or `hybrid` mitigation path
 1. Skill tool - `flowbit-implementation-verifier`
-2. Task tool - `flowbit-reality-assessor`
-3. Save:
-   - `verification/incident-verification.md`
-4. Update state:
+   - Pass `orchestrator-state.yml` options for review scope.
+   - Saves to `verification/implementation-verification.md`.
+
+2. Update state:
    - `incident_context.verified_at`
    - `incident_context.current_status = "stabilized"` when checks pass.
 
-**Output**: `verification/incident-verification.md`
+**Output**: `verification/implementation-verification.md` (code_fix/hybrid) or `verification/incident-verification.md` (operational)
 
 → **Pause**
 
