@@ -67,6 +67,29 @@ graph LR
   class WORK,INIT,DEV,PERF,MIG,RES,PD,INC,STD_DISC,STD_UPD,REV,QBUG cmd;
 ```
 
+<a id="init-and-standards-flow"></a>
+## Init and standards flow
+
+Description:
+- `init` triggers standards discovery and documentation synchronization.
+- Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
+- `init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
+- This flow ties project setup to standards maintenance and docs.
+
+```mermaid
+graph TD
+  S_INIT["🧠 init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
+  S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
+  S_STD_DISC -- "phase: docs sync" --> S_DOCS
+  S_STD_UPD["🧠 standards-update"] -- "phase: docs update" --> S_DOCS
+  S_DIAG -- "supplements: architecture/tech-stack docs" --> S_DOCS
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD,S_DIAG skill;
+```
+
+
 <a id="work-routing"></a>
 ## Work routing
 
@@ -121,28 +144,6 @@ graph TD
   classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
   class INIT,DEV,PERF,MIG,RES,PD,INC,STD_DISC,STD_UPD,QBUG cmd;
   class S_INIT,S_DEV,S_PERF,S_MIG,S_RES,S_PD,S_INC,S_STD_DISC,S_STD_UPD,S_QBUG skill;
-```
-
-<a id="init-and-standards-flow"></a>
-## Init and standards flow
-
-Description:
-- `init` triggers standards discovery and documentation synchronization.
-- Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
-- `init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
-- This flow ties project setup to standards maintenance and docs.
-
-```mermaid
-graph TD
-  S_INIT["🧠 init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
-  S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
-  S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
-  S_STD_DISC -- "phase: docs sync" --> S_DOCS
-  S_STD_UPD["🧠 standards-update"] -- "phase: docs update" --> S_DOCS
-  S_DIAG -- "supplements: architecture/tech-stack docs" --> S_DOCS
-
-  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
-  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD,S_DIAG skill;
 ```
 
 <a id="delivery-orchestrators-and-shared-skills"></a>
