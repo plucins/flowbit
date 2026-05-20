@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.6
+
+- Added new plugin skill `html-renderer` for converting markdown plans, ideas, RFCs, and design notes into self-contained, share-ready HTML files using a warm editorial visual system (opt-in, no auto-trigger).
+- Bundled reference assets under `src/skills/html-renderer/references/`: `index.html` (canonical component reference), `styles.css` (full `hr-*` class system inlined into outputs), and `tokens.json` (design tokens).
+- Added Mermaid diagram support to html-renderer: `<div class="hr-diagram"><div class="mermaid">…</div></div>` blocks, with the Mermaid CDN script + initializer injected only when at least one ` ```mermaid ` fence is present in the source.
+- Added reference diagram examples for flowchart, sequence diagram, state diagram, and entity-relationship diagram.
+- Reordered `docs/flow/overview.md` so "Init and standards flow" appears earlier, immediately after the high-level command map.
+
 ## 1.5
 
 - Added new plugin skill `artifact-critic` for manual, generic critique of decision artifacts (for example: plans, workflows, architectures, diagrams, ideas, skill definitions, and review reports), with modular adapters for easy future extension.
