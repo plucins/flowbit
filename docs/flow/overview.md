@@ -19,9 +19,9 @@ Arrows show invocation or delegation direction. Edge labels describe the phase o
 ## Navigation
 
 - [Entry points](#entry-points)
+- [Init and standards flow](#init-and-standards-flow)
 - [Work routing](#work-routing)
 - [Direct command to orchestrator mapping](#direct-command-to-orchestrator-mapping)
-- [Init and standards flow](#init-and-standards-flow)
 - [Delivery orchestrators and shared skills](#delivery-orchestrators-and-shared-skills)
 - [Orchestrators to specialized agent families](#orchestrators-to-specialized-agent-families)
 - [Reviews and quick bugfix bindings](#reviews-and-quick-bugfix-bindings)
@@ -66,6 +66,28 @@ graph LR
   classDef cmd fill:#E8F1FF,stroke:#2563EB,stroke-width:2px,color:#0B3A8F;
   class WORK,INIT,DEV,PERF,MIG,RES,PD,INC,STD_DISC,STD_UPD,REV,QBUG cmd;
 ```
+<a id="init-and-standards-flow"></a>
+## Init and standards flow
+
+Description:
+- `init` triggers standards discovery and documentation synchronization.
+- Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
+- `init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
+- This flow ties project setup to standards maintenance and docs.
+
+```mermaid
+graph TD
+  S_INIT["🧠 init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
+  S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
+  S_STD_DISC -- "phase: docs sync" --> S_DOCS
+  S_STD_UPD["🧠 standards-update"] -- "phase: docs update" --> S_DOCS
+  S_DIAG -- "supplements: architecture/tech-stack docs" --> S_DOCS
+
+  classDef skill fill:#EAFBF1,stroke:#16A34A,stroke-width:2px,color:#14532D;
+  class S_INIT,S_STD_DISC,S_DOCS,S_STD_UPD,S_DIAG skill;
+```
+
 
 <a id="init-and-standards-flow"></a>
 ## Init and standards flow
