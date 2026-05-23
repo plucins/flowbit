@@ -12,6 +12,22 @@ Static-analysis-first performance optimization workflow. Identifies bottlenecks 
 
 **BEFORE executing any phase, you MUST complete these steps:**
 
+### Step 0: Session-reminder conflict resolution (decide ONCE)
+
+Before doing anything else, settle this policy now and do not re-litigate it at any gate:
+
+**`→ **MANDATORY GATE**` / `→ MANDATORY GATE` markers fire regardless of session-reminders, permission mode, or prior approval patterns.** None of the following exempt you from invoking `ask_user` at a gate — they apply only to your discretionary clarifications:
+
+- Auto / acceptEdits / bypassPermissions permission modes
+- Session reminders saying "work without stopping", "continue without asking", or "minimize clarifying questions"
+- Compaction summaries showing the user approving every prior gate
+
+If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
+
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
+
 ### Step 1: Load Framework Patterns
 
 **Read the framework reference file NOW using the Read tool:**
@@ -123,7 +139,7 @@ Pass `task_type="enhancement"` and the performance-focused description. The code
 
 **SELF-CHECK**: Did you just invoke the Task tool with `flowbit-bottleneck-analyzer`? Or did you start analyzing code yourself? If the latter, STOP and invoke the Task tool.
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count] P0, [P1 count] P1). Continue to specification?"
 
@@ -131,7 +147,7 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 
 ### Phase 3: Requirements & Specification
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 2 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 2 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Gather optimization requirements and create specification
 **Output**: `analysis/requirements.md`, `implementation/spec.md`
@@ -167,7 +183,7 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 6. Add diagrams that clarify bottleneck flows and optimization boundaries without replacing specification text.
 7. If context for a diagram is missing, document gaps and avoid speculative dependencies.
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/spec.md` and extract: optimization targets, approach chosen, number of changes planned, expected impact. Format as brief overview then "Continue to specification audit?"
 
@@ -175,7 +191,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 
 ### Phase 4: Specification Audit (Conditional)
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 3 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 3 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Independent review of optimization specification
 **Execute**: Task tool - `flowbit-spec-auditor` subagent
@@ -187,7 +203,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 
 ask_user to decide - "Run specification audit?"
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `verification/spec-audit.md` and extract: overall verdict, issue counts by severity, top findings. Format as brief overview then "Continue to implementation planning?"
 
@@ -195,7 +211,7 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 ### Phase 5: Implementation Planning
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 4 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 4 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Break optimization specification into implementation steps
 
@@ -220,7 +236,7 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 - Add one compact optimization execution flow (task-group dependency or state flow).
 - Keep plan steps authoritative; diagrams are explanatory additions only.
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/implementation-plan.md` and extract: number of task groups, total steps, key dependencies, optimization sequence. Format as brief overview then "Continue to implementation?"
 
@@ -228,7 +244,7 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 ### Phase 6: Implementation
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 5 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 5 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Execute the optimization plan
 
@@ -251,7 +267,7 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 2. Update state: add Phase 6 to `completed_phases`
 3. Proceed to Phase 7
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Extract from `phase_summaries.implementation` and `implementation/work-log.md`: optimizations applied, files changed, test results, any known issues. Format as brief overview then "Continue to verification?"
 
@@ -259,7 +275,7 @@ ask_user - Display executive summary before asking. Extract from `phase_summarie
 
 ### Phase 7: Verification Options
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 6 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 6 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Determine which verification checks to run
 **Execute**: Direct - use ask_user for options
@@ -273,7 +289,7 @@ ask_user with sequential single-select - "Which additional verification checks?"
   - "Code review" (recommended)
   - "Production readiness check"
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Options selected. Continue to Phase 8?"
 
@@ -281,7 +297,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 
 ### Phase 8: Verification & Issue Resolution
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 7 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 7 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Comprehensive implementation verification with user-driven fix cycles
 **Output**: `verification/implementation-verification.md`, optional review reports
@@ -305,7 +321,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 5. ask_user — "Re-run verification to check fixes?" with options: "Yes, re-run verification" / "No, proceed to next phase"
 6. If re-run → re-invoke `flowbit-implementation-verifier` → return to Step 2
 
-→ Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary: total issues found, issues fixed, issues remaining by severity. Then "Continue to finalization?"
 
@@ -313,7 +329,7 @@ ask_user - Display executive summary: total issues found, issues fixed, issues r
 
 ### Phase 9: Finalization
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 8 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 8 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Complete workflow and provide next steps
 **Execute**: Direct - create summary, update state, guide commit

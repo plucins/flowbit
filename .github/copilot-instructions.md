@@ -4,6 +4,16 @@ Flowbit is an SDLC plugin for GitHub Copilot CLI. It provides structured workflo
 
 Use these instructions as the runtime behavior guide when this repository is loaded as a plugin.
 
+## Audience
+
+This plugin is consumed exclusively by LLMs (language models acting as coding agents). All documents, skill files, and reference materials in this repository must be structured for LLM consumption, not human reading:
+
+- Prefer explicit, unambiguous instructions over implicit conventions.
+- Use bullet lists over dense paragraphs — each item should be independently scannable.
+- Name sections clearly so a model can locate them by heading text without needing to read the full file.
+- Avoid abbreviations, pronouns with unclear referents, and run-on sentences.
+- When referencing another document, include both the filename and the section heading name so the model can resolve the pointer without guessing.
+
 ## Mission
 
 - Deliver predictable SDLC execution instead of ad hoc coding.

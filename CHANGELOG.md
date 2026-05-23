@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.6.2
+
+- Enforced mandatory user-confirmation gates across all orchestrator skills (`development`, `migration`, `performance`, `product-design`, `research`): every `→ Pause` transition is now explicitly marked as `→ **MANDATORY GATE**` to prevent models from silently bypassing phase checkpoints.
+- Added Step 0 (session-reminder conflict resolution) to all orchestrator skills: instructs the model to resolve conflicts between session reminders (e.g., "work without stopping") and workflow gate requirements before execution begins.
+- Replaced implicit phase gate notes with explicit `**Phase entry self-check**` blocks at the top of every gated phase, ensuring gates fire even when a prior phase's pause was skipped.
+- Updated `orchestrator-framework/references/orchestrator-patterns.md`: added section 2.1 documenting session-reminder conflict resolution rules, and extended the anti-pattern table with entries for gate suppression via session context and auto-acknowledgement via compaction summaries.
+
 ## 1.6
 
 - Added new plugin skill `html-renderer` for converting markdown plans, ideas, RFCs, and design notes into self-contained, share-ready HTML files using a warm editorial visual system (opt-in, no auto-trigger).

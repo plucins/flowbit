@@ -12,6 +12,22 @@ Interactive workflow for product and feature design -- from fuzzy idea to develo
 
 **BEFORE executing any phase, you MUST complete these steps:**
 
+### Step 0: Session-reminder conflict resolution (decide ONCE)
+
+Before doing anything else, settle this policy now and do not re-litigate it at any gate:
+
+**`→ **MANDATORY GATE**` / `→ MANDATORY GATE` markers fire regardless of session-reminders, permission mode, or prior approval patterns.** None of the following exempt you from invoking `ask_user` at a gate — they apply only to your discretionary clarifications:
+
+- Auto / acceptEdits / bypassPermissions permission modes
+- Session reminders saying "work without stopping", "continue without asking", or "minimize clarifying questions"
+- Compaction summaries showing the user approving every prior gate
+
+If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
+
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
+
 ### Step 1: Load Framework Patterns
 
 **Read the framework reference file NOW using the Read tool:**
@@ -207,13 +223,13 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 **Output**: `orchestrator-state.yml` (characteristics, collected URLs, research topics, user files list)
 **State**: Set `design_context.design_characteristics`, `design_context.complexity_level`, `design_context.collected_urls`, `design_context.research_topics`, `design_context.user_files_list`
 
--> Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ---
 
 ### Phase 1: Context Synthesis
 
-> **Phase gate**: Confirm Phase 0 completion before executing.
+> **Phase gate**: Confirm Phase 0 completion in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Synthesize ALL context sources into a unified design context document that informs all downstream phases
 **Execute**: Skill/Agent + Direct (adapts based on characteristics)
@@ -264,13 +280,13 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 **Output**: `analysis/design-context.md`
 **State**: Update `phase_summaries.context_synthesis`
 
--> Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ---
 
 ### Phase 2: Problem Exploration
 
-> **Phase gate**: Confirm Phase 1 completion before executing.
+> **Phase gate**: Confirm Phase 1 completion in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Explore the problem space through structured questioning to produce a refined problem statement, constraints, and success criteria
 **Execute**: Direct, inline, interactive
@@ -322,7 +338,7 @@ ask_user — "Problem space explored." Read `next_phase` from `orchestrator-stat
 
 ### Phase 3: User & Persona Exploration
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 2 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 2 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Develop persona cards and user journeys for the design
 **Execute**: Direct, inline, interactive
@@ -358,7 +374,7 @@ ask_user — with options:
 **Output**: `analysis/personas.md`
 **State**: Update `phase_summaries.persona_exploration` with `personas`, `user_journeys`
 
--> Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Personas defined. Continue to Idea Generation?"
 
@@ -366,7 +382,7 @@ ask_user — "Personas defined. Continue to Idea Generation?"
 
 ### Phase 4: Idea Generation
 
-> **Phase gate**: Requires `ask_user` confirmation from the preceding phase (Phase 3 if ran, or Phase 2) before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from the preceding phase (Phase 3 if ran, or Phase 2) in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Generate unbiased design alternatives using the solution-brainstormer agent
 **Execute**: Agent via Task tool (deliberately non-interactive to avoid anchoring bias)
@@ -448,7 +464,7 @@ ask_user — with options:
 **Output**: `analysis/design-decisions.md`
 **State**: Update `phase_summaries.idea_convergence` with `selected_approach`, `trade_offs_accepted`, `key_decisions`
 
--> Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Design direction approved. Continue to Feature Specification?"
 
@@ -456,7 +472,7 @@ ask_user — "Design direction approved. Continue to Feature Specification?"
 
 ### Phase 6: Feature Specification
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 5 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 5 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Build a complete feature specification section-by-section using propose-and-refine
 **Execute**: Direct, inline, interactive
@@ -527,7 +543,7 @@ ask_user — "Specification complete." Read `next_phase` from `orchestrator-stat
 
 ### Phase 7: Visual Prototyping
 
-> **Phase gate**: Requires `ask_user` confirmation from Phase 6 before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 6 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Generate visual mockups (HTML/CSS via visual companion or ASCII fallback) for UI-focused designs
 **Execute**: Visual companion + Direct, with ui-mockup-generator fallback
@@ -612,7 +628,7 @@ Mockups are saved to `analysis/mockups/` automatically on each POST to the visua
 **Output**: `analysis/mockups/` (mockup files)
 **State**: Update `phase_summaries.visual_prototyping` with `mockup_references`, `design_context.visual_companion` status
 
--> Pause
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Visual prototyping complete. Continue to Review & Handoff?"
 
@@ -620,7 +636,7 @@ ask_user — "Visual prototyping complete. Continue to Review & Handoff?"
 
 ### Phase 8: Review & Handoff
 
-> **Phase gate**: Requires `ask_user` confirmation from the preceding phase before executing.
+> **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from the preceding phase in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Assemble the layered product brief, present for final approval, suggest development handoff
 **Execute**: Direct, inline, interactive
