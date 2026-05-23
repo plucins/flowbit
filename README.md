@@ -179,6 +179,6 @@ task:
   priority: high
 ```
 
-To resume an existing task, run `/flowbit:work` again — it detects the open task folder and continues from where it left off.
+To resume an existing task, run `/flowbit:work` again — it detects the open task folder and continues from where it left off. You can also point to a specific task by name, e.g. `/flowbit:work 2026-05-23-add-auth`, matching the folder name under `.flowbit/tasks/`.
 
 ---
