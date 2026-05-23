@@ -2,6 +2,16 @@
 
 This repository contains the Flowbit GitHub Copilot CLI plugin under `src/`.
 
+## Contents
+
+- [What it provides](#what-it-provides)
+- [Install from marketplace (recommended)](#install-from-marketplace-recommended)
+- [Install directly from repository](#install-directly-from-repository)
+- [Update plugin](#update-plugin)
+- [Getting started](#getting-started)
+  - [Step 1 — Initialize your project with `/flowbit:init`](#step-1--initialize-your-project-with-flowbitinit)
+  - [Step 2 — Start working with `/flowbit:work`](#step-2--start-working-with-flowbitwork-or-a-specific-command)
+
 ## What it provides
 
 - SDLC workflow skills (development, performance, migration, research, product design, incident response)
@@ -49,7 +59,7 @@ In an interactive Copilot CLI session, verify loaded components:
 /skills list
 ```
 
-## Update after changes
+## Update plugin
 
 After pushing changes, update the installed plugin:
 
