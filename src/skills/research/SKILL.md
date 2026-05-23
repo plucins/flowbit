@@ -24,7 +24,9 @@ Before doing anything else, settle this policy now and do not re-litigate it at 
 
 If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
 
-Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md` § 2 "Phase Gate Behavior" and § 2.1 "Resolving session-reminder conflicts".
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
 
 ### Step 1: Load Framework Patterns
 
@@ -183,7 +185,7 @@ Update state: `research_context.confidence_level`
 
 ---
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Research foundation complete (initialized, planned, gathered, synthesized). Continue to brainstorming evaluation?"
 
@@ -284,7 +286,7 @@ ask_user - "Research foundation complete (initialized, planned, gathered, synthe
 
 > **GATE CHECK**: Verify that ask_user was called for EACH decision area. If any decision area was skipped for any reason (e.g., output file missing, read failure), STOP and resolve before continuing. Do NOT mark Phase 4 complete without user convergence on all decision areas.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Brainstorming complete. Continue to high-level design?"
 
@@ -339,7 +341,7 @@ ask_user - "Brainstorming complete. Continue to high-level design?"
    - one interaction/state view (`sequenceDiagram` or `flowchart`) for the critical flow.
 7. If minimum context for a diagram is missing, record explicit gaps in the document and avoid speculative components/relationships.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Design complete. Continue to output generation?"
 

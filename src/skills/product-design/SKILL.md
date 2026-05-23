@@ -24,7 +24,9 @@ Before doing anything else, settle this policy now and do not re-litigate it at 
 
 If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
 
-Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md` § 2 "Phase Gate Behavior" and § 2.1 "Resolving session-reminder conflicts".
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
 
 ### Step 1: Load Framework Patterns
 
@@ -221,7 +223,7 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 **Output**: `orchestrator-state.yml` (characteristics, collected URLs, research topics, user files list)
 **State**: Set `design_context.design_characteristics`, `design_context.complexity_level`, `design_context.collected_urls`, `design_context.research_topics`, `design_context.user_files_list`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ---
 
@@ -278,7 +280,7 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 **Output**: `analysis/design-context.md`
 **State**: Update `phase_summaries.context_synthesis`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ---
 
@@ -372,7 +374,7 @@ ask_user — with options:
 **Output**: `analysis/personas.md`
 **State**: Update `phase_summaries.persona_exploration` with `personas`, `user_journeys`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Personas defined. Continue to Idea Generation?"
 
@@ -462,7 +464,7 @@ ask_user — with options:
 **Output**: `analysis/design-decisions.md`
 **State**: Update `phase_summaries.idea_convergence` with `selected_approach`, `trade_offs_accepted`, `key_decisions`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Design direction approved. Continue to Feature Specification?"
 
@@ -626,7 +628,7 @@ Mockups are saved to `analysis/mockups/` automatically on each POST to the visua
 **Output**: `analysis/mockups/` (mockup files)
 **State**: Update `phase_summaries.visual_prototyping` with `mockup_references`, `design_context.visual_companion` status
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user — "Visual prototyping complete. Continue to Review & Handoff?"
 

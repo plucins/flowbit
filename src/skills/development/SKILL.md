@@ -24,7 +24,9 @@ Before doing anything else, settle this policy now and do not re-litigate it at 
 
 If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
 
-Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md` § 2 "Phase Gate Behavior" and § 2.1 "Resolving session-reminder conflicts".
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
 
 ### Step 1: Load Framework Patterns
 
@@ -140,7 +142,7 @@ Use for **all development tasks**: bug fixes, enhancements, new features, and an
 
 **Context to pass**: Risk level, codebase summary, key files, clarifications, project_doc_paths (from state)
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 **ANTI-PATTERN — DO NOT DO THIS:**
 - ❌ "The UI change is small/simple, skipping Phase 4..." — STOP. If `ui_heavy` is true, Phase 4 runs. The gap-analyzer made this assessment, not you.
@@ -166,7 +168,7 @@ ask_user - Display executive summary before asking. Read `analysis/gap-analysis.
 
 **Critical**: Test MUST fail before implementation (proves defect exists)
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "TDD red gate complete. Continue to Phase 4?"
 
@@ -185,7 +187,7 @@ ask_user - "TDD red gate complete. Continue to Phase 4?"
 
 **Context to pass**: Gap analysis, scope decisions, component choices
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "UI mockups complete. Continue to Phase 5?"
 
@@ -249,7 +251,7 @@ ask_user - "UI mockups complete. Continue to Phase 5?"
    - optionally `C4Component` if internal module structure is required by scope.
 9. If required context is missing, add explicit open questions/assumptions section instead of inventing entities.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/spec.md` and extract: spec title, scope boundaries (what's included and excluded), number of key requirements, architecture approach chosen (if any), assumptions made. Format as brief overview then "Continue to specification audit?"
 
@@ -268,7 +270,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 
 ask_user - "Run specification audit? (Recommended)" with "Yes, run audit (Recommended)" as first option
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `verification/spec-audit.md` and extract: overall verdict (pass/pass-with-concerns/fail), issue counts by severity, top 1-2 critical findings if any. Format as brief overview then "Continue to implementation planning?"
 
@@ -300,7 +302,7 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 - Add a compact execution diagram (task-group dependency flow or phase/state view).
 - Keep implementation steps authoritative; diagrams are explanatory, not a replacement for task descriptions.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/implementation-plan.md` and extract: number of task groups, total implementation steps, key dependencies between groups, estimated complexity. Format as brief overview then "Continue to implementation?"
 
@@ -329,7 +331,7 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 2. Update state: add Phase 8 to `completed_phases`
 3. Evaluate conditional: if `task_characteristics.has_reproducible_defect` AND Phase 3 in `completed_phases` → Phase 9, else → Phase 10
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Extract from `phase_summaries.implementation` and `implementation/work-log.md`: task groups completed, files changed, test results from incremental runs, any known issues or deferred items. Format as brief overview then "Continue to verification?"
 
@@ -348,7 +350,7 @@ ask_user - Display executive summary before asking. Extract from `phase_summarie
 
 **Critical**: Test MUST pass (proves defect is fixed)
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "TDD gate passed. Continue to Phase 10?"
 
@@ -391,7 +393,7 @@ Options: "Code review (Recommended)", "Pragmatic review (Recommended)", "Reality
 
 **Q3** (SKIP if `options.user_docs_enabled: false` and no `--user-docs` flag): ask_user — "Generate user documentation?" Options: "Yes (Recommended)", "No, skip".
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ---
 
@@ -448,7 +450,7 @@ Verification Results:
 2. Update state: add Phase 11 to `completed_phases`
 3. Proceed to Phase 12
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary: total issues found, issues fixed, issues remaining by severity. Then "Continue to Phase 12?"
 
@@ -466,7 +468,7 @@ ask_user - Display executive summary: total issues found, issues fixed, issues r
 
 **Skip if**: `options.e2e_enabled = false`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "E2E complete. Continue to Phase 13?"
 
@@ -484,7 +486,7 @@ ask_user - "E2E complete. Continue to Phase 13?"
 
 **Skip if**: `options.user_docs_enabled = false`
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - "Documentation complete. Continue to Phase 14?"
 

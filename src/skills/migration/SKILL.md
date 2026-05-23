@@ -24,7 +24,9 @@ Before doing anything else, settle this policy now and do not re-litigate it at 
 
 If you find yourself reasoning "the user has been approving everything, so I can skip this gate" or "auto-mode is on, so I should minimize questions" — that reasoning IS the failure mode. STOP and fire the gate.
 
-Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md` § 2 "Phase Gate Behavior" and § 2.1 "Resolving session-reminder conflicts".
+Full framework rule: `../orchestrator-framework/references/orchestrator-patterns.md`
+- section "Phase Gate Behavior"
+- section "Resolving session-reminder conflicts"
 
 ### Step 1: Load Framework Patterns
 
@@ -129,7 +131,7 @@ Use for:
 4. Recommend migration strategy (incremental/big-bang/dual-run/phased)
 5. External research via WebSearch for version upgrades
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Extract from gap analysis: current system overview, target system, migration type classified, number of gaps identified, recommended strategy, risk level. Format as brief overview then "Continue to migration strategy?"
 
@@ -165,7 +167,7 @@ ask_user - Display executive summary before asking. Extract from gap analysis: c
 5. Add migration-focused visuals (target architecture and transition/compatibility flow) as supplements, not replacements for strategy prose.
 6. If minimum context is missing, record open gaps instead of inventing systems, protocols, or migration paths.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/spec.md` and extract: migration strategy chosen, scope boundaries, rollback approach, breaking changes identified, key constraints. Format as brief overview then "Continue to implementation planning?"
 
@@ -187,7 +189,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 - Add one migration execution/state flow with rollback checkpoints.
 - Preserve written task steps and rollback details as source of truth.
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Read `implementation/implementation-plan.md` and extract: number of task groups, total steps, rollback steps included, key dependencies, execution sequence. Format as brief overview then "Continue to execute migration?"
 
@@ -218,7 +220,7 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 2. Update state: add Phase 5 to `completed_phases`
 3. Proceed to Phase 6
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Extract from `phase_summaries.implementation` and `implementation/work-log.md`: migration steps completed, files changed, test results, rollback readiness status. Format as brief overview then "Continue to verification?"
 
@@ -244,7 +246,7 @@ ask_user - Display executive summary before asking. Extract from `phase_summarie
 2. Update state: add Phase 6 to `completed_phases`
 3. Evaluate verdict: if PASS → Phase 8, if fixable issues → Phase 7, otherwise stop workflow
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary before asking. Extract from verification results: overall verdict, issue counts by severity, compatibility test results, data integrity status, rollback test results. Format as detailed overview then "Continue to Phase [7 or 8]?"
 
@@ -277,7 +279,7 @@ ask_user - Display executive summary before asking. Extract from verification re
 - ⚠️ Max iterations (3) reached → Ask user: proceed with warnings or rollback
 - ❌ Data integrity issues → HALT immediately, recommend rollback
 
-→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md § 2 "Phase Gate Behavior" / § 2.1 "Resolving session-reminder conflicts").
+→ **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
 ask_user - Display executive summary: total issues found, issues fixed, issues remaining by severity. Then "Continue to documentation?"
 
