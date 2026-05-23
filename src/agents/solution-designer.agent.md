@@ -97,15 +97,12 @@ The Task prompt MUST include:
 
 ### Phase 2: C4 Architecture Diagrams
 
-Create architecture descriptions at two levels:
+Create architecture descriptions at two levels by invoking the `diagrams-mermaid` skill for each diagram.
 
 **Level 1: System Context**
 - Show the system in its environment
 - Identify external systems, users, and integration points
-- Use ASCII diagram format:
-```
-[User/Actor] --> [System] --> [External System]
-```
+- Invoke `diagrams-mermaid` skill with `C4Context` type
 - Keep it simple: 3-7 boxes maximum
 - Label all connections with their nature (HTTP, events, file, etc.)
 
@@ -113,14 +110,16 @@ Create architecture descriptions at two levels:
 - Show the high-level technical building blocks
 - Identify containers: applications, databases, message brokers, file stores
 - Show how containers communicate
-- Use ASCII diagram format with clear labels
+- Invoke `diagrams-mermaid` skill with `C4Container` type
 - Each container gets a brief responsibility statement
 
 **Diagram guidelines**:
-- ASCII art only (no external tools required)
-- Clear labels on all boxes and arrows
+- Use the `diagrams-mermaid` skill — output diagrams as fenced ` ```mermaid ` blocks only
+- Invoke the skill separately for each diagram (Level 1 and Level 2 are separate calls)
+- Provide the extracted context (actors, components, boundaries, protocols) as input to the skill
+- Clear labels on all nodes and edges
 - Brief annotations explaining key interactions
-- Consistent visual style across diagrams
+- Do NOT use ASCII art, PlantUML, or any non-Mermaid format
 
 ### Phase 3: Component Mapping
 
@@ -147,7 +146,7 @@ For each significant component identified in the architecture:
    - Key transformations and processing steps
    - Where data is stored and in what form
    - How data exits the system or reaches users
-   - Optional: ASCII flow diagram for complex flows
+   - Optional: use `diagrams-mermaid` skill (`flowchart` or `sequenceDiagram` type) for complex flows
 
 2. **Integration Points**:
    - Connections to existing systems
@@ -251,16 +250,16 @@ Chosen option: [Option N], because [justification, 1-2 sentences]
 ## Architecture
 
 ### System Context (C4 Level 1)
-[ASCII diagram + description]
+[Mermaid C4Context diagram + description]
 
 ### Container Overview (C4 Level 2)
-[ASCII diagram + description]
+[Mermaid C4Container diagram + description]
 
 ## Key Components
 [Component table]
 
 ## Data Flow
-[Description + optional ASCII diagram]
+[Description + optional Mermaid diagram (flowchart/sequenceDiagram) for complex flows]
 
 ## Integration Points
 [Connections to existing systems]
@@ -321,11 +320,12 @@ warnings: ["any non-critical observations"]
 ## Quality Gates
 
 - ALWAYS create both output files (design + decision log)
-- ALWAYS include C4 Level 1 and Level 2 ASCII diagrams
+- ALWAYS include C4 Level 1 and Level 2 Mermaid diagrams (use `diagrams-mermaid` skill with `C4Context` and `C4Container` types)
 - ALWAYS create at least 1 ADR in MADR format
 - ALWAYS include concrete examples (Specification by Example)
 - ALWAYS define explicit scope boundaries (out of scope section)
 - ALWAYS link decision table in design doc to entries in decision-log.md
+- NEVER use ASCII art or non-Mermaid diagram formats — always use the `diagrams-mermaid` skill
 - NEVER go below C4 Level 2 (no component or code-level diagrams)
 - NEVER include implementation code or file paths (that's for specification-creator)
 - NEVER ask user questions - work with provided context and preferences
@@ -359,7 +359,7 @@ warnings: ["any non-critical observations"]
 
 Your design is successful when:
 
-- C4 Level 1 and Level 2 diagrams are present and readable
+- C4 Level 1 and Level 2 Mermaid diagrams are present and readable (generated via `diagrams-mermaid` skill)
 - Key components are mapped with clear responsibilities and interfaces
 - Data flow through the system is documented
 - At least 1 MADR-format ADR exists in the decision log
