@@ -75,7 +75,7 @@ The planning mode will:
 
 **BLOCKING: Do NOT call `ExitPlanMode` until the plan file contains these sections:**
 
-1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/flowbit-bootstrap`."
+1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/flowbit-spec-init`."
 
 2. **"## Standards Compliance Checklist"** — checkboxes for each applicable standard guideline that implementation must follow. Example:
    ```markdown
@@ -93,7 +93,7 @@ If these sections are missing from the plan file, add them before calling ExitPl
 Continue with planning mode normally. The "Applicable Standards" section in the plan should note:
 
 ```
-No AI SDLC standards found. Consider running `/flowbit-bootstrap` to initialize
+No AI SDLC standards found. Consider running `/flowbit-spec-init` to initialize
 project documentation and coding standards for better consistency.
 ```
 

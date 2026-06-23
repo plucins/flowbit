@@ -1,5 +1,5 @@
 ---
-name: bootstrap
+name: spec-init
 description: Initialize Flowbit with intelligent project analysis and documentation generation
 argument-hint: [--standards-from=PATH]
 ---
@@ -186,7 +186,7 @@ Invoke the `standards-discover` skill via Skill tool with `--scope=full` to auto
 
 > "Run standards discovery with --scope=full. This is being invoked as part of project initialization."
 
-The standards-discover skill handles its own user interaction (presenting findings by confidence tier, asking for approval). Let it run its full workflow — this is the last phase of bootstrap, so context handoff is fine here.
+The standards-discover skill handles its own user interaction (presenting findings by confidence tier, asking for approval). Let it run its full workflow — this is the last phase of spec-init, so context handoff is fine here.
 
 After completion, display a brief summary of how many standards were discovered and applied.
 

@@ -8,7 +8,7 @@ Each diagram uses the following conventions:
 
 | Symbol | Color | Meaning |
 |--------|-------|---------|
-| ⚡ | Blue | **Command** — a user-facing CLI entry point (e.g. `/flowbit:work`, `/flowbit:bootstrap`) |
+| ⚡ | Blue | **Command** — a user-facing CLI entry point (e.g. `/flowbit:work`, `/flowbit:spec-init`) |
 | 🧠 | Green | **Skill** — an orchestration unit that manages a multi-phase workflow |
 | 🤖 | Orange | **Agent** — a specialized subagent that executes a focused, bounded task |
 
@@ -42,7 +42,7 @@ graph LR
   subgraph C1[" "]
     direction TB
     WORK["⚡ /flowbit:work"]
-    INIT["⚡ /flowbit:bootstrap"]
+    INIT["⚡ /flowbit:spec-init"]
     PERF["⚡ /flowbit:performance"]
     RES["⚡ /flowbit:research"]
   end
@@ -70,14 +70,14 @@ graph LR
 ## Init and standards flow
 
 Description:
-- `bootstrap` triggers standards discovery and documentation synchronization.
+- `spec-init` triggers standards discovery and documentation synchronization.
 - Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
-- `bootstrap` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
+- `spec-init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
 - This flow ties project setup to standards maintenance and docs.
 
 ```mermaid
 graph TD
-  S_INIT["🧠 bootstrap"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT["🧠 spec-init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
   S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
   S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
   S_STD_DISC -- "phase: docs sync" --> S_DOCS
@@ -93,14 +93,14 @@ graph TD
 ## Init and standards flow
 
 Description:
-- `bootstrap` triggers standards discovery and documentation synchronization.
+- `spec-init` triggers standards discovery and documentation synchronization.
 - Both `standards-discover` and `standards-update` end at `docs-manager (via docs-operator)`.
-- `bootstrap` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
+- `spec-init` can call `diagrams-mermaid` to refine generated documents (e.g., architecture/tech-stack) without replacing content.
 - This flow ties project setup to standards maintenance and docs.
 
 ```mermaid
 graph TD
-  S_INIT["🧠 bootstrap"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
+  S_INIT["🧠 spec-init"] -- "phase: standards discovery" --> S_STD_DISC["🧠 standards-discover"]
   S_INIT -- "phase: docs sync" --> S_DOCS["🧠 docs-manager (via docs-operator)"]
   S_INIT -- "phase: visual refinement (optional)" --> S_DIAG["🧠 diagrams-mermaid"]
   S_STD_DISC -- "phase: docs sync" --> S_DOCS
@@ -147,11 +147,11 @@ Description:
 - These commands bypass the classifier and invoke orchestrators directly.
 - `/flowbit:quick-bugfix` starts `quick-bugfix` as a separate, shortened fix flow.
 - `/flowbit:incident` starts `incident` as a dedicated response + postmortem flow.
-- Dependencies of `bootstrap` and standards are expanded in [Init and standards flow](#init-and-standards-flow).
+- Dependencies of `spec-init` and standards are expanded in [Init and standards flow](#init-and-standards-flow).
 
 ```mermaid
 graph TD
-  INIT["⚡ /flowbit:bootstrap"] -- "command: direct invoke skill" --> S_INIT["🧠 bootstrap"]
+  INIT["⚡ /flowbit:spec-init"] -- "command: direct invoke skill" --> S_INIT["🧠 spec-init"]
   DEV["⚡ /flowbit:development"] -- "command: direct invoke skill" --> S_DEV["🧠 development"]
   PERF["⚡ /flowbit:performance"] -- "command: direct invoke skill" --> S_PERF["🧠 performance"]
   MIG["⚡ /flowbit:migration"] -- "command: direct invoke skill" --> S_MIG["🧠 migration"]
@@ -241,7 +241,7 @@ graph TD
   S_INC["🧠 incident"] -- "delegation: triage + blast radius" --> A_INCIDENT["🤖 incident-triage / blast-radius-analyzer / mitigation-selector / timeline-correlator / postmortem-author"]
   S_INC -- "delegation: code-fix planning/execution (conditional)" --> A_PLAN
 
-  S_INIT["🧠 bootstrap"] -- "delegation: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
+  S_INIT["🧠 spec-init"] -- "delegation: helper analyzers" --> A_OTHER["🤖 project-analyzer / gap-analyzer / ui-mockup / bottleneck / user-docs"]
   S_DEV -- "delegation: helper analyzers" --> A_OTHER
   S_PERF -- "delegation: helper analyzers" --> A_OTHER
   S_MIG -- "delegation: helper analyzers" --> A_OTHER
