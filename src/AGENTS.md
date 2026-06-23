@@ -140,7 +140,7 @@ Core workflow skills:
 - `implementation-verifier`
 - `standards-discover`
 - `docs-manager` (internal engine used by `docs-operator`)
-- `bootstrap`
+- `spec-init`
 - `standards-update`
 - `quick-bugfix`
 - `incident-intake`
@@ -162,7 +162,7 @@ See `skills/*/SKILL.md` for details.
 
 Setup/standards:
 
-- `/flowbit:bootstrap`
+- `/flowbit:spec-init`
 - `/flowbit:standards-update`
 - `/flowbit:standards-discover`
 

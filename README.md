@@ -9,7 +9,7 @@ This repository contains the Flowbit GitHub Copilot CLI plugin under `src/`.
 - [Install directly from repository](#install-directly-from-repository)
 - [Update plugin](#update-plugin)
 - [Getting started](#getting-started)
-  - [Step 1 — Initialize your project with `/flowbit:bootstrap`](#step-1--initialize-your-project-with-flowbitbootstrap)
+  - [Step 1 — Initialize your project with `/flowbit:spec-init`](#step-1--initialize-your-project-with-flowbitspec-init)
   - [Step 2 — Start working with `/flowbit:work`](#step-2--start-working-with-flowbitwork-or-a-specific-command)
 
 ## What it provides
@@ -70,12 +70,12 @@ copilot plugin update flowbit
 
 ## Getting started
 
-### Step 1 — Initialize your project with `/flowbit:bootstrap`
+### Step 1 — Initialize your project with `/flowbit:spec-init`
 
 Run this once per project to set up Flowbit's documentation and standards:
 
 ```text
-/flowbit:bootstrap
+/flowbit:spec-init
 ```
 
 The skill analyzes your codebase, asks a few questions, and creates the following structure:
@@ -99,7 +99,7 @@ The skill analyzes your codebase, asks a few questions, and creates the followin
 **Optional**: copy standards from another already-initialized project:
 
 ```text
-/flowbit:bootstrap --standards-from=../other-project
+/flowbit:spec-init --standards-from=../other-project
 ```
 
 ---

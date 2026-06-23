@@ -26,7 +26,7 @@ When `--from=PATH` is provided, the skill switches to **sync mode** — importin
 
 1. Resolve the path (absolute or relative to cwd)
 2. Check `PATH/.flowbit/docs/standards/` exists. If not, inform the user and stop.
-3. Check `.flowbit/docs/standards/` exists in the current project. If not, offer to run `/flowbit-bootstrap` first.
+3. Check `.flowbit/docs/standards/` exists in the current project. If not, offer to run `/flowbit-spec-init` first.
 
 ### SYNC STEP 2: Analyze Differences
 
@@ -148,4 +148,4 @@ Wait for docs-operator to complete, then immediately proceed to Phase 5.
 
 ## Prerequisites
 
-If `.flowbit/docs/` doesn't exist, offer to run `/flowbit-bootstrap` first.
+If `.flowbit/docs/` doesn't exist, offer to run `/flowbit-spec-init` first.

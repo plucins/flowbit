@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.8.0
+
+- Renamed the `bootstrap` skill to `spec-init`. The skill is now invoked as `/flowbit:spec-init` (previously `/flowbit:bootstrap`). All commands, skills, agents, and documentation references were updated to the new name.
+
 ## 1.7.0
 
 - Renamed the `init` skill to `bootstrap`. The skill is now invoked as `/flowbit:bootstrap` (previously `/flowbit:init`). All commands, skills, agents, and documentation references were updated to the new name.
