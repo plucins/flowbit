@@ -66,7 +66,7 @@ Custom scope values are matched against existing `.flowbit/docs/standards/*/` di
 ### Phase 1: Planning & Initialization
 
 1. **Parse options** from command arguments
-2. **Check prerequisites**: Verify `.flowbit/docs/` exists. If not, offer to run `/flowbit-init` first
+2. **Check prerequisites**: Verify `.flowbit/docs/` exists. If not, offer to run `/flowbit-bootstrap` first
 3. **Read existing standards** from `.flowbit/docs/INDEX.md` to identify updates vs creates and avoid duplicates
 4. **Display discovery plan** showing scope, sources, and estimated time
 5. **Get user confirmation** via ask_user before proceeding
@@ -209,7 +209,7 @@ Display final results:
 
 | Situation | Strategy |
 |-----------|----------|
-| `.flowbit/docs/` missing | Offer `/flowbit-init`, abort if declined |
+| `.flowbit/docs/` missing | Offer `/flowbit-bootstrap`, abort if declined |
 | gh CLI unavailable | Skip PR analysis, continue with other sources |
 | GitHub API rate limit | Skip PR analysis, note in report |
 | Config file parse error | Skip that file, log warning, continue |

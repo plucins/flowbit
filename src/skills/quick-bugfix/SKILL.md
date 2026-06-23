@@ -61,7 +61,7 @@ For complex bugs that grow beyond a quick fix, suggests escalating to the full d
 
 **If not exists:**
 - Note that no standards are available
-- Suggest running `/flowbit-init` in completion message
+- Suggest running `/flowbit-bootstrap` in completion message
 
 ### Standards Reading Enforcement (MANDATORY)
 
@@ -135,7 +135,7 @@ Standards context from Step 2 and analysis from Step 3 MUST inform the plan.
 ## Applicable Standards
 
 [List each standard file read, with key guidelines extracted from each.
-If no standards exist: "No AI SDLC standards found. Consider running `/flowbit-init`."]
+If no standards exist: "No AI SDLC standards found. Consider running `/flowbit-bootstrap`."]
 
 ## Standards Compliance Checklist
 
@@ -225,6 +225,6 @@ If any section is missing, add it before calling ExitPlanMode.
 Proceed with the bug fix normally, then note:
 
 ```
-"No AI SDLC standards found. Consider running `/flowbit-init` to initialize
+"No AI SDLC standards found. Consider running `/flowbit-bootstrap` to initialize
 project documentation and coding standards for better consistency."
 ```

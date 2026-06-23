@@ -80,7 +80,7 @@ Do not save workflow artifacts in project root docs or source directories unless
 ## Copilot CLI Conventions
 
 - Use single-select prompts sequentially when multiple user decisions are required.
-- In this environment, invoke skills via `/flowbit:<skill>` (for example: `/flowbit:init`, `/flowbit:development`).
+- In this environment, invoke skills via `/flowbit:<skill>` (for example: `/flowbit:bootstrap`, `/flowbit:development`).
 - Keep `/flowbit:work` as the unified routing command entrypoint.
 - Keep command behavior deterministic and tool-driven (avoid vague, free-form execution when a skill/agent exists).
 - Prefer plugin-defined skills/agents for delegated tasks rather than re-implementing workflow logic inline.
@@ -90,7 +90,7 @@ Do not save workflow artifacts in project root docs or source directories unless
 - Confirm before destructive actions (rollback/reset/remove generated assets).
 - Run appropriate verification before concluding implementation.
 - Report what was changed, why, and what verification was executed.
-- If standards are missing, continue work but recommend initializing Flowbit docs with `/flowbit:init`.
+- If standards are missing, continue work but recommend initializing Flowbit docs with `/flowbit:bootstrap`.
 
 ## Command Intent Map
 
