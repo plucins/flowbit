@@ -153,12 +153,20 @@ The **Sources** column lists all contributing sources for each finding (config, 
 - **High confidence (>= 80%)**: Use ask_user offering batch approval ("Apply all N high-confidence standards") or individual drill-down review. For drill-down, show full detail per finding: all evidence items with source attribution, examples (preferred/avoid), and confidence score breakdown (which factors contributed how many points).
 
 - **Medium confidence (60-79%)**: Present each individually with full detail (evidence, examples, confidence breakdown). Use ask_user with Accept/Modify/Skip options per finding.
+  - **If Modify**: Incorporate the user's remarks into the standard's content immediately — update the description, examples, or rationale based on the feedback. Re-present the updated standard to the user for final confirmation. Only advance to the next finding once the user has confirmed the modified version (Accept) or chosen to Skip it. Do NOT carry unmodified content forward.
+  - **If Skip**: Exclude from Phase 8 application.
 
 - **Low confidence (< threshold)**: Show the summary table rows only. Offer to expand details or skip all.
 
 - **Conflicts**: Present each conflict showing both sides with their evidence and sources. Use ask_user to resolve (pick side A, pick side B, skip, or custom).
 
 If `--auto-apply` is set, automatically approve findings with confidence >= 90% and only prompt for the rest.
+
+> **BLOCKING GATE — MANDATORY**: Do NOT proceed to Phase 8 until **every** finding has reached a terminal state:
+> - **Accepted** — original or modified content confirmed by the user
+> - **Skipped** — explicitly excluded by the user
+>
+> A finding is NOT in terminal state if the user has provided remarks that have not yet been incorporated and re-confirmed. Advancing to Phase 8 while any finding is in a non-terminal state causes duplicate files and discards user remarks.
 
 ---
 
@@ -168,10 +176,17 @@ If `--auto-apply` is set, automatically approve findings with confidence >= 90% 
 >
 > **SELF-CHECK before each file operation**: "Am I about to write a file directly? STOP — invoke docs-operator via Task tool instead."
 
-For each approved standard:
+> **NAMING CONVENTION — CRITICAL**: Standard files MUST follow the docs-manager directory structure:
+> - Files live at `standards/{category}/{topic}.md` — e.g., `standards/backend/api.md`, `standards/global/error-handling.md`
+> - Topic filenames are short and noun-based: `api.md`, `models.md`, `error-handling.md`, `validation.md`
+> - Do NOT create files named `backend-standards.md`, `api-standards.md`, or any `{category}-standards.md` pattern
+> - Do NOT place files directly under `standards/` root — always use the category subdirectory
+> - Before naming a new file, inspect existing files in `.flowbit/docs/standards/{category}/` and follow the same naming pattern
 
-1. **Prepare content** — Standard name, description, examples (preferred/avoid), rationale from evidence, source citations. Format each standard as a `###` heading with 1-10 lines description (excluding code snippets). Group related standards into the same topic file. Add brief code examples only when they clarify the practice.
-2. **Check if file exists** — Determine create vs update action
+For each approved standard (using the final, user-confirmed content from Phase 7):
+
+1. **Prepare content** — Standard name, description, examples (preferred/avoid), rationale from evidence, source citations. Format each standard as a `###` heading with 1-10 lines description (excluding code snippets). Group related standards into the same topic file following the naming convention above. Add brief code examples only when they clarify the practice.
+2. **Check if file exists** — If the target file already exists at `standards/{category}/{topic}.md`, use UPDATE (merge new findings with existing content). **NEVER create a new file at a path that already has content** — doing so produces duplicate files that cause user remarks to be discarded during INDEX.md regeneration.
 3. **Invoke `docs-operator` subagent** via Task tool (subagent_type: `flowbit-docs-operator`) — Pass prepared content. For creates: new file. For updates: merge new findings with existing. Wait for completion, then continue with the next standard.
 4. **After all standards applied, invoke `docs-operator` subagent** via Task tool to regenerate INDEX.md. Wait for completion, then continue with step 5.
 5. **Invoke `docs-operator` subagent** via Task tool to verify .github/copilot-instructions.md integration — ensure standards directory is referenced. Wait for completion, then display the application summary.
