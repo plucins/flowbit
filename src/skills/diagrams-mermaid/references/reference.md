@@ -136,8 +136,8 @@ Better:
 
 ## Integration Candidates
 
-- `src/skills/init/SKILL.md`
-- `src/skills/init/references/architecture-template.md`
+- `src/skills/bootstrap/SKILL.md`
+- `src/skills/bootstrap/references/architecture-template.md`
 - `src/skills/work/SKILL.md`
 - `src/skills/orchestrator-framework/references/orchestrator-patterns.md`
 

@@ -65,7 +65,7 @@ Implement a task directly without entering planning mode, while still applying p
 
 **If not exists:**
 - Note that no standards are available
-- Suggest running `/flowbit-init` in completion message
+- Suggest running `/flowbit-bootstrap` in completion message
 
 ### Standards Reading Enforcement (MANDATORY)
 
@@ -129,6 +129,6 @@ Implement a task directly without entering planning mode, while still applying p
 Proceed with implementation normally, then note:
 
 ```
-"No AI SDLC standards found. Consider running `/flowbit-init` to initialize
+"No AI SDLC standards found. Consider running `/flowbit-bootstrap` to initialize
 project documentation and coding standards for better consistency."
 ```
