@@ -48,15 +48,15 @@ graph TD
 ## Init + standards
 
 Description:
-- The `/flowbit:spec-init` command starts the `spec-init skill`.
-- `spec-init skill` triggers project analysis and standards discovery.
-- `spec-init skill` can call `diagrams-mermaid` to refine `architecture` and `tech-stack` documents without replacing their descriptions.
+- The `/flowbit:init` command starts the `init skill`.
+- `init skill` triggers project analysis and standards discovery.
+- `init skill` can call `diagrams-mermaid` to refine `architecture` and `tech-stack` documents without replacing their descriptions.
 - `docs-operator` aggregates standards and updates `docs-manager`.
-- The `/flowbit:standards-update` command allows updating standards outside of spec-init.
+- The `/flowbit:standards-update` command allows updating standards outside of init.
 
 ```mermaid
 graph TD
-  INIT_CMD["⚡ /flowbit:spec-init"] -- "command: spec-init" --> INIT["🧠 spec-init skill"]
+  INIT_CMD["⚡ /flowbit:init"] -- "command: bootstrap" --> INIT["🧠 init skill"]
   INIT -- "phase: discovery" --> PROJ["🤖 project-analyzer"]
   INIT -- "phase: standards discovery" --> STD_DISC["🧠 standards-discover skill"]
   INIT -- "phase: visual refinement (optional)" --> DIAG_I["🧠 diagrams-mermaid"]
