@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.6.3
+
+- Fixed `argument-hint` quoting in `init` skill frontmatter (value now properly quoted to avoid YAML parsing issues).
+
 ## 1.6.2
 
 - Enforced mandatory user-confirmation gates across all orchestrator skills (`development`, `migration`, `performance`, `product-design`, `research`): every `→ Pause` transition is now explicitly marked as `→ **MANDATORY GATE**` to prevent models from silently bypassing phase checkpoints.
