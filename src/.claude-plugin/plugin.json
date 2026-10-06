@@ -8,6 +8,7 @@
   },
   "homepage": "https://github.com/plucins/flowbit",
   "repository": "https://github.com/plucins/flowbit",
+  "commands": {},
   "keywords": [
     "claude-code",
     "copilot-cli",
