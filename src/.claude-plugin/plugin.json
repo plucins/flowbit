@@ -1,5 +1,6 @@
 {
   "name": "flowbit",
+  "displayName": "Flowbit",
   "description": "Structured SDLC workflows and agents for GitHub Copilot CLI and Claude Code",
   "version": "1.6.3",
   "author": {
@@ -15,8 +16,5 @@
     "agents",
     "planning",
     "verification"
-  ],
-  "commands": "commands/",
-  "skills": "skills/",
-  "agents": "agents/"
+  ]
 }

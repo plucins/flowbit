@@ -1,13 +1,15 @@
-# Flowbit Plugin for GitHub Copilot CLI
+# Flowbit Plugin for GitHub Copilot CLI and Claude Code
 
-This repository contains the Flowbit GitHub Copilot CLI plugin under `src/`.
+This repository contains the Flowbit plugin under `src/`. The same skills,
+agents, commands, and MCP configuration can be installed in GitHub Copilot CLI
+or Claude Code.
 
 ## Contents
 
 - [What it provides](#what-it-provides)
-- [Install from marketplace (recommended)](#install-from-marketplace-recommended)
-- [Install directly from repository](#install-directly-from-repository)
-- [Update plugin](#update-plugin)
+- [Install in GitHub Copilot CLI](#install-in-github-copilot-cli)
+- [Install in Claude Code](#install-in-claude-code)
+- [Local Claude Code development](#local-claude-code-development)
 - [Getting started](#getting-started)
   - [Step 1 — Initialize your project with `/flowbit:init`](#step-1--initialize-your-project-with-flowbitinit)
   - [Step 2 — Start working with `/flowbit:work`](#step-2--start-working-with-flowbitwork-or-a-specific-command)
@@ -16,9 +18,10 @@ This repository contains the Flowbit GitHub Copilot CLI plugin under `src/`.
 
 - SDLC workflow skills (development, performance, migration, research, product design, incident response)
 - Specialized agents for analysis, planning, implementation, and verification
-- Plugin bundle located in `src/` (`plugin.json`, `commands/`, `skills/`, `agents/`)
+- A shared plugin bundle under `src/` for GitHub Copilot CLI and Claude Code
+- A repository-hosted, third-party marketplace for each supported CLI
 
-## Install from marketplace (recommended)
+## Install in GitHub Copilot CLI
 
 Add the Flowbit marketplace:
 
@@ -38,9 +41,7 @@ Install Flowbit from marketplace:
 copilot plugin install flowbit@flowbit
 ```
 
-## Install directly from repository
-
-Install from plugin subdirectory:
+Alternatively, install directly from the plugin subdirectory:
 
 ```bash
 copilot plugin install https://github.com/plucins/flowbit:src
@@ -52,19 +53,58 @@ Verify:
 copilot plugin list
 ```
 
-In an interactive Copilot CLI session, verify loaded components:
-
-```text
-/agent
-/skills list
-```
-
-## Update plugin
-
 After pushing changes, update the installed plugin:
 
 ```bash
 copilot plugin update flowbit
+```
+
+## Install in Claude Code
+
+Add the repository-hosted Flowbit marketplace:
+
+```bash
+claude plugin marketplace add plucins/flowbit
+```
+
+Install and verify Flowbit:
+
+```bash
+claude plugin install flowbit@flowbit
+claude plugin list
+```
+
+Start Claude Code and run a Flowbit skill:
+
+```text
+/flowbit:init
+/flowbit:work
+```
+
+Manage the installation from the shell:
+
+```bash
+claude plugin update flowbit@flowbit
+claude plugin disable flowbit@flowbit
+claude plugin uninstall flowbit@flowbit
+```
+
+This repository is a third-party Claude Code marketplace. It is not an
+Anthropic-official marketplace listing.
+
+## Local Claude Code development
+
+Validate the plugin and marketplace from the repository root:
+
+```bash
+claude plugin validate ./src --strict
+claude plugin validate . --strict
+```
+
+Load the working tree for one Claude Code session without installing it:
+
+```bash
+claude --plugin-dir ./src
 ```
 
 
@@ -83,7 +123,7 @@ The skill analyzes your codebase, asks a few questions, and creates the followin
 ```
 .flowbit/
 └── docs/
-    ├── INDEX.md                  ← navigation index, loaded by Copilot on each turn
+    ├── INDEX.md                  ← navigation index for project context
     ├── project/
     │   ├── architecture.md       ← auto-generated architecture doc
     │   ├── tech-stack.md         ← detected stack with rationale

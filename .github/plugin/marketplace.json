@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Marketplace for the Flowbit GitHub Copilot CLI plugin",
-    "version": "1.0.0"
+    "version": "1.6.3"
   },
   "plugins": [
     {
       "name": "flowbit",
-      "description": "Structured SDLC workflows and agents for GitHub Copilot CLI",
-      "version": "1.6.2",
+      "description": "Structured SDLC workflows and agents for GitHub Copilot CLI and Claude Code",
+      "version": "1.6.3",
       "source": "src"
     }
   ]
