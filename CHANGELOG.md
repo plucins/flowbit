@@ -2,6 +2,11 @@
 
 All notable changes to this project are documented in this file.
 
+## 1.6.4
+
+- Aligned skill and agent references with Claude Code namespaced commands and agent identifiers.
+- Updated `quick-plan` to save plans under `.flowbit/tasks/quick-plan/<slug>/plan.md`.
+
 ## 1.6.3
 
 - Fixed `argument-hint` quoting in `init` skill frontmatter (value now properly quoted to avoid YAML parsing issues).

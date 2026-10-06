@@ -3,7 +3,7 @@ name: reviews-spec-audit
 description: Independent specification audit to verify completeness and clarity before implementation
 ---
 
-**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="flowbit-spec-auditor" NOW. Pass the spec path in the prompt. Do not read files, explore code, or execute workflow steps yourself.
+**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="flowbit:spec-auditor" NOW. Pass the spec path in the prompt. Do not read files, explore code, or execute workflow steps yourself.
 
 You are running an independent specification audit using the `spec-auditor` agent.
 
@@ -29,7 +29,7 @@ You are performing senior auditor review of specifications to verify completenes
 
 ```
 Task Tool:
-- subagent_type: spec-auditor
+- subagent_type: flowbit:spec-auditor
 - description: Specification audit
 - prompt: |
     You are the spec-auditor agent. Audit the specification at: [spec-path]
@@ -71,17 +71,17 @@ The spec-auditor agent will:
 
 **Example 1**: Pre-implementation spec audit
 ```
-User: /flowbit-reviews-spec-audit .flowbit/tasks/development/2025-11-17-user-auth/implementation/spec.md
+User: /flowbit:reviews-spec-audit .flowbit/tasks/development/2025-11-17-user-auth/implementation/spec.md
 ```
 
 **Example 2**: Post-implementation audit
 ```
-User: /flowbit-reviews-spec-audit .flowbit/tasks/development/2025-11-17-user-auth/ --post-implementation
+User: /flowbit:reviews-spec-audit .flowbit/tasks/development/2025-11-17-user-auth/ --post-implementation
 ```
 
 **Example 3**: Audit with clarification focus
 ```
-User: /flowbit-reviews-spec-audit spec.md --focus=ambiguity
+User: /flowbit:reviews-spec-audit spec.md --focus=ambiguity
 ```
 
 ## What to Expect

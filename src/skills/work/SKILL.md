@@ -1,6 +1,6 @@
 ---
 name: work
-description: Unified entry point — auto-classifies tasks and routes to appropriate workflow. ALWAYS execute when invoked via slash command.
+description: Use when a user starts or resumes a Flowbit task without selecting a workflow. Classify new tasks, route to the matching orchestrator, or resume an existing task folder.
 ---
 
 **NOTE**: This is a multi-step workflow that invokes the task-classifier subagent and orchestrator skills at specific steps. The `<command-name>` tag refers to THIS command only — you MUST still use the Skill tool to invoke those other skills when instructed below. Follow ALL steps in order.
@@ -55,11 +55,11 @@ Auto-classifies tasks and routes to the appropriate workflow orchestrator. Suppo
 
 | Classification | Routes To (Skill) |
 |----------------|-------------------|
-| development | `flowbit-development` |
-| performance | `flowbit-performance` |
-| migration | `flowbit-migration` |
-| research | `flowbit-research` |
-| product-design | `flowbit-product-design` |
+| development | `development` |
+| performance | `performance` |
+| migration | `migration` |
+| research | `research` |
+| product-design | `product-design` |
 
 ---
 
@@ -135,19 +135,19 @@ Options:
 
 ```
 Use Skill tool:
-  skill: "flowbit-[orchestrator-name]"
+  skill: "[orchestrator-name]"
   args: "--resume [task_path] [flags]"
 ```
 
 Examples:
-- Resume development: `skill: "flowbit-development"` with `args: "--resume .flowbit/tasks/development/2025-10-23-fix"`
-- Restart from phase: `skill: "flowbit-development"` with `args: "--resume .flowbit/tasks/development/2025-10-26-auth --from=verify"`
-- Fresh attempts: `skill: "flowbit-migration"` with `args: "--resume .flowbit/tasks/migrations/2025-10-20-redux --reset-attempts"`
+- Resume development: `skill: "development"` with `args: "--resume .flowbit/tasks/development/2025-10-23-fix"`
+- Restart from phase: `skill: "development"` with `args: "--resume .flowbit/tasks/development/2025-10-26-auth --from=verify"`
+- Fresh attempts: `skill: "migration"` with `args: "--resume .flowbit/tasks/migrations/2025-10-20-redux --reset-attempts"`
 
 6. **Optional visualization (when user wants flow clarity):**
 ```
 Use Skill tool:
-  skill: "flowbit-diagrams-mermaid"
+  skill: "diagrams-mermaid"
   args: "Visualize routing/resume flow using current task state.
          IMPORTANT: refine existing status/context only; do not invent domain details."
 ```
@@ -160,7 +160,7 @@ Use Skill tool:
 
 ```
 Use Task tool:
-  subagent_type: "flowbit-task-classifier"
+  subagent_type: "flowbit:task-classifier"
   description: "Classify task type"
   prompt: "Classify this task into a workflow type: [task description].
            Return structured YAML classification result."
@@ -190,19 +190,19 @@ Display:
   Routing to [task_type] workflow...
 
 Use Skill tool:
-  skill: "flowbit-[orchestrator-name]"
+  skill: "[orchestrator-name]"
   args: "[description]"
 ```
 
 **Routing examples:**
-- development (92%): `skill: "flowbit-development"` with `args: "Fix login timeout error"`
-- development (88%): `skill: "flowbit-development"` with `args: "Add filtering to user table"`
-- performance (95%): `skill: "flowbit-performance"` with `args: "Optimize slow dashboard queries"`
+- development (92%): `skill: "development"` with `args: "Fix login timeout error"`
+- development (88%): `skill: "development"` with `args: "Add filtering to user table"`
+- performance (95%): `skill: "performance"` with `args: "Optimize slow dashboard queries"`
 
 4. **Optional visualization (when user asks for visual map):**
 ```
 Use Skill tool:
-  skill: "flowbit-diagrams-mermaid"
+  skill: "diagrams-mermaid"
   args: "Visualize classification -> orchestrator routing for this task.
          Use only confirmed classification data."
 ```
@@ -235,7 +235,7 @@ Display:
 "Task cancelled. You can:
 - Run /work again when ready
 - Use specific workflow commands directly:
-  /flowbit-development, /flowbit-performance, etc."
+  /flowbit:development, /flowbit:performance, etc."
 ```
 
 ---
@@ -244,11 +244,11 @@ Display:
 
 | Workflow Type | Skill | Args |
 |---------------|-------|------|
-| development | `flowbit-development` | `--resume [path] [--from=PHASE] [--reset-attempts]` |
-| performance | `flowbit-performance` | `--resume [path] [--from=PHASE]` |
-| migration | `flowbit-migration` | `--resume [path] [--from=PHASE]` |
-| research | `flowbit-research` | `--resume [path] [--from=PHASE]` |
-| product-design | `flowbit-product-design` | `--resume [path] [--from=PHASE]` |
+| development | `development` | `--resume [path] [--from=PHASE] [--reset-attempts]` |
+| performance | `performance` | `--resume [path] [--from=PHASE]` |
+| migration | `migration` | `--resume [path] [--from=PHASE]` |
+| research | `research` | `--resume [path] [--from=PHASE]` |
+| product-design | `product-design` | `--resume [path] [--from=PHASE]` |
 
 ---
 

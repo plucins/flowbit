@@ -55,7 +55,7 @@ You are an implementation plan executor that delegates task groups to subagents 
 
 For each task group:
 
-0. Use `TaskUpdate` to set the group task to `status: "in_progress"` with `owner: "flowbit-task-group-implementer"`
+0. Use `TaskUpdate` to set the group task to `status: "in_progress"` with `owner: "flowbit:task-group-implementer"`
 
 1. **Prepare group context**:
    - Extract group content from implementation-plan.md
@@ -64,7 +64,7 @@ For each task group:
    - Get relevant spec sections
 
 2. **Invoke task-group-implementer subagent via Task tool**:
-   - subagent_type: `flowbit-task-group-implementer`
+   - subagent_type: `flowbit:task-group-implementer`
    - prompt: Include group content, initial standards, INDEX.md path, spec excerpt
    - See "Subagent Invocation" section for full prompt template
 

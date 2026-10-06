@@ -1,6 +1,6 @@
 ---
 name: codebase-analyzer
-description: Analyzes codebase using adaptive parallel Explore subagents based on task complexity. Selects agent roles from a pool, launches Explore agents, then delegates report generation to codebase-analysis-reporter subagent.
+description: Use when a workflow needs a structured codebase analysis. Scale parallel exploration to task complexity and delegate synthesis to the codebase-analysis-reporter agent.
 user-invocable: false
 ---
 
@@ -107,7 +107,7 @@ After all Explore agents complete, delegate to `codebase-analysis-reporter` suba
 
 ```
 Task tool:
-  subagent_type: "flowbit-codebase-analysis-reporter"
+  subagent_type: "flowbit:codebase-analysis-reporter"
   description: "Merge findings into analysis report"
   prompt: |
     You are the codebase-analysis-reporter. Merge these raw findings into a structured analysis report.

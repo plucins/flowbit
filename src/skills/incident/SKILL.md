@@ -68,7 +68,7 @@ Do not use for:
 
 ```mermaid
 flowchart TD
-  incidentCmd["/flowbit:incident"] --> incidentSkill["flowbit-incident orchestrator"]
+  incidentCmd["/flowbit:incident"] --> incidentSkill["incident orchestrator"]
   incidentSkill --> intake["Phase 1: IntakeAndSeverity"]
   intake --> triage["Phase 2: TriageAndContainment"]
   triage --> evidence["Phase 3: EvidenceCollection"]
@@ -92,7 +92,7 @@ flowchart TD
 **Purpose**: Normalize incident brief, classify severity, define initial impact.
 
 **Execute**:
-1. Skill tool - `flowbit-incident-intake`
+1. Skill tool - `incident-intake`
 2. Persist:
    - `analysis/incident-brief.md`
    - `analysis/impact-assessment.md`
@@ -115,7 +115,7 @@ ask_user: show severity + impact summary and ask:
 **Purpose**: Decide immediate operational posture (contain now vs continue diagnosis).
 
 **Execute**:
-1. Task tool - `flowbit-incident-triage`
+1. Task tool - `flowbit:incident-triage`
 2. Persist triage result in `analysis/triage-decision.md`
 3. If triage proposes rollback, hot disable, or risk-heavy containment, require explicit `ask_user` confirmation before execution.
 4. Update state:
@@ -137,7 +137,7 @@ ask_user:
 **Purpose**: Build evidence pack and timeline before selecting mitigation path.
 
 **Execute**:
-1. Skill tool - `flowbit-incident-evidence`
+1. Skill tool - `incident-evidence`
 2. Ensure artifacts exist:
    - `analysis/evidence-pack.md`
    - `analysis/timeline.md`
@@ -159,8 +159,8 @@ ask_user:
 **Purpose**: Convert evidence into ranked hypotheses and decide mitigation type.
 
 **Execute**:
-1. Task tool - `flowbit-gap-analyzer` (focused on mismatch symptoms vs expected behavior)
-2. Task tool - `flowbit-mitigation-selector` (incident-specific options ranking)
+1. Task tool - `flowbit:gap-analyzer` (focused on mismatch symptoms vs expected behavior)
+2. Task tool - `flowbit:mitigation-selector` (incident-specific options ranking)
 3. Save:
    - `analysis/hypotheses.md`
    - `implementation/mitigation-plan.md`
@@ -194,16 +194,16 @@ ask_user:
 2. Log all actions in `implementation/execution-log.md`.
 
 #### Branch B: code_fix or hybrid code part
-1. Task tool - `flowbit-implementation-planner` to generate `implementation/implementation-plan.md`.
+1. Task tool - `flowbit:implementation-planner` to generate `implementation/implementation-plan.md`.
 2. Present concise plan summary to user.
 3. **MANDATORY GATE**: ask_user with options:
    - "Approve and execute plan"
    - "Revise implementation plan"
    - "Stop incident workflow"
-4. Invoke `flowbit-implementation-plan-executor` **only if user explicitly approves**.
+4. Invoke `implementation-plan-executor` **only if user explicitly approves**.
 5. Append implementation activity to `implementation/execution-log.md`.
 
-**Critical rule**: Never invoke `flowbit-implementation-plan-executor` before explicit approval in Step 3.
+**Critical rule**: Never invoke `implementation-plan-executor` before explicit approval in Step 3.
 
 **Output**: `implementation/implementation-plan.md` (when code fix), `implementation/execution-log.md`
 
@@ -221,12 +221,12 @@ ask_user:
 **Execute**:
 
 #### Branch A: `operational` mitigation path
-1. Task tool - `flowbit-reality-assessor`
+1. Task tool - `flowbit:reality-assessor`
    - Pass `task_path` and context of applied operational mitigations.
    - Saves to `verification/incident-verification.md`.
 
 #### Branch B: `code_fix` or `hybrid` mitigation path
-1. Skill tool - `flowbit-implementation-verifier`
+1. Skill tool - `implementation-verifier`
    - Pass `orchestrator-state.yml` options for review scope.
    - Saves to `verification/implementation-verification.md`.
 
@@ -248,7 +248,7 @@ ask_user:
 **Purpose**: Create structured postmortem and actionable next steps.
 
 **Execute**:
-1. Skill tool - `flowbit-incident-postmortem`
+1. Skill tool - `incident-postmortem`
 2. Ensure outputs:
    - `documentation/postmortem.md`
    - `documentation/followups.md`

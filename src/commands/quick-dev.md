@@ -1,6 +1,6 @@
 ---
 name: quick-dev
-description: Implement task directly with AI SDLC standards awareness (no planning mode)
+description: Use for a clear, small implementation task that needs no architecture decision or planning mode. Read applicable .flowbit/docs/ standards, make the change, and verify it.
 ---
 
 # Quick Development with Standards Awareness
@@ -10,28 +10,28 @@ Implement a task directly without entering planning mode, while still applying p
 ## Usage
 
 ```bash
-/flowbit-quick-dev [task description]
+/flowbit:quick-dev [task description]
 ```
 
 ## Examples
 
 ```bash
-/flowbit-quick-dev "Add a logout button to the navbar"
-/flowbit-quick-dev "Fix the typo in the error message"
-/flowbit-quick-dev "Update the API endpoint to accept JSON"
+/flowbit:quick-dev "Add a logout button to the navbar"
+/flowbit:quick-dev "Fix the typo in the error message"
+/flowbit:quick-dev "Update the API endpoint to accept JSON"
 ```
 
 ---
 
 ## When to Use
 
-**Use `/flowbit-quick-dev` when:**
+**Use `/flowbit:quick-dev` when:**
 - Task is clear and well-defined
 - You know what needs to be done
 - No architectural decisions needed
 - Quick fixes, small features, or straightforward changes
 
-**Use `/flowbit-quick-plan` instead when:**
+**Use `/flowbit:quick-plan` instead when:**
 - Task scope is uncertain
 - Multiple implementation approaches possible
 - Architectural decisions required
@@ -65,7 +65,7 @@ Implement a task directly without entering planning mode, while still applying p
 
 **If not exists:**
 - Note that no standards are available
-- Suggest running `/flowbit-init` in completion message
+- Suggest running `/flowbit:init` in completion message
 
 ### Standards Reading Enforcement (MANDATORY)
 
@@ -129,6 +129,6 @@ Implement a task directly without entering planning mode, while still applying p
 Proceed with implementation normally, then note:
 
 ```
-"No AI SDLC standards found. Consider running `/flowbit-init` to initialize
+"No AI SDLC standards found. Consider running `/flowbit:init` to initialize
 project documentation and coding standards for better consistency."
 ```

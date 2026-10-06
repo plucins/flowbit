@@ -1,24 +1,24 @@
 ---
 name: quick-plan
-description: Enter planning mode with AI SDLC standards awareness
+description: Use when a user wants an implementation plan before code changes. Read applicable .flowbit/docs/ standards and save the plan under .flowbit/tasks/quick-plan/<slug>/plan.md.
 ---
 
 # Planning Mode with Standards Awareness
 
-Enter GitHub Copilot planning mode for a task, with automatic discovery of project standards from `.flowbit/docs/`.
+Enter the host's planning mode for a task, with automatic discovery of project standards from `.flowbit/docs/`.
 
 ## Usage
 
 ```bash
-/flowbit-quick-plan [task description]
+/flowbit:quick-plan [task description]
 ```
 
 ## Examples
 
 ```bash
-/flowbit-quick-plan "Add user authentication with email/password"
-/flowbit-quick-plan "Refactor the payment processing module"
-/flowbit-quick-plan
+/flowbit:quick-plan "Add user authentication with email/password"
+/flowbit:quick-plan "Refactor the payment processing module"
+/flowbit:quick-plan
 ```
 
 ---
@@ -35,12 +35,19 @@ Enter GitHub Copilot planning mode for a task, with automatic discovery of proje
   "What would you like to plan? Please describe the task or feature."
   ```
 
-### Step 2: Discover and Read Standards (BEFORE Plan Mode)
+### Step 2: Choose the Task Folder
+
+1. Derive a short lowercase kebab-case `<slug>` from the task description (for example, `add-user-auth`).
+2. Use `.flowbit/tasks/quick-plan/<slug>/` as the task folder and `plan.md` as the final plan path.
+3. If the folder already exists for the same task, reuse its plan when revising or resuming. For a different task with the same slug, choose the next unused suffix (`<slug>-2`, `<slug>-3`, etc.). Never overwrite an unrelated plan.
+4. Create the task folder before entering planning mode. Keep the plan and any supporting task artifacts in this folder, not in the repository root.
+
+### Step 3: Discover and Read Standards (BEFORE Plan Mode)
 
 **CRITICAL: This step MUST complete before calling EnterPlanMode.**
 
 1. **Check if `.flowbit/docs/INDEX.md` exists**
-   - **If not exists**: Note that no standards are available, skip to Step 3
+   - **If not exists**: Note that no standards are available, continue to Step 4
    - **If exists**: Continue with discovery below
 
 2. **Read INDEX.md** to understand available standards and documentation
@@ -54,28 +61,28 @@ Enter GitHub Copilot planning mode for a task, with automatic discovery of proje
 
 5. **Summarize key guidelines** from each standard file read — these will carry into plan mode as context
 
-### Step 3: Enter Planning Mode
+### Step 4: Enter Planning Mode
 
-**Use the planning mode flow to trigger GitHub Copilot's built-in planning behavior.**
+**Enter the host's planning mode (for example, `EnterPlanMode` in Claude Code).**
 
-**Standards context from Step 2 MUST actively inform all plan mode phases:**
+**Standards context from Step 3 MUST actively inform all plan mode phases:**
 
-- **Phase 1 (Explore)**: When launching Explore agents, include in the prompt: "The following project standards apply to this task: [list standard files and key guidelines from Step 2]. Verify how the existing codebase follows these standards."
-- **Phase 2 (Plan)**: When launching Plan agents, include in the prompt: "Apply these project standards in your implementation plan: [list standard files and key guidelines from Step 2]. Each implementation step must conform to these standards."
-- **Phase 4 (Final Plan)**: The plan file must incorporate standards into the implementation steps themselves, not just list them in a separate section.
+- **Explore**: When delegating codebase exploration, include the applicable standard files and key guidelines from Step 3 in the prompt. Verify how the existing codebase follows them.
+- **Plan**: Apply these standards to each implementation step, not just in a separate list.
+- **Final plan**: Include the standards in the implementation steps and in the mandatory sections below.
 
 The planning mode will:
-1. Launch Explore agents to understand the codebase (with standards context)
-2. Launch Plan agents to design implementation approach (with standards constraints)
+1. Explore the codebase with standards context; delegate when the scope warrants it
+2. Design the implementation approach with standards constraints
 3. Review and verify alignment with user intent
-4. Write final plan to plan file (with standards woven into steps)
-5. Call ExitPlanMode for user approval (gated on mandatory standards sections)
+4. Write the final plan to `.flowbit/tasks/quick-plan/<slug>/plan.md` (with standards woven into steps). If the host restricts writes to its own plan file during planning mode, validate that file before requesting approval, then copy its final content to the task folder immediately after leaving planning mode and before starting implementation. Do not treat the host's temporary plan file as the saved Flowbit plan.
+5. Request user approval through the host's plan-mode exit (gated on mandatory standards sections)
 
-### ExitPlanMode Gate: Mandatory Standards Sections
+### Plan Approval Gate: Mandatory Standards Sections
 
-**BLOCKING: Do NOT call `ExitPlanMode` until the plan file contains these sections:**
+**BLOCKING: Do NOT exit planning mode until the final plan contains these sections:**
 
-1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/flowbit-init`."
+1. **"## Applicable Standards"** — list each standard file that was read, with key guidelines extracted from each. If no standards exist, state: "No AI SDLC standards found. Consider running `/flowbit:init`."
 
 2. **"## Standards Compliance Checklist"** — checkboxes for each applicable standard guideline that implementation must follow. Example:
    ```markdown
@@ -84,7 +91,7 @@ The planning mode will:
    - [ ] New components use TypeScript strict mode (from `standards/frontend/components.md`)
    ```
 
-If these sections are missing from the plan file, add them before calling ExitPlanMode.
+If these sections are missing, add them before requesting approval. Confirm that `.flowbit/tasks/quick-plan/<slug>/plan.md` contains the approved plan before reporting completion; if writing it fails, report the error and do not claim the plan was saved.
 
 ### Graceful Fallback
 
@@ -93,7 +100,7 @@ If these sections are missing from the plan file, add them before calling ExitPl
 Continue with planning mode normally. The "Applicable Standards" section in the plan should note:
 
 ```
-No AI SDLC standards found. Consider running `/flowbit-init` to initialize
+No AI SDLC standards found. Consider running `/flowbit:init` to initialize
 project documentation and coding standards for better consistency.
 ```
 
@@ -101,21 +108,21 @@ project documentation and coding standards for better consistency.
 
 1. **Parses** task description from user input
 2. **Discovers and READS** applicable standard files from `.flowbit/docs/` (BEFORE plan mode)
-3. **Enters** GitHub Copilot planning mode with standards already loaded
-4. **Produces** a plan file with implementation approach, applicable standards, and compliance checklist
-5. **Gates** ExitPlanMode on mandatory standards sections in the plan file
+3. **Enters** the host's planning mode with standards already loaded
+4. **Saves** the plan with implementation approach, applicable standards, and compliance checklist to `.flowbit/tasks/quick-plan/<slug>/plan.md`
+5. **Gates** plan approval on mandatory standards sections in the plan file
 
 ## Benefits Over Manual Planning
 
 - Automatic standards discovery and integration
 - Standards read BEFORE planning begins (not as an afterthought)
-- Plan file for review before implementation
+- Plan saved in a task-specific folder for review before implementation
 - Standards compliance checklist built into the plan
 
 ## After Planning
 
 Once the plan is approved:
-- Implementation begins based on the plan
+- Report the saved plan path; do not start implementation unless requested
 - Standards are applied during coding
 
 ## Post-Implementation Verification

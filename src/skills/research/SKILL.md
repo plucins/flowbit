@@ -140,7 +140,7 @@ This phase executes 4 sequential steps. On resume, check existing artifacts to s
 
 **Read `references/research-methodologies.md` NOW using the Read tool** — research type classification, methodology selection, gathering strategies
 
-**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-research-planner`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit:research-planner`
 
 **Context to pass**: task_path, research_brief_path, research_type, research_question, scope, project_doc_paths (from state)
 
@@ -171,7 +171,7 @@ For each category in strategy:
 **Artifacts**: `analysis/synthesis.md`, `outputs/research-report.md`
 **Resume check**: If `analysis/synthesis.md` AND `outputs/research-report.md` exist, skip (Phase 1 complete)
 
-**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-research-synthesizer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit:research-synthesizer`
 
 **Context to pass**: task_path, findings_directory_path, research_question, research_type, methodology
 
@@ -239,7 +239,7 @@ ask_user - "Research foundation complete (initialized, planned, gathered, synthe
 
 > **ANTI-PATTERN**: Do NOT generate solution alternatives inline. The solution-brainstormer agent has specialized multi-perspective analysis capabilities.
 
-**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-solution-brainstormer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit:solution-brainstormer`
 
 **Context to pass** (Pattern 7):
 - `task_path`, `synthesis_path`, `research_report_path`
@@ -314,7 +314,7 @@ ask_user - "Brainstorming complete. Continue to high-level design?"
 
 > **ANTI-PATTERN**: Do NOT generate C4 architecture diagrams or ADRs inline. The solution-designer agent has specialized architecture and MADR documentation capabilities.
 
-**INVOKE NOW**: Use Task tool with `subagent_type: flowbit-solution-designer`
+**INVOKE NOW**: Use Task tool with `subagent_type: flowbit:solution-designer`
 
 **Context to pass** (Pattern 7):
 - `task_path`, `synthesis_path`, `research_report_path`
@@ -335,7 +335,7 @@ ask_user - "Brainstorming complete. Continue to high-level design?"
    - Integration points with existing system (if applicable)
 
 **Part D — Diagram Refinement (Skill, content-preserving)**:
-5. Invoke Skill tool: `flowbit-diagrams-mermaid` to refine visual communication in `outputs/high-level-design.md`
+5. Invoke Skill tool: `diagrams-mermaid` to refine visual communication in `outputs/high-level-design.md`
 6. Add diagrams that supplement (not replace) existing architecture content:
    - one architecture view (`C4Container` preferred, `C4Component` only if needed),
    - one interaction/state view (`sequenceDiagram` or `flowchart`) for the critical flow.
@@ -364,7 +364,7 @@ ask_user - "Design complete. Continue to output generation?"
 3. If design artifacts exist, suggest starting development in a fresh session:
    ```
    To start development based on this research, clear context first or start a new session, then run:
-   /flowbit-development [task-path]
+   /flowbit:development [task-path]
    ```
 
 → End of workflow
@@ -458,7 +458,7 @@ options:
 
 ### As Standalone Research
 
-**Command**: `/flowbit-research [research-question]`
+**Command**: `/flowbit:research [research-question]`
 **Flow**: Complete all phases, save outputs in task directory
 
 ### As Embedded Research Phase
@@ -486,8 +486,8 @@ research_outputs:
 ## Command Integration
 
 Invoked via:
-- `/flowbit-research [question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new)
-- `/flowbit-research [task-path] [--from=PHASE]` (resume)
+- `/flowbit:research [question] [--type=TYPE] [--brainstorm] [--no-brainstorm] [--design] [--no-design]` (new)
+- `/flowbit:research [task-path] [--from=PHASE]` (resume)
 
 **Brainstorming flags**:
 - `--brainstorm`: Force brainstorming phase (auto-resolves Phase 2 brainstorming decision to "enable")

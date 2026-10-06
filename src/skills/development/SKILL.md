@@ -1,6 +1,6 @@
 ---
 name: development
-description: Unified orchestrator for all development tasks. ALWAYS execute when invoked — never skip for 'straightforward' tasks. Phases adapt based on detected task characteristics rather than predetermined types. Use for any development work that modifies code.
+description: Use for code-changing development tasks such as bug fixes, features, and enhancements. Orchestrate analysis, specification, planning, implementation, and verification with phases selected from task characteristics.
 user-invocable: true
 ---
 
@@ -100,7 +100,7 @@ Use for **all development tasks**: bug fixes, enhancements, new features, and an
 
 **Purpose**: Comprehensive codebase exploration followed by scope/requirements clarification
 **Execute**:
-1. Skill tool - `flowbit-codebase-analyzer`
+1. Skill tool - `codebase-analyzer`
 2. Update state with analysis results
 3. Direct - use ask_user for max 5 critical clarifying questions
 4. Save clarifications to `analysis/clarifications.md`
@@ -115,7 +115,7 @@ Use for **all development tasks**: bug fixes, enhancements, new features, and an
 
 **Purpose**: Compare current vs desired state, detect task characteristics, then resolve scope/approach decisions
 **Execute**:
-1. Task tool - `flowbit-gap-analyzer` subagent
+1. Task tool - `flowbit:gap-analyzer` subagent
 2. **Extract and store structured data from gap-analyzer result**:
    a. Read `task_characteristics` from gap-analyzer output — 5 fields: `has_reproducible_defect`, `modifies_existing_code`, `creates_new_entities`, `involves_data_operations`, `ui_heavy`
    b. Write all 5 fields to `orchestrator-state.yml` at `task_context.task_characteristics`
@@ -179,7 +179,7 @@ ask_user - "TDD red gate complete. Continue to Phase 4?"
 > **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from the preceding phase in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Generate ASCII mockups showing UI integration
-**Execute**: Task tool - `flowbit-ui-mockup-generator` subagent
+**Execute**: Task tool - `flowbit:ui-mockup-generator` subagent
 **Output**: `analysis/ui-mockups.md`
 **State**: Update `phase_summaries.ui_mockups`
 
@@ -234,17 +234,17 @@ ask_user - "UI mockups complete. Continue to Phase 5?"
 
 **INVOKE NOW** — Task tool call:
 
-6. Task tool - `flowbit-specification-creator` subagent
+6. Task tool - `flowbit:specification-creator` subagent
 
 **Context to pass to subagent**: task_path, task_description, task_characteristics, requirements_path (analysis/requirements.md), project_context_paths (INDEX.md + project_doc_paths from state — all discovered project docs), risk_level, phase_summaries (codebase_analysis, gap_analysis, clarifications, scope_clarifications, ui_mockups), research_context (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit:specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
 
 **Output**: `analysis/technical-clarifications.md` (conditional), `analysis/requirements.md`, `implementation/spec.md`
 **State**: Update `task_context.tech_clarified`, `task_context.architecture_decision`, `phase_summaries.specification`
 
 **Part D — Diagram Refinement (Skill, content-preserving)**:
-7. Invoke Skill tool: `flowbit-diagrams-mermaid` to refine `implementation/spec.md`
+7. Invoke Skill tool: `diagrams-mermaid` to refine `implementation/spec.md`
 8. Add diagrams that clarify scope and communication (without replacing prose):
    - `flowchart` for primary functional path,
    - `sequenceDiagram` for key component interaction,
@@ -262,7 +262,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 > **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 5 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Independent review of specification before implementation
-**Execute**: Task tool - `flowbit-spec-auditor` subagent
+**Execute**: Task tool - `flowbit:spec-auditor` subagent
 **Output**: `verification/spec-audit.md`
 **State**: Update `options.spec_audit_enabled`
 
@@ -289,16 +289,16 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 **INVOKE NOW** — Task tool call:
 
-**Execute**: Task tool - `flowbit-implementation-planner` subagent
+**Execute**: Task tool - `flowbit:implementation-planner` subagent
 **Output**: `implementation/implementation-plan.md`
 **State**: Update task groups and dependencies
 
 **Context to pass to subagent**: task_path, task_description, task_characteristics, phase_summaries (specification, gap_analysis, codebase_analysis), research_context (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-implementation-planner`? Or did you start writing implementation-plan.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit:implementation-planner`? Or did you start writing implementation-plan.md yourself? If the latter, STOP immediately and invoke the Task tool instead.
 
 **Post-plan diagram refinement (Skill, content-preserving)**:
-- Invoke Skill tool: `flowbit-diagrams-mermaid` for `implementation/implementation-plan.md`
+- Invoke Skill tool: `diagrams-mermaid` for `implementation/implementation-plan.md`
 - Add a compact execution diagram (task-group dependency flow or phase/state view).
 - Keep implementation steps authoritative; diagrams are explanatory, not a replacement for task descriptions.
 
@@ -320,11 +320,11 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 **INVOKE NOW** — Skill tool call:
 
-**Execute**: Skill tool - `flowbit-implementation-plan-executor`
+**Execute**: Skill tool - `implementation-plan-executor`
 **Output**: Implemented code, `implementation/work-log.md`
 **State**: Update implementation progress, extract phase_summaries.implementation
 
-**SELF-CHECK**: Did you just invoke the Skill tool with `flowbit-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
+**SELF-CHECK**: Did you just invoke the Skill tool with `implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
 
 **⚠️ POST-IMPLEMENTATION CONTINUATION** — After the skill completes and returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -407,7 +407,7 @@ Options: "Code review (Recommended)", "Pragmatic review (Recommended)", "Reality
 
 **Execute**:
 
-**Step 1**: Invoke Skill tool - `flowbit-implementation-verifier`
+**Step 1**: Invoke Skill tool - `implementation-verifier`
 
 **Step 2**: Display detailed issue breakdown grouped by category and severity:
 ```
@@ -435,7 +435,7 @@ Verification Results:
 3. Fix selected issues, log each to `verification_context.fixes_applied`
 4. After fixes applied: set `skip_test_suite: false` (code changed, tests must re-run)
 5. ask_user — "Re-run verification to check fixes?" with options:
-   - "Yes, re-run verification" → re-invoke `flowbit-implementation-verifier` → return to Step 2
+   - "Yes, re-run verification" → re-invoke `implementation-verifier` → return to Step 2
    - "No, proceed to next phase"
 6. Update `verification_context.reverify_count`
 
@@ -461,7 +461,7 @@ ask_user - Display executive summary: total issues found, issues fixed, issues r
 > **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 11 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Runtime browser verification with screenshots (via Playwright MCP tools, not test file generation)
-**Execute**: Task tool - `flowbit-e2e-test-verifier` subagent
+**Execute**: Task tool - `flowbit:e2e-test-verifier` subagent
 **Prompt must include**: task_path (absolute), spec_path, base_url. Report saves to `{task_path}/verification/e2e-verification-report.md`.
 **Output**: `verification/e2e-verification-report.md`, screenshots
 **State**: Update E2E results
@@ -479,7 +479,7 @@ ask_user - "E2E complete. Continue to Phase 13?"
 > **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from the preceding phase in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Generate user-facing documentation with screenshots
-**Execute**: Task tool - `flowbit-user-docs-generator` subagent
+**Execute**: Task tool - `flowbit:user-docs-generator` subagent
 **Prompt must include**: task_path (absolute), spec_path, base_url. Guide saves to `{task_path}/documentation/user-guide.md`.
 **Output**: `documentation/user-guide.md`, screenshots
 **State**: Update docs generation status
@@ -620,7 +620,7 @@ When starting development from a completed research task, the orchestrator loads
 
 **Method 1: Research folder as sole argument** (recommended)
 ```
-/flowbit-development .flowbit/tasks/research/2026-01-12-oauth-research
+/flowbit:development .flowbit/tasks/research/2026-01-12-oauth-research
 ```
 The orchestrator auto-detects this is a research folder and:
 - Extracts task description from `research_context.research_question`
@@ -629,7 +629,7 @@ The orchestrator auto-detects this is a research folder and:
 
 **Method 2: Explicit --research flag**
 ```
-/flowbit-development "Implement OAuth" --research=.flowbit/tasks/research/2026-01-12-oauth-research
+/flowbit:development "Implement OAuth" --research=.flowbit/tasks/research/2026-01-12-oauth-research
 ```
 
 ### Research Artifacts (Standard List)
@@ -660,8 +660,8 @@ When research context is detected, read these files from the research folder:
 ## Command Integration
 
 Invoked via:
-- `/flowbit-development [description] [--e2e] [--user-docs] [--research=PATH]` (new)
-- `/flowbit-development [task-path] [--from=PHASE] [--reset-attempts]` (resume)
+- `/flowbit:development [description] [--e2e] [--user-docs] [--research=PATH]` (new)
+- `/flowbit:development [task-path] [--from=PHASE] [--reset-attempts]` (resume)
 
 ---
 

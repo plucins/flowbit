@@ -1,6 +1,6 @@
 ---
 name: diagrams-mermaid
-description: Creates Mermaid diagrams for planning flows, component communication, and architecture views with adaptive detail selection (including C4 levels). This skill should be used when the user asks for a workflow, interaction, or architecture visualization from provided task context.
+description: Use when a user or workflow needs a Mermaid diagram of a process, component interaction, state transition, or C4 architecture from provided context. Select the smallest useful level of detail and refine existing artifacts without inventing domain facts.
 ---
 
 # Mermaid Diagram Builder

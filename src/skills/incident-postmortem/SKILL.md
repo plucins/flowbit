@@ -31,7 +31,7 @@ Read:
 
 Call Task tool:
 
-- `flowbit-postmortem-author`
+- `flowbit:postmortem-author`
 
 Subagent output must include:
 

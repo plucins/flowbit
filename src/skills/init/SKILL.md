@@ -1,6 +1,6 @@
 ---
 name: init
-description: Initialize Flowbit with intelligent project analysis and documentation generation
+description: Use when a project needs Flowbit documentation and coding standards initialized in .flowbit/docs/. Analyze the existing codebase before generating project documentation.
 argument-hint: "[--standards-from=PATH]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[--standards-from=PATH]"
 
 Initialize `.flowbit/docs/` with intelligent project analysis and meaningful documentation generation based on actual codebase inspection.
 
-**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `flowbit-docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** for standards-discover (Phase 8, last phase) and diagrams-mermaid (Phase 6 doc refinement). The Task tool returns control to this skill after completion; the Skill tool does not.
+**NOTE**: This skill invokes other skills and subagents at specific phases. Use the **Task tool with `docs-operator` subagent** (subagent_type: `flowbit:docs-operator`) for all docs-manager operations, and **Task tool** for project-analyzer. Use the **Skill tool** for standards-discover (Phase 8, last phase) and diagrams-mermaid (Phase 6 doc refinement). The Task tool returns control to this skill after completion; the Skill tool does not.
 
 ## Phase Configuration
 
@@ -109,7 +109,7 @@ Store selection for Phase 5.
 
 ## PHASE 5: Initialize Documentation Structure
 
-**Invoke `docs-operator` subagent** via Task tool (subagent_type: `flowbit-docs-operator`) with prompt:
+**Invoke `docs-operator` subagent** via Task tool (subagent_type: `flowbit:docs-operator`) with prompt:
 
 > "Initialize documentation structure. Standards selection: [array from Phase 4]. [If --standards-from was provided: Standards source path: [resolved path]/.flowbit/docs/standards/. Copy standards from this external path instead of built-in defaults.] Only copy selected standard categories. Do NOT copy project templates — only create the project/ directory. Project documentation will be generated in Phase 6 with real content from project analysis. Create placeholder sections in INDEX.md for skipped categories."
 
@@ -137,7 +137,7 @@ Write each file to `.flowbit/docs/project/`.
 **Diagram refinement (content-preserving, do NOT replace prose):**
 
 - If Architecture doc is selected and `.flowbit/docs/project/architecture.md` exists:
-  1. Invoke Skill tool: `flowbit-diagrams-mermaid`
+  1. Invoke Skill tool: `diagrams-mermaid`
   2. Pass context from analysis + generated architecture content
   3. Add Mermaid sections that **refine** the document:
      - `## Visual Architecture Context` (prefer `C4Context` or `C4Container`)
@@ -145,7 +145,7 @@ Write each file to `.flowbit/docs/project/`.
   4. Keep existing architecture narrative intact; diagrams must supplement, not replace sections.
 
 - If Tech Stack doc is selected and `.flowbit/docs/project/tech-stack.md` exists:
-  1. Invoke Skill tool: `flowbit-diagrams-mermaid`
+  1. Invoke Skill tool: `diagrams-mermaid`
   2. Add one lightweight visual section (e.g., runtime/build dependency flow) only if context is sufficient
   3. If context is insufficient, keep text-only output and list missing details (no invented dependencies).
 
@@ -153,7 +153,7 @@ Write each file to `.flowbit/docs/project/`.
 
 ## PHASE 7: Validate
 
-**Step 1**: Invoke `docs-operator` subagent via Task tool (subagent_type: `flowbit-docs-operator`) with prompt:
+**Step 1**: Invoke `docs-operator` subagent via Task tool (subagent_type: `flowbit:docs-operator`) with prompt:
 
 > "Regenerate INDEX.md to include all newly created project documentation. Then verify .github/copilot-instructions.md is properly integrated with .flowbit/docs/ documentation."
 
@@ -175,7 +175,7 @@ Wait for docs-operator to complete, then immediately continue with Step 2.
 - Next steps:
   1. Review generated documentation
   2. Customize for your team
-  3. Start development with `/flowbit-work`
+  3. Start development with `/flowbit:work`
   4. Keep documentation current
 
 ---

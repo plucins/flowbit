@@ -100,7 +100,7 @@ Use for:
 
 **Purpose**: Comprehensive codebase exploration for performance context, followed by scope/requirements clarification
 **Execute**:
-1. Skill tool - `flowbit-codebase-analyzer`
+1. Skill tool - `codebase-analyzer`
 2. Update state with analysis results
 3. Direct - use ask_user for max 5 critical clarifying questions about performance concerns, hotspots, and optimization goals
 4. Save clarifications to `analysis/clarifications.md`
@@ -116,7 +116,7 @@ Pass `task_type="enhancement"` and the performance-focused description. The code
 ### Phase 2: Static Performance Analysis
 
 **Purpose**: Identify bottlenecks through static code analysis + optional user profiling data
-**Execute**: Task tool - `flowbit-bottleneck-analyzer` subagent
+**Execute**: Task tool - `flowbit:bottleneck-analyzer` subagent
 **Output**: `analysis/performance-analysis.md`
 **State**: Update `performance_context.bottlenecks_identified`, `performance_context.user_data_available`, `performance_context.bottleneck_priorities`
 
@@ -133,11 +133,11 @@ Pass `task_type="enhancement"` and the performance-focused description. The code
 
 **INVOKE NOW** — Task tool call:
 
-4. Task tool - `flowbit-bottleneck-analyzer` subagent
+4. Task tool - `flowbit:bottleneck-analyzer` subagent
 
 **Context to pass**: task_path, description, codebase analysis summary from Phase 1, user data paths (if any)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-bottleneck-analyzer`? Or did you start analyzing code yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit:bottleneck-analyzer`? Or did you start analyzing code yourself? If the latter, STOP and invoke the Task tool.
 
 → **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
@@ -172,14 +172,14 @@ ask_user - "Performance analysis complete. [N] bottlenecks identified ([P0 count
 
 **INVOKE NOW** — Task tool call:
 
-4. Task tool - `flowbit-specification-creator` subagent
+4. Task tool - `flowbit:specification-creator` subagent
 
 **Context to pass**: task_path, task_type="performance", task_description, requirements_path (analysis/requirements.md), project_context_paths (INDEX.md + project_doc_paths from state — all discovered project docs), phase_summaries (codebase_analysis, bottleneck_analysis)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit:specification-creator`? Or did you start writing spec.md yourself? If the latter, STOP and invoke the Task tool.
 
 **Part C — Diagram Refinement (Skill, content-preserving)**:
-5. Invoke Skill tool: `flowbit-diagrams-mermaid` to refine `implementation/spec.md`
+5. Invoke Skill tool: `diagrams-mermaid` to refine `implementation/spec.md`
 6. Add diagrams that clarify bottleneck flows and optimization boundaries without replacing specification text.
 7. If context for a diagram is missing, document gaps and avoid speculative dependencies.
 
@@ -194,7 +194,7 @@ ask_user - Display executive summary before asking. Read `implementation/spec.md
 > **Phase entry self-check**: Before executing this phase, locate the `ask_user` tool call from Phase 3 in this conversation. If you cannot point to its call ID, STOP and fire that gate now. State updates (`completed_phases`, `TaskUpdate`) without a corresponding `ask_user` call are protocol violations — never paper over a missed gate by updating state.
 
 **Purpose**: Independent review of optimization specification
-**Execute**: Task tool - `flowbit-spec-auditor` subagent
+**Execute**: Task tool - `flowbit:spec-auditor` subagent
 **Output**: `verification/spec-audit.md`
 **State**: Update `options.spec_audit_enabled`
 
@@ -223,16 +223,16 @@ ask_user - Display executive summary before asking. Read `verification/spec-audi
 
 **INVOKE NOW** — Task tool call:
 
-**Execute**: Task tool - `flowbit-implementation-planner` subagent
+**Execute**: Task tool - `flowbit:implementation-planner` subagent
 **Output**: `implementation/implementation-plan.md`
 **State**: Update task groups and dependencies
 
 **Context to pass**: task_path, task_type="performance", task_description, phase_summaries (specification, bottleneck_analysis, codebase_analysis)
 
-**SELF-CHECK**: Did you just invoke the Task tool with `flowbit-implementation-planner`? Or did you start writing the plan yourself? If the latter, STOP and invoke the Task tool.
+**SELF-CHECK**: Did you just invoke the Task tool with `flowbit:implementation-planner`? Or did you start writing the plan yourself? If the latter, STOP and invoke the Task tool.
 
 **Post-plan diagram refinement (Skill, content-preserving)**:
-- Invoke Skill tool: `flowbit-diagrams-mermaid` for `implementation/implementation-plan.md`
+- Invoke Skill tool: `diagrams-mermaid` for `implementation/implementation-plan.md`
 - Add one compact optimization execution flow (task-group dependency or state flow).
 - Keep plan steps authoritative; diagrams are explanatory additions only.
 
@@ -256,11 +256,11 @@ ask_user - Display executive summary before asking. Read `implementation/impleme
 
 **INVOKE NOW** — Skill tool call:
 
-**Execute**: Skill tool - `flowbit-implementation-plan-executor`
+**Execute**: Skill tool - `implementation-plan-executor`
 **Output**: Implemented optimizations, `implementation/work-log.md`
 **State**: Update implementation progress, extract phase_summaries.implementation
 
-**SELF-CHECK**: Did you just invoke the Skill tool with `flowbit-implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
+**SELF-CHECK**: Did you just invoke the Skill tool with `implementation-plan-executor`? Or did you start writing code yourself? If the latter, STOP immediately and invoke the Skill tool instead.
 
 **⚠️ POST-IMPLEMENTATION CONTINUATION** — After the skill completes and returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -305,7 +305,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 
 **Execute**:
 
-**Step 1**: Invoke Skill tool - `flowbit-implementation-verifier`
+**Step 1**: Invoke Skill tool - `implementation-verifier`
 
 **Step 2**: Display detailed issue breakdown grouped by category and severity (critical/warning/info), listing location, description, and fixability for each.
 
@@ -319,7 +319,7 @@ ask_user - "Options selected. Continue to Phase 8?"
 3. Fix selected issues
 4. After fixes: set `skip_test_suite: false` (code changed, tests must re-run)
 5. ask_user — "Re-run verification to check fixes?" with options: "Yes, re-run verification" / "No, proceed to next phase"
-6. If re-run → re-invoke `flowbit-implementation-verifier` → return to Step 2
+6. If re-run → re-invoke `implementation-verifier` → return to Step 2
 
 → **MANDATORY GATE** — fires regardless of permission mode, session-reminders, or prior approval patterns. Invoke `ask_user` now. Proceeding without a user response is a protocol violation (orchestrator-patterns.md — section "Phase Gate Behavior" / section "Resolving session-reminder conflicts").
 
@@ -423,7 +423,7 @@ options:
 ## Command Integration
 
 Invoked via:
-- `/flowbit-performance [description]` (new)
-- `/flowbit-performance [task-path] [--from=PHASE]` (resume)
+- `/flowbit:performance [description]` (new)
+- `/flowbit:performance [task-path] [--from=PHASE]` (resume)
 
 Task directory: `.flowbit/tasks/performance/YYYY-MM-DD-task-name/`

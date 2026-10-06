@@ -81,6 +81,12 @@ Start Claude Code and run a Flowbit skill:
 /flowbit:work
 ```
 
+Claude Code exposes plugin skills as `/flowbit:<skill-name>` (for example,
+`/flowbit:diagrams-mermaid`). Within Flowbit workflow instructions, refer to
+the skill by its `name` in `SKILL.md` (`diagrams-mermaid`), not
+`flowbit-diagrams-mermaid`. Plugin agents are scoped as
+`flowbit:<agent-name>` (for example, `flowbit:task-classifier`).
+
 Manage the installation from the shell:
 
 ```bash

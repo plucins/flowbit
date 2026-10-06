@@ -21,7 +21,7 @@ Collect concrete signals first, then correlate timeline and likely fault domains
 
 Call Task tool:
 
-- `flowbit-information-gatherer`
+- `flowbit:information-gatherer`
 
 Prompt must focus on incident-relevant sources:
 
@@ -34,7 +34,7 @@ Prompt must focus on incident-relevant sources:
 
 Call Task tool:
 
-- `flowbit-timeline-correlator`
+- `flowbit:timeline-correlator`
 
 Input:
 

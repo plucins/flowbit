@@ -1,6 +1,6 @@
-# AI SDLC Plugin for GitHub Copilot
+# AI SDLC Plugin for GitHub Copilot CLI and Claude Code
 
-This plugin provides AI-powered Software Development Lifecycle (SDLC) capabilities for GitHub Copilot projects, with a focus on Copilot CLI workflows.
+This plugin provides AI-powered Software Development Lifecycle (SDLC) workflows for GitHub Copilot CLI and Claude Code.
 
 ## Purpose
 
@@ -203,6 +203,13 @@ Commonly used agents include:
 
 See `agents/*.agent.md` for workflow-specific guidance.
 
+## Component Names
+
+- Skill frontmatter `name` and internal skill references use the bare directory name, such as `diagrams-mermaid`.
+- User-facing Claude Code commands use `/flowbit:<skill-name>`, such as `/flowbit:diagrams-mermaid`.
+- Claude Code plugin agents use the scoped identifier `flowbit:<agent-name>`, such as `flowbit:task-classifier`. Keep the agent frontmatter `name` unscoped.
+- Do not use `flowbit-<skill-name>` as a skill identifier. It is not a registered skill name.
+
 ## Key Workflow Principles
 
 1. **Documentation first**: read `.flowbit/docs/INDEX.md` before implementation.
@@ -256,13 +263,12 @@ Documentation priority:
 3) Existing repository patterns  
 4) General best practices
 
-## Platform Notes: Copilot CLI
+## Platform Notes
 
-For this repository, use Copilot CLI conventions:
+For Claude Code, use the plugin's namespaced slash commands and scoped agent identifiers above. For Copilot CLI, keep its separate project instructions and integration where required:
 
 - Use sequential single-select prompts when multiple decisions are needed.
 - Treat `AGENTS.md` as agent instruction source for Copilot CLI.
 - Keep repository-wide behavior in `.github/copilot-instructions.md`.
 - Keep plugin metadata in `plugin.json`.
-- Use command and skill names exactly as exposed by plugin routing in Copilot CLI.
-
+- Use command and skill names exactly as exposed by the active host.

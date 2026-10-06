@@ -1,6 +1,6 @@
 ---
 name: solution-designer
-description: Transforms selected solution approach into high-level architecture design with C4 diagrams, component mapping, and MADR decision records. Non-interactive content generator.
+description: Use after a research workflow selects a solution approach. Produce high-level C4 architecture diagrams, component mapping, and MADR decision records without prompting the user.
 model: inherit
 color: cyan
 ---

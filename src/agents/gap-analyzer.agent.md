@@ -1,6 +1,6 @@
 ---
 name: gap-analyzer
-description: Compares current vs desired state, identifies gaps with user journey and data lifecycle analysis. Reports findings for orchestrator to act on. Adapts analysis based on detected task characteristics.
+description: Use after codebase analysis to compare current and desired behavior, identify gaps in the user journey and data lifecycle, and return task characteristics and decisions for the orchestrator.
 model: inherit
 color: blue
 ---

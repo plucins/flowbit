@@ -3,7 +3,7 @@ name: reviews-pragmatic
 description: Run pragmatic code review to detect over-engineering and ensure code matches project scale
 ---
 
-**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="flowbit-code-quality-pragmatist" NOW. Pass the path to analyze in the prompt. Do not read files, explore code, or execute workflow steps yourself.
+**ACTION REQUIRED**: This command delegates to a different skill. The `<command-name>` tag refers to THIS command, not the target. Call the Task tool with subagent_type="flowbit:code-quality-pragmatist" NOW. Pass the path to analyze in the prompt. Do not read files, explore code, or execute workflow steps yourself.
 
 You are running a pragmatic code review using the `code-quality-pragmatist` agent.
 
@@ -25,7 +25,7 @@ You are performing pragmatic analysis to identify over-engineering, unnecessary 
 
 ```
 Task Tool:
-- subagent_type: code-quality-pragmatist
+- subagent_type: flowbit:code-quality-pragmatist
 - description: Pragmatic code review
 - prompt: |
     You are the code-quality-pragmatist agent. Review the code at: [path]
@@ -58,17 +58,17 @@ The code-quality-pragmatist agent will:
 
 **Example 1**: Review specific feature
 ```
-User: /flowbit-reviews-pragmatic .flowbit/tasks/development/2025-11-17-user-management/
+User: /flowbit:reviews-pragmatic .flowbit/tasks/development/2025-11-17-user-management/
 ```
 
 **Example 2**: Review source directory
 ```
-User: /flowbit-reviews-pragmatic src/features/payments/
+User: /flowbit:reviews-pragmatic src/features/payments/
 ```
 
 **Example 3**: Review specific file
 ```
-User: /flowbit-reviews-pragmatic src/services/cache-service.ts
+User: /flowbit:reviews-pragmatic src/services/cache-service.ts
 ```
 
 ## What to Expect

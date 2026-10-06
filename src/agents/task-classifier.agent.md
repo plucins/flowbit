@@ -1,6 +1,6 @@
 ---
 name: task-classifier
-description: Task classification specialist analyzing task descriptions and issue references to classify into 5 workflow types (development, performance, migration, research). Supports GitHub/Jira integration, codebase context analysis, and confidence scoring.
+description: Use when routing a new task to a Flowbit workflow. Classify task descriptions and issue references using available tracker and codebase context, and return a workflow type with confidence and reasoning.
 model: inherit
 color: purple
 ---

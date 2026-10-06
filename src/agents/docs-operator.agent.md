@@ -1,6 +1,6 @@
 ---
 name: docs-operator
-description: Internal documentation management service. Executes docs-manager operations and returns results to the calling workflow.
+description: Use internally when init or standards workflows need documentation files updated, INDEX.md regenerated, or project instruction integration checked. Execute docs-manager operations and report results to the caller.
 skills:
   - docs-manager
 ---

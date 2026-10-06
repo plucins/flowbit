@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Automated code quality, security, and performance analysis. Analyzes code for complexity, duplication, security vulnerabilities, performance issues, and best practices compliance. Can run standalone (via command) or as part of implementation verification. Provides actionable findings categorized by severity. Read-only - reports issues without fixing. Does not interact with users.
+description: Use for a standalone code review or post-implementation verification. Analyze code quality, security, and performance; report actionable findings by severity without changing files or asking the user questions.
 model: inherit
 color: orange
 ---
@@ -214,7 +214,7 @@ issue_counts:
 
 ## Integration
 
-**Invoked by**: implementation-verifier (Phase 3), standalone via `/flowbit-reviews-code` command
+**Invoked by**: implementation-verifier (Phase 3), standalone via `/flowbit:reviews-code` command
 
 **Prerequisites**:
 - Code exists at the specified path

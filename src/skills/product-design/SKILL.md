@@ -70,7 +70,7 @@ Starting Phase 0: Initialize & Gather Context...
 
 Use for **product and feature design**: defining what to build before building it. Greenfield products, new features, enhancements, API designs, workflow designs.
 
-**DO NOT use for**: Implementation tasks (use `/flowbit-development`), pure research (use `/flowbit-research`), bug fixes, performance optimization, migrations.
+**DO NOT use for**: Implementation tasks (use `/flowbit:development`), pure research (use `/flowbit:research`), bug fixes, performance optimization, migrations.
 
 **When to use this vs development orchestrator**: If you need to explore the problem space, evaluate alternatives, and define requirements interactively before any code is written, use this. If you already know what to build and need to plan and execute, use development.
 
@@ -242,9 +242,9 @@ ask_user — "I detected these design characteristics. Please confirm or correct
 - "I'll look through the project..." -- STOP. Delegate to codebase-analyzer.
 
 **INVOKE NOW** -- Skill tool call:
-1. Skill tool - `flowbit-codebase-analyzer` (to understand existing product context, tech stack, UI patterns)
+1. Skill tool - `codebase-analyzer` (to understand existing product context, tech stack, UI patterns)
 
-**SELF-CHECK**: Did you invoke the Skill tool with `flowbit-codebase-analyzer`? Or did you start reading project files yourself? If the latter, STOP and invoke the Skill tool.
+**SELF-CHECK**: Did you invoke the Skill tool with `codebase-analyzer`? Or did you start reading project files yourself? If the latter, STOP and invoke the Skill tool.
 
 **POST-SKILL CONTINUATION**: After codebase-analyzer returns control:
 1. Read `orchestrator-state.yml` to confirm you are the orchestrator
@@ -261,7 +261,7 @@ ask_user — "I detected these design characteristics. Please confirm or correct
    - "I'll look that up..." -- STOP. Delegate to information-gatherer.
 
    **INVOKE NOW** -- Task tool call (parallel, one per topic):
-   Task tool - `flowbit-information-gatherer` subagent per research topic
+   Task tool - `flowbit:information-gatherer` subagent per research topic
 
    **Context to pass**: research topic, scope constraints, task_path
 
@@ -395,7 +395,7 @@ ask_user — "Personas defined. Continue to Idea Generation?"
 
 **INVOKE NOW** -- Task tool call:
 
-Task tool - `flowbit-solution-brainstormer` subagent
+Task tool - `flowbit:solution-brainstormer` subagent
 
 **Context to pass** (Pattern 7):
 - `task_path`
@@ -601,7 +601,7 @@ The visual companion is the **default and preferred** rendering method. Always a
 > You should only reach this section if Step 1 failed (server could not start on any port) or the user explicitly passed `--no-visual`. If the visual companion is running, do NOT use this fallback.
 
 **INVOKE NOW** -- Task tool call:
-Task tool - `flowbit-ui-mockup-generator` subagent
+Task tool - `flowbit:ui-mockup-generator` subagent
 
 **Context to pass**: task_path, spec sections from Phase 6, design context from Phase 1, selected approach from Phase 5
 
@@ -695,7 +695,7 @@ ask_user — with options:
 Product brief approved and saved to: [task-path]/outputs/product-brief.md
 
 To start development based on this design, clear context first or start a new session, then run:
-/flowbit-development [task-path]
+/flowbit:development [task-path]
 ```
 
 **Output**: `outputs/product-brief.md`
@@ -795,8 +795,8 @@ options:
 ## Command Integration
 
 Invoked via:
-- `/flowbit-product-design [description] [--no-visual] [--research=PATH]` (new)
-- `/flowbit-product-design [task-path] [--from=PHASE]` (resume)
+- `/flowbit:product-design [description] [--no-visual] [--research=PATH]` (new)
+- `/flowbit:product-design [task-path] [--from=PHASE]` (resume)
 
 **Flags**:
 | Flag | Effect |
@@ -818,7 +818,7 @@ Task directory: `.flowbit/tasks/product-design/YYYY-MM-DD-task-name/`
 The product brief is consumed by the development orchestrator:
 
 ```
-/flowbit-development .flowbit/tasks/product-design/YYYY-MM-DD-task-name/
+/flowbit:development .flowbit/tasks/product-design/YYYY-MM-DD-task-name/
 ```
 
 The development orchestrator auto-detects the product-design task type and copies the product brief to `analysis/design-context/product-brief.md`, then flows design context through all development phases. The product brief's Layer 0 maps to requirements, design characteristics map to task characteristics, and mockup references feed into UI implementation phases.
@@ -828,7 +828,7 @@ The development orchestrator auto-detects the product-design task type and copie
 A completed research workflow can feed into product design:
 
 ```
-/flowbit-product-design "Design feature X" --research=.flowbit/tasks/research/YYYY-MM-DD-research/
+/flowbit:product-design "Design feature X" --research=.flowbit/tasks/research/YYYY-MM-DD-research/
 ```
 
 Research findings are imported into `context/research-context/` and synthesized alongside other context sources in Phase 1.

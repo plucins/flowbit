@@ -24,7 +24,7 @@ Use this command when production behavior is degraded, unavailable, or risky eno
 ## Workflow
 
 1. Parse incident context (symptoms, impact, timeline hints, known changes).
-2. Invoke orchestrator skill `flowbit-incident`.
+2. Invoke orchestrator skill `incident`.
 3. The orchestrator:
    - triages severity and blast radius,
    - gathers evidence and correlates hypotheses,

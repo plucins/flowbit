@@ -9,7 +9,7 @@ Optional documentation — only generate if user selected "Architecture" in Phas
 [High-level description of system architecture]
 
 ## Visual Architecture Context
-[Mermaid diagram generated via `flowbit-diagrams-mermaid` that refines existing architecture content. Prefer C4Context/C4Container. Do NOT replace narrative sections.]
+[Mermaid diagram generated via `diagrams-mermaid` that refines existing architecture content. Prefer C4Context/C4Container. Do NOT replace narrative sections.]
 
 ## Architecture Pattern
 **Pattern**: [From analysis - e.g., "Layered monolithic with REST API"]
@@ -32,7 +32,7 @@ Optional documentation — only generate if user selected "Architecture" in Phas
 [Describe how data flows through the system]
 
 ## Component Communication Flow
-[Mermaid sequence/flow diagram generated via `flowbit-diagrams-mermaid` to clarify interaction order. Use only confirmed domain context.]
+[Mermaid sequence/flow diagram generated via `diagrams-mermaid` to clarify interaction order. Use only confirmed domain context.]
 
 ## External Integrations
 [List integrations found in analysis - databases, APIs, services]
